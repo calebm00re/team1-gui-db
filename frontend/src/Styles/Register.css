@@ -1,0 +1,9 @@
+.register-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: bisque;
+    text-align: center;
+    color: rgb(46, 51, 56);
+}

@@ -1,19 +1,29 @@
+import '../Styles/Landing.css';
 import { useNavigate } from "react-router-dom";
+import landLogo from "../Assets/landLogo.png";
+
 export const Landing = () => {
 
-    //buttons to take me to the register and login pages routes
     const navigate = useNavigate();
-
-    // function goRegister() {
-    //     navigate("/register");
-    // }
 
     return (
         <>
-            <div>Welcome to the landing page</div>
-            <button onClick={() => navigate("/register")}>Register</button>
-            <button onClick={() => navigate("/login")}>Login</button>
-
+            <div class="landing-container">
+                <div class="landing-center">
+                    <h1>Babysitting Done Right</h1>
+                </div>
+                <div class="landing-center">
+                    <img class="landing-img" alt="Landing img" src={landLogo}></img>
+                </div>
+                <div class="landing-center">
+                    <h2>add nonsense about why you should use our app</h2>
+                    <h2>screen shots of usefull features etc then scroll to buttons</h2>
+                </div>
+                <div class="landing-menu">
+                    <button type="button" class="btn btn-block btn-outline-dark" onClick={() => navigate("/register")}>Register </button>
+                    <button type="button" class="btn btn-block btn-outline-dark" onClick={() => navigate("/login")}>Login </button>
+                </div>
+            </div>
         </>
     );
 }

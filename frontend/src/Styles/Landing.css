@@ -1,0 +1,37 @@
+* {
+    box-sizing: border-box;
+    background-color: bisque;
+}
+
+.landing-img {
+    display: flex;
+    justify-content: center;
+    max-width: 20%;
+    height: auto;
+    width: auto\9;
+    background-color: bisque;
+    margin-top: 2rem;
+}
+
+.landing-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.landing-center {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: bisque;
+    text-align: center;
+    color: rgb(46, 51, 56);
+}
+
+.landing-menu {
+    padding-left: 25%;
+    padding-right: 25%;
+    margin-top: 4rem;
+    margin-bottom: 1rem;
+}
