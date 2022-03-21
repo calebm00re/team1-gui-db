@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from "react-router-dom";
+// import { ArrowBackIosOutlined } from '@mui/icons-material/AcUnit';
 
 const theme = createTheme();
 
@@ -112,7 +113,13 @@ export const Register = () => {
                     sx={{
                       marginTop: 8
                     }}>
-                <Button variant="outlined" href="/">Back</Button>
+                <Button 
+                  variant="outlined" 
+                  href="/"
+                  // startIcon={<ArrowBackIosOutlined />}
+                >
+                  Back
+                </Button>
               </Grid>
             </Grid>
           </Box>
