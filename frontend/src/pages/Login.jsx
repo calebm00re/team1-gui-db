@@ -93,7 +93,6 @@ export const Login = () => {
             </Grid>
           </Box>
         </Box>
-            <backIcon />
       </Container>
     </ThemeProvider>
   );
