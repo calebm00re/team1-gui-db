@@ -1,6 +1,6 @@
-import '../Styles/Landing.css';
+// import '../Styles/Landing.css';
 import { useNavigate } from "react-router-dom";
-import landLogo from "../Assets/landLogo.png";
+import landLogo from "../Assets/images/logo.png";
 
 export const Landing = () => {
 
