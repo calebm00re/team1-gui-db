@@ -17,6 +17,14 @@ const theme = createTheme({
         main: accentColor,
       },
     },
+    components: {
+        MuiButton: {
+            styleOverrides: {
+                root: { 
+                },
+            },
+        },
+    },
   });
 
 export default theme;

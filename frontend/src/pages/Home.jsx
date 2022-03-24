@@ -12,12 +12,17 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { ProfileCard } from './ProfileCard';
-import { ThemeProvider } from '@mui/material';
+import { ThemeProvider, Grid } from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 import theme from '../Assets/theme';
 
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = ['Sitters', 'Kids', 'browse'];
+const pageIcons = [<PersonIcon />, <CalendarMonthIcon />, <DashboardIcon />, <LogoutIcon />]; 
+const settings = ['Profile', 'Calendar', 'Dashboard', 'Logout'];
 
 export const Home = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -38,9 +43,19 @@ export const Home = () => {
     setAnchorElUser(null);
   };
 
+  const buildMap = (settings, pageIcons) => {
+    const map = new Map();
+    for(let i = 0; i < pages.length; i++) {
+      map.set(settings[i], pageIcons[i]);
+    };
+    return map;
+  };
+
+  buildMap(settings, pageIcons);
+
   return (
     <ThemeProvider theme={theme}>
-      <AppBar position="static">
+      <AppBar position="sticky">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Typography
@@ -132,7 +147,7 @@ export const Home = () => {
               >
                 {settings.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
+                    <Typography textAlign="center">{pageIcons[setting] + setting}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
@@ -140,7 +155,17 @@ export const Home = () => {
           </Toolbar>
         </Container>
       </AppBar>
-      <ProfileCard />
+      <Grid 
+        container
+        direction='column'
+        justifyContent='center'
+        alignItems='center'
+      >
+        <ProfileCard />
+        <ProfileCard />
+        <ProfileCard />
+        <ProfileCard />
+      </Grid>
       <Button variant="outlined" href="/">Landing</Button>
     </ThemeProvider>
   );

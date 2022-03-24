@@ -9,7 +9,7 @@ import { Card,
 import theme from '../Assets/theme';
 import emma from '../Assets/images/emma.jpeg';
 
-export const ProfileCard = () => {
+export const ProfileCard = (name) => {
     return (
         <ThemeProvider theme={theme}>
             <Card sx={{ maxWidth: 345,
