@@ -21,7 +21,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import theme from '../Assets/theme';
 
 const pages = ['Sitters', 'Kids', 'browse'];
-const pageIcons = [<PersonIcon />, <CalendarMonthIcon />, <DashboardIcon />, <LogoutIcon />]; 
+const pageIcons = [{PersonIcon}, {CalendarMonthIcon}, {DashboardIcon}, {LogoutIcon}]; 
 const settings = ['Profile', 'Calendar', 'Dashboard', 'Logout'];
 
 export const Home = () => {
@@ -147,7 +147,7 @@ export const Home = () => {
               >
                 {settings.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{pageIcons[setting] + setting}</Typography>
+                    <Typography textAlign="center">{'icon ' + setting}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
