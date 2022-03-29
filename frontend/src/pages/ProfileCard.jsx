@@ -8,6 +8,8 @@ import { Card,
          ThemeProvider } from '@mui/material';
 import theme from '../Assets/theme';
 import emma from '../Assets/images/emma.jpeg';
+import PersonIcon from '@mui/icons-material/Person';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 export const ProfileCard = (name) => {
     return (
@@ -30,8 +32,8 @@ export const ProfileCard = (name) => {
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button size="small" variant='contained' color='secondary'>Profile</Button>
-                    <Button size="small" variant='contained' color='info'>Calendar</Button>
+                    <Button size="small" variant='contained' color='secondary' startIcon={<PersonIcon />}>Profile</Button>
+                    <Button size="small" variant='contained' color='info' startIcon={<CalendarMonthIcon />}>Calendar</Button>
                 </CardActions>
             </Card>
         </ThemeProvider>

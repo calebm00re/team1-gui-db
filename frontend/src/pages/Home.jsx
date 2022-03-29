@@ -192,10 +192,13 @@ export const Home = () => {
       </AppBar>
       <Grid 
         container
-        direction='column'
+        direction='row'
         justifyContent='center'
         alignItems='center'
       >
+        <ProfileCard />
+        <ProfileCard />
+        <ProfileCard />
         <ProfileCard />
         <ProfileCard />
         <ProfileCard />
