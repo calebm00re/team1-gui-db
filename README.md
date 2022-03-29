@@ -23,9 +23,9 @@ NOTE: You will need to share the values in this `.env` file in the backend folde
 ```
 # POPULATE WITH YOUR OWN VALUES SPECIFIED IN DATABASE CREATION!
 # mysql database name
-MYSQL_DB=
+MYSQL_DB=db-gui-team1
 # mysql port (usually 3306)
-MYSQL_PORT=
+MYSQL_PORT=3306
 # mysql cloud database login user
 MYSQL_CLOUD_USER=
 # mysql cloud database login password
