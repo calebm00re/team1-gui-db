@@ -1,5 +1,8 @@
-const pool = require('./db')
 
+const pool = require('./db'); // IDK why this is required
+const express = require('express');
+
+/*
 module.exports = function routes(app, logger) {
   // GET /
   app.get('/', (req, res) => {
@@ -97,6 +100,7 @@ module.exports = function routes(app, logger) {
   });
 
   // POST /register
+
   app.post('/register', (req, res) => {
     console.log(req.body);
     // obtain a connection from our pool of connections
@@ -124,4 +128,28 @@ module.exports = function routes(app, logger) {
   });
 
 
+
+
 }
+ */ //way of doing routes from tutorial
+
+//Based on Ayalla's code
+const router = express.Router();
+
+router.post('/', async (req, res, next) => {
+  try {
+    const body = req.body;
+    console.log(body);
+    const result = await req.models.user.createNewUser(body.email, body.password);
+    res.status(201).json(result);
+  } catch (err) {
+    console.error('Failed to create new user:', err);
+    res.status(500).json({ message: err.toString() });
+  }
+
+  next();
+})
+
+module.exports = router;
+
+
