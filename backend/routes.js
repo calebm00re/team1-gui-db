@@ -115,12 +115,13 @@ module.exports = function routes(app, logger) {
         console.log(str);
         connection.query('INSERT INTO `db`.`users` (`lastName`,`firstName`,`email`,`password`) VALUES(?,?,?,?)', [req.body.lastName, req.body.firstName, req.body.email, req.body.password],  function (err, rows, fields) {
           connection.release();
+
           if (err) {
             // if there is an error with the query, log the error
             logger.error("Problem inserting into test table: \n", err);
             res.status(400).send('Problem inserting into table');
           } else {
-            res.status(200).send(`added ${req.body.product} to the table!`);
+            res.status(200).send(`added ${req.body.firstName}  ${req.body.lastName} to the table!`);
           }
         });
       }
@@ -130,10 +131,12 @@ module.exports = function routes(app, logger) {
 
 
 
+
 }
  */ //way of doing routes from tutorial
 
 //Based on Ayalla's code
+/*
 const router = express.Router();
 
 router.post('/', async (req, res, next) => {
@@ -151,5 +154,5 @@ router.post('/', async (req, res, next) => {
 })
 
 module.exports = router;
-
+*/
 
