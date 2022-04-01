@@ -8,6 +8,7 @@ const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
 // const mysqlConnect = require('./db');
 const routes = require('./routes');
 const userRoutes = require('./routes/userRoutes') //this includes userRoutes into the files
+const sessionRoutes = require('./routes/session') //this includes session into the files
 // set up some configs for express.
 const config = {
   name: 'sample-express-app',
@@ -32,6 +33,7 @@ app.use(ExpressAPILogMiddleware(logger, { request: true }));
 //routes(app, logger);
 
 app.use('/users', userRoutes); //this makes userRoutes a route file
+app.use('/session',sessionRoutes); //this makes sessionRoutes a routes file
 
 
 // connecting the express object to listen on a particular port as defined in the config object.

@@ -11,7 +11,6 @@ const router = express.Router();
 router.post('/login', async (req, res, next) => {
     try {
         const body = req.body;
-
         const result = await req.models.user.authenticateUser(body.email, body.password);
         res.status(201).json(result);
     } catch (err) {
@@ -21,5 +20,6 @@ router.post('/login', async (req, res, next) => {
 
     next();
 })
+
 
 module.exports = router;
