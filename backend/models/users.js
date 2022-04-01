@@ -15,6 +15,11 @@ const createNewUser = async (firstName, lastName, email, password) => {
     //hashes the password with the salt using sha256
     const hashedPassword = crypto.createHash('sha256').update(salt + password).digest('hex');
     console.log('Hashed password', hashedPassword);
+    //checks to see if email given is a valid email
+    const isValidEmail = checkIfValid(email);
+    if (!isValidEmail) {
+        throw new Error('Invalid email');
+    }
 
     //checks to see if the user already exists
     const isNotFirst = await knex(USER_TABLE).where({email: email}).first();
@@ -26,6 +31,11 @@ const createNewUser = async (firstName, lastName, email, password) => {
     const result = await query;
     return result;
 
+};
+
+const checkIfValid = (email) => {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
 };
 
 
