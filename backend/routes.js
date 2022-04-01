@@ -1,5 +1,8 @@
-const pool = require('./db')
 
+const pool = require('./db'); // IDK why this is required
+const express = require('express');
+
+/*
 module.exports = function routes(app, logger) {
   // GET /
   app.get('/', (req, res) => {
@@ -97,6 +100,7 @@ module.exports = function routes(app, logger) {
   });
 
   // POST /register
+
   app.post('/register', (req, res) => {
     console.log(req.body);
     // obtain a connection from our pool of connections
@@ -111,12 +115,13 @@ module.exports = function routes(app, logger) {
         console.log(str);
         connection.query('INSERT INTO `db`.`users` (`lastName`,`firstName`,`email`,`password`) VALUES(?,?,?,?)', [req.body.lastName, req.body.firstName, req.body.email, req.body.password],  function (err, rows, fields) {
           connection.release();
+
           if (err) {
             // if there is an error with the query, log the error
             logger.error("Problem inserting into test table: \n", err);
             res.status(400).send('Problem inserting into table');
           } else {
-            res.status(200).send(`added ${req.body.product} to the table!`);
+            res.status(200).send(`added ${req.body.firstName}  ${req.body.lastName} to the table!`);
           }
         });
       }
@@ -124,4 +129,30 @@ module.exports = function routes(app, logger) {
   });
 
 
+
+
+
 }
+ */ //way of doing routes from tutorial
+
+//Based on Ayalla's code
+/*
+const router = express.Router();
+
+router.post('/', async (req, res, next) => {
+  try {
+    const body = req.body;
+    console.log(body);
+    const result = await req.models.user.createNewUser(body.email, body.password);
+    res.status(201).json(result);
+  } catch (err) {
+    console.error('Failed to create new user:', err);
+    res.status(500).json({ message: err.toString() });
+  }
+
+  next();
+})
+
+module.exports = router;
+*/
+
