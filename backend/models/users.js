@@ -1,5 +1,6 @@
 const knex = require('../database/knex.js');
 // const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 
 const USER_TABLE = 'users';
 
@@ -7,16 +8,17 @@ const USER_TABLE = 'users';
 
 const createNewUser = async (firstName, lastName, email, password) => {
     console.log('Raw password:', password);
- //   const salt = await bcrypt.genSalt(10);
-    const salt = "salt";
-    console.log('Password salt', salt);
+    //generates a random salt
+  //  const salt = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  //  console.log('Password salt', salt);
     // const hashedPassword = await bcrypt.hash(password, salt);
-    const hashedPassword = password;
+    //hashes the password with the salt using sha256
+    const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
     console.log('Hashed password', hashedPassword);
 
     //checks to see if the user already exists
-    const user = await knex(USER_TABLE).where({email: email}).first();
-    if (user) {
+    const isNotFirst = await knex(USER_TABLE).where({email: email}).first();
+    if (isNotFirst) {
         throw new Error('User already exists');
     }
     //inserts the new user into the database
@@ -42,27 +44,13 @@ const authenticateUser = async (email, password) => {
     }
     const user = users[0];
  //   const validPassword = await bcrypt.compare(password, user.password);
-    const validPassword = password === user.password;
+    const validPassword = crypto.createHash('sha256').update(password).digest('hex') === user.password;
     if (validPassword) {
         return true;
     }
     return false;
 }
 
-async function sha256(message) {
-    // encode as UTF-8
-    const msgBuffer = new TextEncoder().encode(message);
-
-    // hash the message
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-
-    // convert ArrayBuffer to Array
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-
-    // convert bytes to hex string
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    return hashHex;
-}
 
 
 module.exports = {

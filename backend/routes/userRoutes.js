@@ -1,6 +1,6 @@
 const { application } = require('express');
 const express = require('express');
-const createNewUser = require('../models/users.js');
+const users = require('../models/users.js');
 
 
 /**
@@ -18,7 +18,7 @@ router.post('/register', async (req, res, next) => {
     //    const result = await req.models.user.createNewUser(body.email, body.password);
        // const result = await req.models.createNewUser(req.body.firstName, req.body.lastName, req.body.email, req.body.password
       //calls the createNewUser function in the users.js file of the models folder and return the result
-        const result = await createNewUser.createNewUser(body.firstName, body.lastName, body.email, body.password);
+        const result = await users.createNewUser(body.firstName, body.lastName, body.email, body.password);
 
 
         res.status(201).json(result);
