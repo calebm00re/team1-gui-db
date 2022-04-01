@@ -12,18 +12,28 @@ import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from "react-router-dom";
 import theme from '../Assets/theme';
+import { UserRepository } from '../api/userRepository.js'
 
 
 export const Login = () => {
+
+  const userRepository = new UserRepository();
   const navigate = useNavigate();
-  const handleSubmit = (event) => {
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-    navigate('/home');
+    const res = await userRepository.login(data.get('email'), data.get('password'));
+    console.log('res');
+    console.log(res);
+    if(!res.success) {
+      console.log("no good");
+      alert("Invalid email or password");
+    }
+    else {
+      console.log("good entry");
+      navigate('/home');
+    }
   };
 
   return (
