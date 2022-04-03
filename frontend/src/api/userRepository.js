@@ -34,7 +34,6 @@ export class UserRepository {
         const errors = { success: false };
         console.log('about tot try to post2');
         const { status } = await axios.post(URL + "/session/login", {email: email, password: pass});
-
         if (status <= 201) {
         errors.success = true;
         }
