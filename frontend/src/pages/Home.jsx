@@ -21,6 +21,9 @@ import { useNavigate } from "react-router-dom";
 import ChildCareIcon from '@mui/icons-material/ChildCare';
 import SavedSearchIcon from '@mui/icons-material/SavedSearch';
 import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
+import{ Sitters } from './Sitters';
+import { Kids } from './Kids';
+import { Browse } from './Browse';
 
 import theme from '../Assets/theme';
 
@@ -33,6 +36,13 @@ export const Home = () => {
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [page, setPage] = React.useState('Browse');
+  const [sitColor, setSitColor] = React.useState('white');
+  const [kidColor, setKidColor] = React.useState('white');
+  const [browseColor, setBrowseColor] = React.useState('info');
+  const [sitTextColor, setSitTextColor] = React.useState('white');
+  const [kidTextColor, setKidTextColor] = React.useState('white');
+  const [browseTextColor, setBrowseTextColor] = React.useState(theme.palette.info.main);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -48,6 +58,34 @@ export const Home = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  React.useEffect(() => {
+    if (page === 'Sitters') {
+      setSitColor('info');
+      setKidColor('white');
+      setBrowseColor('white');
+      setSitTextColor(theme.palette.info.main);
+      setKidTextColor('white');
+      setBrowseTextColor('white');
+    }
+    else if (page === 'Kids') {
+      setSitColor('white');
+      setKidColor('info');
+      setBrowseColor('white');
+      setSitTextColor('white');
+      setKidTextColor(theme.palette.info.main);
+      setBrowseTextColor('white');
+    }
+    else if (page === 'Browse') {
+      setSitColor('white');
+      setKidColor('white');
+      setBrowseColor('info');
+      setSitTextColor('white');
+      setKidTextColor('white');
+      setBrowseTextColor(theme.palette.info.main);
+    }
+  }, [page]);
+
 
   // const buildMap = (settings, pageIcons) => {
   //   const map = new Map();
@@ -139,9 +177,9 @@ export const Home = () => {
                   {page}
                 </Button>
               ))} */}
-              <Button onClick={() => navigate("/sitters")} sx={{ my: 2, color: 'white', display: 'flex' }} startIcon={<WorkHistoryIcon/>}>Sitters</Button>
-              <Button onClick={() => navigate("/kids")} sx={{ my: 2, color: 'white', display: 'flex' }} startIcon={<ChildCareIcon/>}>Kids</Button>
-              <Button onClick={() => navigate("/browse")} sx={{ my: 2, color: 'white', display: 'flex' }} startIcon={<SavedSearchIcon/>}>Browse</Button>
+              <Button onClick={() => setPage('Sitters')} sx={{ my: 2, color: sitTextColor, display: 'flex' }} startIcon={<WorkHistoryIcon color={sitColor}/>}>Sitters</Button>
+              <Button onClick={() => setPage('Kids')} sx={{ my: 2, color: kidTextColor, display: 'flex' }} startIcon={<ChildCareIcon color={kidColor}/>}>Kids</Button>
+              <Button onClick={() => setPage('Browse')} sx={{ my: 2, color: browseTextColor, display: 'flex' }} startIcon={<SavedSearchIcon color={browseColor}/>}>Browse</Button>
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
@@ -190,20 +228,7 @@ export const Home = () => {
           </Toolbar>
         </Container>
       </AppBar>
-      <Grid 
-        container
-        direction='row'
-        justifyContent='center'
-        alignItems='center'
-      >
-        <ProfileCard />
-        <ProfileCard />
-        <ProfileCard />
-        <ProfileCard />
-        <ProfileCard />
-        <ProfileCard />
-        <ProfileCard />
-      </Grid>
+      {page === 'Sitters' ? <Sitters /> : page === 'Kids' ? <Kids /> : <Browse />}
       {/* <Button variant="outlined" href="/">Landing</Button> */}
     </ThemeProvider>
   );
