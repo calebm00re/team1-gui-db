@@ -24,6 +24,7 @@ const createNewUser = async (firstName, lastName, email, password) => {
     }
 
     //checks to see if the user already exists
+
     const isNotFirst = await knex(USER_TABLE).where({email: email}).first();
     if (isNotFirst) {
         return {
@@ -41,6 +42,7 @@ const createNewUser = async (firstName, lastName, email, password) => {
 
 const checkIfValid = (email) => {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    console.log("Is valid email:", re.test(String(email).toLowerCase()));
     return re.test(String(email).toLowerCase());
 };
 

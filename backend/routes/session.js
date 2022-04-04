@@ -15,6 +15,7 @@ router.post('/login', async (req, res, next) => {
         if(result === false){
             console.log('login failed: invaled email or password');
             res.status(401).send('Invalid email or password');
+
         }
         console.log('login success');
         res.status(201).json(result);
