@@ -14,11 +14,12 @@ router.post('/login', async (req, res, next) => {
         const result = await users.authenticateUser(body.email, body.password);
         if(result === false){
             console.log('login failed: invaled email or password');
-            res.status(401).send('Invalid email or password');
+            res.status(401).json(result);
 
+        } else {
+            console.log('login success');
+            res.status(201).json(result);
         }
-        console.log('login success');
-        res.status(201).json(result);
     } catch (err) {
         console.error('Failed to create new user:', err);
         res.status(500).json({ message: err.toString() });
