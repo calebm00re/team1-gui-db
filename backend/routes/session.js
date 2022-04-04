@@ -12,6 +12,7 @@ router.post('/login', async (req, res, next) => {
     try {
         const body = req.body;
         const result = await users.authenticateUser(body.email, body.password);
+        console.log("result of authenticateUser: ", result);
         if(result === false){
             console.log('login failed: invaled email or password');
             res.status(401).json(result);

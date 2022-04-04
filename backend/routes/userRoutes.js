@@ -19,6 +19,7 @@ router.post('/register', async (req, res, next) => {
        // const result = await req.models.createNewUser(req.body.firstName, req.body.lastName, req.body.email, req.body.password
       //calls the createNewUser function in the users.js file of the models folder and return the result
         const result = await users.createNewUser(body.firstName, body.lastName, body.email, body.password);
+        console.log("Result of createNewUser: ", result);
         if(result.error === "Invalid email"){
             console.log("Invalid email");
             res.status(400).json({message: "Invalid email"});
