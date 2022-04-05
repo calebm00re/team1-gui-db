@@ -62,10 +62,15 @@ const authenticateUser = async (email, password) => {
     return false;
 }
 
-
+const getUserById = async (id) => {
+    const query = knex(USER_TABLE).where({ id });
+    const result = await query;
+    return result;
+}
 
 module.exports = {
     createNewUser,
     findUserByEmail,
-    authenticateUser
+    authenticateUser,
+    getUserById
 };
