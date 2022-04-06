@@ -15,7 +15,7 @@ export class UserRepository {
         const errors = { success: false };
         console.log('about tot try to post1');
         const { status } = await axios.post(URL + "/users/register", {firstName: firstname, lastName: lastname, email: email, password: pass});
-
+        console.log("The status is: " + status);
         if (status <= 201) {
         errors.success = true;
         }
@@ -34,7 +34,7 @@ export class UserRepository {
         const errors = { success: false };
         console.log('about tot try to post2');
         const { status } = await axios.post(URL + "/session/login", {email: email, password: pass});
-
+        console.log("The status is: " + status);
         if (status <= 201) {
         errors.success = true;
         }
