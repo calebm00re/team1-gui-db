@@ -1,3 +1,5 @@
+--NOTE: THIS PAGE NEEDS TO BE CHANGED TO BE A JS FILE
+
 -- create database db
 CREATE DATABASE db;
 
