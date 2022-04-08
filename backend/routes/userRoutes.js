@@ -40,9 +40,18 @@ router.post('/register', async (req, res, next) => {
        // const result = await req.models.createNewUser(req.body.firstName, req.body.lastName, req.body.email, req.body.password
       //calls the createNewUser function in the users.js file of the models folder and return the result
         const result = await users.createNewUser(body.firstName, body.lastName, body.email, body.password);
+        console.log("Result of createNewUser: ", result);
+        if(result.error === "Invalid email"){
+            console.log("Invalid email");
+            res.status(400).json({message: "Invalid email"});
+        } else if(result.error === "User already exists"){
+            console.log("User already exists");
+            res.status(400).json({message: "User already exists"});
+        } else {
+            console.log("User created");
+            res.status(201).json(result);
+        }
 
-
-        res.status(201).json(result);
     } catch (err) {
         console.error('Failed to create new user:', err);
         res.status(500).json({ message: err.toString() });
