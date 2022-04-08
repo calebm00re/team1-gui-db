@@ -13,24 +13,38 @@ import { ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from "react-router-dom";
 import theme from '../Assets/theme';
 import { UserRepository } from '../api/userRepository.js'
+import { FormControlLabel } from '@mui/material';
+import { FormGroup } from '@mui/material';
+import { Checkbox } from '@mui/material';
+import { FormControl } from '@mui/material';
+import { FormLabel } from '@mui/material';
+import { RadioGroup } from '@mui/material';
+import Radio from '@mui/material/Radio';
 
 export const Register = () => {
 
+  const [value, setValue] = React.useState('Parent');
+
   const userRepository = new UserRepository();
   const navigate = useNavigate();
+  const userChange = (event) => {
+    setValue(event.target.value);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const res = await userRepository.register(data.get('firstName'), data.get('lastName'), data.get('email'), data.get('password'));
-    if(!res.success) {
-      console.log("no good");
-      // setErrors(res)
-    } 
-    else {
-      console.log("good entry");
-      navigate('/home');
-    }
+    const res = await userRepository.register(data.get('firstName'), data.get('lastName'), data.get('email'), data.get('password'))
+
+
+    // if(!res.success) {
+    //   console.log("no good");
+    //   // setErrors(res)
+    // } 
+    // else {
+    //   console.log("good entry");
+    //   navigate('/home');
+    // }
     // navigate('/home');
   };
 
@@ -97,6 +111,19 @@ export const Register = () => {
                 />
               </Grid>
             </Grid>
+            <FormControl sx={{mt:1}}>
+              <FormLabel id="demo-controlled-radio-buttons-group">Account type:</FormLabel>
+              <RadioGroup
+                row
+                aria-labelledby="demo-controlled-radio-buttons-group"
+                name="controlled-radio-buttons-group"
+                value={value}
+                onChange={userChange}
+              >
+                <FormControlLabel value="Parent" control={<Radio />} label="Parent" />
+                <FormControlLabel value="Sitter" control={<Radio />} label="Sitter" />
+              </RadioGroup>
+            </FormControl>
             <Button
               type="submit"
               fullWidth
@@ -113,17 +140,17 @@ export const Register = () => {
               </Grid>
             </Grid>
             <Grid container
-                  direction="column"
-                  alignItems="center"
-                  justifyContent="center">
-              <Grid item 
-                    sx={{
-                      marginTop: 8
-                    }}>
-                <Button 
-                  variant="outlined" 
+              direction="column"
+              alignItems="center"
+              justifyContent="center">
+              <Grid item
+                sx={{
+                  marginTop: 8
+                }}>
+                <Button
+                  variant="outlined"
                   href="/"
-                  // startIcon={<ArrowBackIosOutlined />}
+                // startIcon={<ArrowBackIosOutlined />}
                 >
                   Back
                 </Button>
