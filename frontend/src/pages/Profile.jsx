@@ -4,7 +4,7 @@ import { ThemeProvider } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import { StaticDateTimePicker } from '@mui/lab/StaticDateTimePicker';
+import StaticDateTimePicker from '@mui/lab/StaticDateTimePicker';
 
 
 export const Profile = () => {
