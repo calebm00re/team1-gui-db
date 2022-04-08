@@ -11,6 +11,27 @@ const users = require('../models/users.js');
  */
 const router = express.Router();
 
+//get user by id
+router.get('/info/:id', async(req, res, next) => {
+    try{
+        const id = req.params.id;
+        console.log("Id is: " + id);
+        const result = await users.getUserById(id);
+        //console.log("Result is: " + result.json);
+        if(result.length > 0) {
+            res.status(200).json(result);
+        } else {
+            res.status(400).json({
+                message: "User not found"
+            });
+        }
+    }catch(err){
+        console.error('Failed to get user info:', err);
+        res.status(500).json({ message: err.toString() });
+    }
+    next();
+});
+
 router.post('/register', async (req, res, next) => {
     try {
         const body = req.body;
@@ -38,6 +59,7 @@ router.post('/register', async (req, res, next) => {
 
     next();
 })
+
 
 //get id route. Given the email of a of a user, return the id of that user
 router.get('/id/:email', async (req, res, next) => {
