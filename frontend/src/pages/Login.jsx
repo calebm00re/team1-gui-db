@@ -35,13 +35,18 @@ export const Login = () => {
     const res = await userRepository.login(data.get('email'), data.get('password'));
     console.log('res');
     console.log(res);
-    if(!res.success) {
+    if (!res.success) {
       console.log("no good");
       alert("Invalid email or password");
     }
     else {
       console.log("good entry");
-      navigate('/home');
+      if (value === 'Sitter') {
+        navigate('/Profile');
+      }
+      else {
+        navigate('/home');
+      }
     }
   };
 
@@ -84,7 +89,7 @@ export const Login = () => {
               id="password"
               autoComplete="current-password"
             />
-            <FormControl sx={{mt:1}}>
+            <FormControl sx={{ mt: 1 }}>
               <FormLabel id="demo-controlled-radio-buttons-group">Account type:</FormLabel>
               <RadioGroup
                 row
@@ -113,13 +118,13 @@ export const Login = () => {
               </Grid>
             </Grid>
             <Grid container
-                  direction="column"
-                  alignItems="center"
-                  justifyContent="center">
-              <Grid item 
-                    sx={{
-                      marginTop: 8
-                    }}>
+              direction="column"
+              alignItems="center"
+              justifyContent="center">
+              <Grid item
+                sx={{
+                  marginTop: 8
+                }}>
                 <Button variant="outlined" href="/">Back</Button>
               </Grid>
             </Grid>
