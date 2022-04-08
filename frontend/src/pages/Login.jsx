@@ -13,10 +13,19 @@ import { ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from "react-router-dom";
 import theme from '../Assets/theme';
 import { UserRepository } from '../api/userRepository.js'
+import { FormControl } from '@mui/material';
+import { FormLabel } from '@mui/material';
+import { RadioGroup } from '@mui/material';
+import Radio from '@mui/material/Radio';
+import { FormControlLabel } from '@mui/material';
 
 
 export const Login = () => {
 
+  const [value, setValue] = React.useState('Parent');
+  const userChange = (event) => {
+    setValue(event.target.value);
+  };
   const userRepository = new UserRepository();
   const navigate = useNavigate();
 
@@ -75,6 +84,19 @@ export const Login = () => {
               id="password"
               autoComplete="current-password"
             />
+            <FormControl sx={{mt:1}}>
+              <FormLabel id="demo-controlled-radio-buttons-group">Account type:</FormLabel>
+              <RadioGroup
+                row
+                aria-labelledby="demo-controlled-radio-buttons-group"
+                name="controlled-radio-buttons-group"
+                value={value}
+                onChange={userChange}
+              >
+                <FormControlLabel value="Parent" control={<Radio />} label="Parent" />
+                <FormControlLabel value="Sitter" control={<Radio />} label="Sitter" />
+              </RadioGroup>
+            </FormControl>
             <Button
               type="submit"
               fullWidth
