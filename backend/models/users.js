@@ -71,9 +71,28 @@ const authenticateUser = async (email, password) => {
 }
 
 
+const getUserById = async (id) => {
+    const query = knex(USER_TABLE).where({ id });
+    const result = await query;
+    return result;
+}
+
+getIDFromEmail = async (email) => { //so, this doesn't work when I set it to be constant
+    const users = await findUserByEmail(email); //checks that email is valid
+    if (users.length === 0) {
+        console.error(`No users matched the email: ${email}`);
+        return -1;
+    }
+    const user = users[0];
+    return user.id;
+}
+
+
 
 module.exports = {
     createNewUser,
     findUserByEmail,
-    authenticateUser
+    authenticateUser,
+    getUserById,
+    getIDFromEmail
 };

@@ -11,6 +11,7 @@ const users = require('../models/users.js');
  */
 const router = express.Router();
 
+
 router.post('/register', async (req, res, next) => {
     try {
         const body = req.body;
@@ -39,32 +40,46 @@ router.post('/register', async (req, res, next) => {
     next();
 })
 
-/*
-app.post('/register', (req, res) => {
-    console.log(req.body);
-    // obtain a connection from our pool of connections
-    pool.getConnection(function (err, connection){
-        if(err){
-            // if there is an issue obtaining a connection, release the connection instance and log the error
-            logger.error('Problem obtaining MySQL connection',err)
-            res.status(400).send('Problem obtaining MySQL connection');
-        } else {
-            // if there is no issue obtaining a connection, execute query and release connection
-            let str = 'INSERT INTO `db`.`users` (`lastName`,`firstName`,`email`,`password`) VALUES(\'' + req.body.lastName + "," + req.body.firstName + "," + req.body.email + "," + req.body.password + '\')';
-            console.log(str);
-            connection.query('INSERT INTO `db`.`users` (`lastName`,`firstName`,`email`,`password`) VALUES(?,?,?,?)', [req.body.lastName, req.body.firstName, req.body.email, req.body.password],  function (err, rows, fields) {
-                connection.release();
 
-                if (err) {
-                    // if there is an error with the query, log the error
-                    logger.error("Problem inserting into test table: \n", err);
-                    res.status(400).send('Problem inserting into table');
-                } else {
-                    res.status(200).send(`added ${req.body.firstName}  ${req.body.lastName} to the table!`);
-                }
+//get id route. Given the email of a of a user, return the id of that user
+router.get('/id/:email', async (req, res, next) => {
+    try {
+        const email = req.params.email;
+
+
+        const result = await users.getIDFromEmail(email);
+        if(result === -1){
+            res.status(300).json({message: "User not found"});
+        } else {
+            res.status(200).json(result);
+        }
+    } catch (err) {
+        console.error('Failed to get user id:', err);
+        res.status(500).json({ message: err.toString() });
+    }
+
+    next();
+})
+
+//get user by id
+router.get('/info/:id', async(req, res, next) => {
+    try{
+        const id = req.params.id;
+        console.log("Id is: " + id);
+        const result = await users.getUserById(id);
+        //console.log("Result is: " + result.json);
+        if(result.length > 0) {
+            res.status(200).json(result);
+        } else {
+            res.status(400).json({
+                message: "User not found"
             });
         }
-    });
+    }catch(err){
+        console.error('Failed to get user info:', err);
+        res.status(500).json({ message: err.toString() });
+    }
+    next();
 });
-*/
+
 module.exports = router;
