@@ -4,7 +4,8 @@ import { ThemeProvider } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import StaticDateTimePicker from '@mui/lab/StaticDateTimePicker';
+import StaticDatePicker from '@mui/lab/StaticDatePicker';
+import Grid from '@mui/material/Grid';
 
 
 export const Profile = () => {
@@ -13,17 +14,34 @@ export const Profile = () => {
     return (
         <>
             <ThemeProvider theme={theme}>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <StaticDateTimePicker
-                        displayStaticWrapperAs="desktop"
-                        openTo="year"
-                        value={value}
-                        onChange={(newValue) => {
-                            setValue(newValue);
-                        }}
-                        renderInput={(params) => <TextField {...params} />}
-                    />
-                </LocalizationProvider>
+                <Grid container spacing={2}>
+                    <Grid item xs={4}>
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <StaticDatePicker
+                                displayStaticWrapperAs="desktop"
+                                openTo="day"
+                                value={value}
+                                onChange={(newValue) => {
+                                    setValue(newValue);
+                                }}
+                                renderInput={(params) => <TextField {...params} />}
+                            />
+                        </LocalizationProvider>
+                    </Grid>
+                </Grid>
+                {/* <div>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <StaticDatePicker
+                            orientation="landscape"
+                            openTo="day"
+                            value={value}
+                            onChange={(newValue) => {
+                                setValue(newValue);
+                            }}
+                            renderInput={(params) => <TextField {...params} />}
+                        />
+                    </LocalizationProvider>
+                </div> */}
             </ThemeProvider>
         </>
     );
