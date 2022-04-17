@@ -14,6 +14,8 @@ export const Profile = () => {
     return (
         <>
             <ThemeProvider theme={theme}>
+              <h1>Profile</h1>
+              <p>for pierce (maybe incorrectly spelled) to dev</p>
                 <Grid container spacing={2}>
                     <Grid item xs={4}>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
