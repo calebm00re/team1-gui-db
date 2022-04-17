@@ -13,7 +13,7 @@ export const Landing = () => {
                     <h1>Babysitting Done Right</h1>
                 </div> */}
                 <div>
-                    👶🏼
+                    👶
                 </div>
                 {/* <div class="landing-center">
                     <h2>add nonsense about why you should use our app</h2>
