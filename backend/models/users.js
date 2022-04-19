@@ -34,8 +34,7 @@ const createNewUser = async (firstName, lastName, email, password) => {
     //inserts the new user into the database
     const query = knex(USER_TABLE).insert({lastName, firstName, email, password: hashedPassword, salt });
     const result = await query;
-    //adds the error property to the result object when there isn't an error
-    result['error'] = "none";
+    //adds the error property to the result object when there isn't an errorresult["error"] = "none";
     return result;
 
 };
