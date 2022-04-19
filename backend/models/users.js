@@ -29,11 +29,6 @@ const findUserByEmail = async (email) => {
 
 const authenticateUser = async (email, password) => {
     const users = await findUserByEmail(email);
-    console.log('Results of users query', users);
-    if (users.length === 0) {
-        console.error(`No users matched the email: ${email}`);
-        return false;
-    }
     const user = users[0];
  //   const validPassword = await bcrypt.compare(password, user.password);
 

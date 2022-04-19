@@ -1,5 +1,6 @@
 const express = require('express');
-const users = require('../models/users.js');
+const sessionController = require('../controllers/session');
+
 /**
  * https://expressjs.com/en/guide/routing.html#express-router
  *
@@ -8,18 +9,25 @@ const users = require('../models/users.js');
  */
 const router = express.Router();
 
-router.post('/login', async (req, res, next) => {
+//changed the path from /session/login to /session for simplicity
+router.post('/', async (req, res, next) => {
     try {
         const body = req.body;
-        const result = await users.authenticateUser(body.email, body.password);
+        const result = await sessionController.authenticateUser(body.email, body.password);
         console.log("result of authenticateUser: ", result);
-        if(result === false){
-            console.log('login failed: invaled email or password');
-            res.status(401).json(result);
+        if(result.error == "Email or password is missing"){
+            res.status(400).json({
+                error: result.error
+            });
+        }
+        else if(result.error == "Invalid credentials"){
+            res.status(401).json({
+                error: result.error
+            });
+        }
+        else{
+            //generates a session token
 
-        } else {
-            console.log('login success');
-            res.status(201).json(result);
         }
     } catch (err) {
         console.error('Failed to create new user:', err);

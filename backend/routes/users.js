@@ -32,6 +32,7 @@ router.post('/register', async (req, res, next) => {
             res.status(400).json({message:"Incomplete input"});
         } else {
             console.log("User created");
+            //this should have a call to the session call instead and return the acess token for the session
             res.status(201).json(result);
         }
 
@@ -43,6 +44,7 @@ router.post('/register', async (req, res, next) => {
     next();
 })
 
+//TODO moves these routes to a info route file which will be password protected
 
 //get id route. Given the email of a of a user, return the id of that user
 router.get('/id/:email', async (req, res, next) => {
