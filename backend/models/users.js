@@ -4,46 +4,21 @@ const crypto = require('crypto');
 
 const USER_TABLE = 'users';
 
+const isUnique = async (email) => {
+  const user = await knex(USER_TABLE).where({email}).first();
+  return user ? false : true;
+};
 
 
-const createNewUser = async (firstName, lastName, email, password) => {
-    console.log('Raw password:', password);
-    //generates a random salt
-    const salt = "DB_SALT";
-    console.log('Password salt', salt);
-    // const hashedPassword = await bcrypt.hash(password, salt);
-    //hashes the password with the salt using sha256
-    const hashedPassword = crypto.createHash('sha256').update(salt + password).digest('hex');
-    console.log('Hashed password', hashedPassword);
-    //checks to see if email given is a valid email
-    const isValidEmail = checkIfValid(email);
-    if (!isValidEmail) {
-        return {
-            error: 'Invalid email'
-        }
-    }
 
-    //checks to see if the user already exists
-
-    const isNotFirst = await knex(USER_TABLE).where({email: email}).first();
-    if (isNotFirst) {
-        return {
-            error: 'User already exists'
-        }
-    }
+const createNewUser = async (firstName, lastName, email, hashedPassword , salt) => {
     //inserts the new user into the database
     const query = knex(USER_TABLE).insert({lastName, firstName, email, password: hashedPassword, salt });
     const result = await query;
     //adds the error property to the result object when there isn't an errorresult["error"] = "none";
     return result;
-
 };
 
-const checkIfValid = (email) => {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    console.log("Is valid email:", re.test(String(email).toLowerCase()));
-    return re.test(String(email).toLowerCase());
-};
 
 
 const findUserByEmail = async (email) => {
@@ -89,6 +64,7 @@ getIDFromEmail = async (email) => { //so, this doesn't work when I set it to be 
 
 
 module.exports = {
+    isUnique,
     createNewUser,
     findUserByEmail,
     authenticateUser,
