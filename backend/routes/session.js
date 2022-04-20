@@ -61,6 +61,7 @@ router.post('/register', async (req, res, next) => {
         } else {
             console.log("User created");
             //Note: we don't need to authenticate the user here because the user is already created
+            //Also, the role is not added to the table because it can change every session
             const token = await sessionController.generateAuthToken(body.email, body.role);
             res.status(201).json({"accessToken": token});
         }

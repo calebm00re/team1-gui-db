@@ -13,9 +13,6 @@ const userModel = require('../models/users.js');
 const router = express.Router();
 
 
-
-
-
 //get id route. Given the email of a of a user, return the id of that user
 router.get('/id/:email', async (req, res, next) => {
     try {
@@ -35,6 +32,7 @@ router.get('/id/:email', async (req, res, next) => {
 
     next();
 })
+
 
 //get user by id
 router.get('/info/:id', async(req, res, next) => {
