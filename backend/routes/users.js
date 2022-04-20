@@ -1,6 +1,7 @@
 const { application } = require('express');
 const express = require('express');
 const userController = require('../controllers/users.js');
+const userModel = require('../models/users.js');
 
 
 /**
@@ -12,39 +13,8 @@ const userController = require('../controllers/users.js');
 const router = express.Router();
 
 
-router.post('/register', async (req, res, next) => {
-    try {
-        const body = req.body;
-        console.log(body);
-    //    const result = await req.models.user.createNewUser(body.email, body.password);
-       // const result = await req.models.createNewUser(req.body.firstName, req.body.lastName, req.body.email, req.body.password
-      //calls the createNewUser function in the users.js file of the models folder and return the result
-        const result = await userController.createNewUser(body.firstName, body.lastName, body.email, body.password);
-        console.log("Result of createNewUser: ", result);
-        if(result.error === "Invalid email"){
-            console.log("Invalid email");
-            res.status(400).json({message: "Invalid email"});
-        } else if(result.error === "User already exists") {
-            console.log("User already exists");
-            res.status(400).json({message: "User already exists"});
-        } else if(result.error === "Incomplete input") {
-            console.log("Incomplete input");
-            res.status(400).json({message:"Incomplete input"});
-        } else {
-            console.log("User created");
-            //this should have a call to the session call instead and return the acess token for the session
-            res.status(201).json(result);
-        }
 
-    } catch (err) {
-        console.error('Failed to create new user:', err);
-        res.status(500).json({ message: err.toString() });
-    }
 
-    next();
-})
-
-//TODO moves these routes to a info route file which will be password protected
 
 //get id route. Given the email of a of a user, return the id of that user
 router.get('/id/:email', async (req, res, next) => {
@@ -52,7 +22,7 @@ router.get('/id/:email', async (req, res, next) => {
         const email = req.params.email;
 
 
-        const result = await users.getIDFromEmail(email);
+        const result = await userModel.getIDFromEmail(email);
         if(result === -1){
             res.status(300).json({message: "User not found"});
         } else {
@@ -71,7 +41,7 @@ router.get('/info/:id', async(req, res, next) => {
     try{
         const id = req.params.id;
         console.log("Id is: " + id);
-        const result = await users.getUserById(id);
+        const result = await userModel.getUserById(id);
         //console.log("Result is: " + result.json);
         if(result.length > 0) {
             res.status(200).json(result);

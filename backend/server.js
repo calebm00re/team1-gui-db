@@ -39,8 +39,8 @@ app.use(ExpressAPILogMiddleware(logger, { request: true }));
 //include routes
 //routes(app, logger);
 
-app.use('/users', userRoutes); //this makes userRoutes a route file
-app.use('/session',sessionRoutes); //this makes sessionRoutes a routes file
+app.use(sessionRoutes); //this incorperates session routes into express (the only routes which do not require authentication)
+app.use('/users', authenticateJWT ,userRoutes); //this makes userRoutes a route file
 
 
 // connecting the express object to listen on a particular port as defined in the config object.
