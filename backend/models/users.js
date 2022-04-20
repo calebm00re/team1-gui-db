@@ -56,6 +56,12 @@ getIDFromEmail = async (email) => { //so, this doesn't work when I set it to be 
     return user.id;
 }
 
+const getUsers = async (filters) => {
+    return knex(USER_TABLE)
+        .where(filters)
+        .select('id', 'firstName', 'lastName', 'email','bio');
+}
+
 
 
 module.exports = {
@@ -64,5 +70,6 @@ module.exports = {
     findUserByEmail,
     authenticateUser,
     getUserById,
-    getIDFromEmail
+    getIDFromEmail,
+    getUsers
 };

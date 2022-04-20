@@ -12,8 +12,29 @@ const userModel = require('../models/users.js');
  */
 const router = express.Router();
 
+//ROUTES FOR USERS
 
-//get id route. Given the email of a of a user, return the id of that user
+//GET /users -- returns all users for a given search perameter
+//Can search based off of firstName, lastName, email, or ID
+router.get('/', async(req, res, next) => {
+    try{
+        const result = await userController.getUsers(req.query.firstName, req.query.lastName, req.query.email, req.query.id);
+        res.status(200).json(result);
+    }catch(err){
+        console.error('Failed to get user info:', err);
+        res.status(500).json({ message: err.toString() });
+    }
+    next();
+});
+
+//GET /users/self -- returns the current user information (basically just a call to the get
+
+//PUT /users/self -- updates the user's information
+
+//DEL /users/self -- deletes the user's information
+
+
+//This route is superflous once the GET /users route is implemented
 router.get('/id/:email', async (req, res, next) => {
     try {
         const email = req.params.email;
@@ -33,27 +54,6 @@ router.get('/id/:email', async (req, res, next) => {
     next();
 })
 
-
-//get user by id
-router.get('/info/:id', async(req, res, next) => {
-    try{
-        const id = req.params.id;
-        console.log("Id is: " + id);
-        const result = await userModel.getUserById(id);
-        //console.log("Result is: " + result.json);
-        if(result.length > 0) {
-            res.status(200).json(result);
-        } else {
-            res.status(400).json({
-                message: "User not found"
-            });
-        }
-    }catch(err){
-        console.error('Failed to get user info:', err);
-        res.status(500).json({ message: err.toString() });
-    }
-    next();
-});
 
 
 module.exports = router;
