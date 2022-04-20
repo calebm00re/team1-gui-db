@@ -18,6 +18,7 @@ import { FormLabel } from '@mui/material';
 import { RadioGroup } from '@mui/material';
 import Radio from '@mui/material/Radio';
 import { FormControlLabel } from '@mui/material';
+import Page from '../components/Page';
 
 
 export const Login = () => {
@@ -45,92 +46,94 @@ export const Login = () => {
         navigate('/Profile');
       }
       else {
-        navigate('/home');
+        navigate('/dashboard/app');
       }
     }
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControl sx={{ mt: 1 }}>
-              <FormLabel id="demo-controlled-radio-buttons-group">Account type:</FormLabel>
-              <RadioGroup
-                row
-                aria-labelledby="demo-controlled-radio-buttons-group"
-                name="controlled-radio-buttons-group"
-                value={value}
-                onChange={userChange}
+    <Page title="Login">
+      <ThemeProvider theme={theme}>
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <FormControl sx={{ mt: 1 }}>
+                <FormLabel id="demo-controlled-radio-buttons-group">Account type:</FormLabel>
+                <RadioGroup
+                  row
+                  aria-labelledby="demo-controlled-radio-buttons-group"
+                  name="controlled-radio-buttons-group"
+                  value={value}
+                  onChange={userChange}
+                >
+                  <FormControlLabel value="Parent" control={<Radio />} label="Parent" />
+                  <FormControlLabel value="Sitter" control={<Radio />} label="Sitter" />
+                </RadioGroup>
+              </FormControl>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
               >
-                <FormControlLabel value="Parent" control={<Radio />} label="Parent" />
-                <FormControlLabel value="Sitter" control={<Radio />} label="Sitter" />
-              </RadioGroup>
-            </FormControl>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item>
-                <Link href="/Register" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
+                Sign In
+              </Button>
+              <Grid container>
+                <Grid item>
+                  <Link href="/Register" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
               </Grid>
-            </Grid>
-            <Grid container
-              direction="column"
-              alignItems="center"
-              justifyContent="center">
-              <Grid item
-                sx={{
-                  marginTop: 8
-                }}>
-                <Button variant="outlined" href="/">Back</Button>
+              <Grid container
+                direction="column"
+                alignItems="center"
+                justifyContent="center">
+                <Grid item
+                  sx={{
+                    marginTop: 8
+                  }}>
+                  <Button variant="outlined" href="/">Back</Button>
+                </Grid>
               </Grid>
-            </Grid>
+            </Box>
           </Box>
-        </Box>
-      </Container>
-    </ThemeProvider>
+        </Container>
+      </ThemeProvider>
+    </Page>
   );
 }

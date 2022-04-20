@@ -1,6 +1,6 @@
 // import '../Styles/Landing.css';
 import { useNavigate } from "react-router-dom";
-import landLogo from "../Assets/images/logo.png";
+// import landLogo from "../Assets/images/logo.png";
 
 export const Landing = () => {
 
@@ -13,7 +13,7 @@ export const Landing = () => {
                     <h1>Babysitting Done Right</h1>
                 </div> */}
                 <div>
-                    <img alt="Landing img" src={landLogo}></img>
+                    👶
                 </div>
                 {/* <div class="landing-center">
                     <h2>add nonsense about why you should use our app</h2>
