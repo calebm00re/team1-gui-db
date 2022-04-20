@@ -60,8 +60,9 @@ router.post('/register', async (req, res, next) => {
             res.status(400).json({message:"Incomplete input"});
         } else {
             console.log("User created");
-            //Once the user is created, we create a session for the user
-            res.status(201).json(result);
+            //Note: we don't need to authenticate the user here because the user is already created
+            const token = await sessionController.generateAuthToken(body.email, body.role);
+            res.status(201).json({"accessToken": token});
         }
 
     } catch (err) {
