@@ -62,6 +62,12 @@ const getUsers = async (filters) => {
         .select('id', 'firstName', 'lastName', 'email','bio');
 }
 
+const deleteUser = async(id) => {
+    const query = knex(USER_TABLE).where({id}).del();
+    const result = await query;
+    return result;
+}
+
 
 
 module.exports = {
@@ -71,5 +77,6 @@ module.exports = {
     authenticateUser,
     getUserById,
     getIDFromEmail,
-    getUsers
+    getUsers,
+    deleteUser
 };

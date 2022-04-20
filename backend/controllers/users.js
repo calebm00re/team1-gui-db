@@ -27,8 +27,32 @@ const getUsers = async(firstName, lastName, email, id) => {
     }
 }
 
+const userDoesExist = async(firstName, lastName, email, id) => {
+    try{
+        const filters = await getFilters(firstName, lastName, email, id);
+        const users = await userModels.getUsers(filters);
+        if(users.length === 1){
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const deleteUser = async(id) => {
+    try{
+        const user = await userModels.deleteUser(id);
+        return user;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 
 module.exports = {
-    getUsers
+    getUsers,
+    userDoesExist,
+    deleteUser
 }

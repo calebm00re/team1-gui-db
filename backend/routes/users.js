@@ -30,8 +30,9 @@ router.get('/', async(req, res, next) => {
 //GET /users/self -- returns the current user information (basically just a call to the GET /users route with the current user's ID)
 router.get('/self', async(req, res, next) => {
     try{
-        const result = await userController.getUsers(null, null, null,req.user.id);
-        if(result.length === 1){
+        const userDoesExist = await userController.userDoesExist(req.session.userId);
+        if(userDoesExist){
+            const result = await userController.getUsers(null, null, null,req.user.id);
             res.status(200).json(result[0]);
         }else{
             res.status(500).json({ message: 'Failed to get user info' });
@@ -46,6 +47,20 @@ router.get('/self', async(req, res, next) => {
 //PUT /users/self -- updates the user's information
 
 //DEL /users/self -- deletes the user's information
+router.delete('/self', async (req, res, next) => {
+    try{
+        const userDoesExist = await userController.userDoesExist(null, null, null, req.user.id);
+        if(userDoesExist) {
+            const result = await userController.deleteUser(req.user.id);
+            res.status(204).json(result);
+        } else {
+            res.status(400).json({ message: 'User does not exist' });
+        }
+    } catch (err) {
+        console.error('Failed to delete user info:', err);
+        res.status(500).json({ message: err.toString() });
+    }
+});
 
 
 //This route is superflous once the GET /users route is implemented
