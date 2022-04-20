@@ -30,7 +30,7 @@ router.get('/', async(req, res, next) => {
 //GET /users/self -- returns the current user information (basically just a call to the GET /users route with the current user's ID)
 router.get('/self', async(req, res, next) => {
     try{
-        const userDoesExist = await userController.userDoesExist(req.session.userId);
+        const userDoesExist = await userController.userDoesExist(null,null,null,req.user.id);
         if(userDoesExist){
             const result = await userController.getUsers(null, null, null,req.user.id);
             res.status(200).json(result[0]);
@@ -45,6 +45,24 @@ router.get('/self', async(req, res, next) => {
 });
 
 //PUT /users/self -- updates the user's information
+router.put('/self', async (req, res, next) => {
+    try {
+        const result = await userController.updateUser(req.user.id, req.body.firstName, req.body.lastName, req.body.email, req.body.password, req.body.bio);
+        if (result.error === "User account Does not exist") {
+            res.status(400).json({message: result.error});
+        } else if (result.error === "No changes entered") {
+            res.status(400).json({message: result.error});
+        } else if (result.error === "Changes conflict with existing user") {
+            res.status(400).json({message: result.error});
+        } else {
+            const output = await userController.getUsers(null, null, null, req.user.id);
+            res.status(200).json(output[0]);
+        }
+    } catch (err) {
+        console.error('Failed to update user info:', err);
+        res.status(500).json({ message: err.toString() });
+    }
+});
 
 //DEL /users/self -- deletes the user's information
 router.delete('/self', async (req, res, next) => {
@@ -52,7 +70,7 @@ router.delete('/self', async (req, res, next) => {
         const userDoesExist = await userController.userDoesExist(null, null, null, req.user.id);
         if(userDoesExist) {
             const result = await userController.deleteUser(req.user.id);
-            res.status(204).json(result);
+            res.status(204).json({ message: 'User deleted' });
         } else {
             res.status(400).json({ message: 'User does not exist' });
         }

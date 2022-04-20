@@ -62,6 +62,12 @@ const getUsers = async (filters) => {
         .select('id', 'firstName', 'lastName', 'email','bio');
 }
 
+const updateUser = async (id, filters) => {
+    return knex(USER_TABLE)
+        .where({ id })
+        .update(filters);
+}
+
 const deleteUser = async(id) => {
     const query = knex(USER_TABLE).where({id}).del();
     const result = await query;
@@ -78,5 +84,6 @@ module.exports = {
     getUserById,
     getIDFromEmail,
     getUsers,
-    deleteUser
+    deleteUser,
+    updateUser
 };
