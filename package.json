@@ -1,8 +1,5 @@
 {
   "dependencies": {
     "bcrypt": "^5.0.1"
-  },
-  "devDependencies": {
-    "@iconify/react": "^3.2.1"
   }
 }

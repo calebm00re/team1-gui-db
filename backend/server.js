@@ -4,10 +4,18 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const cors = require('cors');
 
+
 const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
+
+
 // const mysqlConnect = require('./db');
 const userRoutes = require('./routes/users') //this includes userRoutes into the files
 const sessionRoutes = require('./routes/session') //this includes session into the files
+
+//sets up middleware
+const { authenticateJWT, authenticateWithClaims } = require('./middleware/auth');
+
+
 // set up some configs for express.
 const config = {
   name: 'sample-express-app',
@@ -31,8 +39,8 @@ app.use(ExpressAPILogMiddleware(logger, { request: true }));
 //include routes
 //routes(app, logger);
 
-app.use('/users', userRoutes); //this makes userRoutes a route file
-app.use('/session',sessionRoutes); //this makes sessionRoutes a routes file
+app.use(sessionRoutes); //this incorperates session routes into express (the only routes which do not require authentication)
+app.use('/users', authenticateJWT ,userRoutes); //this makes userRoutes a route file
 
 
 // connecting the express object to listen on a particular port as defined in the config object.
