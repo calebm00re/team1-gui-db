@@ -51,7 +51,7 @@ export class UserRepository {
 
     login(email, pass) {
         return new Promise((resolve, reject) => {
-            axios.post(URL + "/session/login", {email: email, password: pass})
+            axios.post(URL + "/login", {email: email, password: pass})
             .then(response => {
                 console.log('this is the response: ');
                 console.log(response);
@@ -70,7 +70,7 @@ export class UserRepository {
 
     register(firstname, lastname, email, pass) {
         return new Promise((resolve, reject) => {
-            axios.post(URL + "/users/register", {firstName: firstname, lastName: lastname, email: email, password: pass})
+            axios.post(URL + "/register", {firstName: firstname, lastName: lastname, email: email, password: pass})
             .then(function (response) {
                 console.log('this is the response: ');
                 resolve(response);
