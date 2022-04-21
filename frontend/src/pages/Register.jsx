@@ -35,18 +35,13 @@ export const Register = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const res = await userRepository.register(data.get('firstName'), data.get('lastName'), data.get('email'), data.get('password'))
-
-
-    // if(!res.success) {
-    //   console.log("no good");
-    //   // setErrors(res)
-    // } 
-    // else {
-    //   console.log("good entry");
-    //   navigate('/home');
-    // }
-    // navigate('/home');
+    userRepository.register(data.get('firstName'), data.get('lastName'), data.get('email'), data.get('password')).then(res => {
+      if (res.status <= 201) {
+        navigate('/dashboard/app');
+      }
+    }).catch(err => {
+      alert("invalid credentials");
+    });
   };
 
   return (
