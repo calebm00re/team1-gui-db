@@ -19,11 +19,24 @@ export const Login = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+    userRepository.login(data.get('email'), data.get('password')).then(res => {
+      if (res.status <= 201) {
+
+        // userRepository.getUserByEmail(data.get('email')).then(res => {
+        //   if (res.status <= 201) {
+        //     console.log('this is my getUserRes');
+        //     console.log(res);
+        //   }}).catch(err => {
+        //     console.log('this is my err');
+        //     console.log(err);
+        //   });
+
+        // sessionStorage.setItem('email', data.get('email'));
+        navigate('/dashboard/app');
+      }
+    }).catch(err => {
+      alert("invalid credentials");
     });
-    navigate('/home');
   };
 
   return (
