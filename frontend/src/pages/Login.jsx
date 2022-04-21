@@ -33,22 +33,24 @@ export const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const res = await userRepository.login(data.get('email'), data.get('password'));
-    console.log('res');
-    console.log(res);
-    if (!res.success) {
-      console.log("no good");
-      alert("Invalid email or password");
-    }
-    else {
-      console.log("good entry");
-      if (value === 'Sitter') {
-        navigate('/Profile');
-      }
-      else {
+    userRepository.login(data.get('email'), data.get('password')).then(res => {
+      if (res.status <= 201) {
+
+        // userRepository.getUserByEmail(data.get('email')).then(res => {
+        //   if (res.status <= 201) {
+        //     console.log('this is my getUserRes');
+        //     console.log(res);
+        //   }}).catch(err => {
+        //     console.log('this is my err');
+        //     console.log(err);
+        //   });
+
+        // sessionStorage.setItem('email', data.get('email'));
         navigate('/dashboard/app');
       }
-    }
+    }).catch(err => {
+      alert("invalid credentials");
+    });
   };
 
   return (
