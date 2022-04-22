@@ -11,7 +11,7 @@ const userModel = require('../models/users.js');
 const router = express.Router();
 
 //changed the path from /session/login to /login for simplicity
-router.post('/login', async (req, res, next) => {
+router.post('users/login', async (req, res, next) => {
     try {
         const body = req.body;
         const result = await sessionController.authenticateUser(body.email, body.password);
@@ -40,7 +40,7 @@ router.post('/login', async (req, res, next) => {
 })
 
 //now simply /register
-router.post('/register', async (req, res, next) => {
+router.post('users/register', async (req, res, next) => {
     try {
         const body = req.body;
         console.log(body);
@@ -74,7 +74,9 @@ router.post('/register', async (req, res, next) => {
     next();
 })
 
-//TODO: Ideally, we want to have a logout route and a refresh token route (we'll do this later)
+//TODO POST /sitter/register
+
+//TODO POST /sitter/login
 
 
 
