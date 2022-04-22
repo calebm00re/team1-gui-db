@@ -124,4 +124,23 @@ export class UserRepository {
             });
         }
     )}
+
+    deleteUser() {
+        return new Promise((resolve, reject) => {
+            axios.delete(URL + "/users/self", { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
+            .then(response => {
+                console.log('this is the response for delete user in user repo: ');
+                console.log(response);
+                resolve(response);
+            })
+            .catch(error => {
+                console.log('this is the error for delete user in user repo: ');
+                console.log(error);
+                reject(error);
+            })
+            .finally(() => {
+                console.log('im in this');
+            });
+        }
+    )}
 }

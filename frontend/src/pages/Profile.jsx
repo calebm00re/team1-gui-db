@@ -12,10 +12,12 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import { UserRepository } from '../api/userRepository.js'
 import PersonIcon from '@mui/icons-material/Person';
+import { useNavigate } from "react-router-dom";
 
 
 export const Profile = () => {
     const theme = useTheme();
+    const navigate = useNavigate();
 
     const userRepository = new UserRepository();
 
@@ -39,6 +41,19 @@ export const Profile = () => {
         // }).catch(err => {
         //   alert("email already in use");
         // });
+    };
+
+    const handleDelete = async () => {
+        userRepository.deleteUser().then(res => {
+            console.log('this is the response for delete_user: ')
+            console.log(res)
+            alert('Your account has been deleted!');
+            navigate('/landing');
+        }).catch(error => {
+            console.log('this is the error for delete_user: ')
+            console.log(error)
+            alert('There was an error deleting your account, please try again.');
+        });
     };
 
     return (
@@ -133,14 +148,21 @@ export const Profile = () => {
                             </Button>
                         </Box>
                     </Box>
-                    <Box sx={{ 
-                        mt: 3,
-                        flexDirection: 'row-reverse',
-                        }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'row-reverse',
+                            p: 1,
+                            mt: 3,
+                            bgcolor: 'background.paper',
+                            borderRadius: 1,
+                        }}
+                    >
                         <Button
                             variant="outlined"
                             color="error"
                             sx={{ mt: 3, mb: 2 }}
+                            onClick={() => handleDelete()}
                         >
                             Delete account
                         </Button>
