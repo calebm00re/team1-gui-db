@@ -6,6 +6,8 @@ export const Landing = () => {
 
     const navigate = useNavigate();
 
+    sessionStorage.clear();
+    
     return (
         <>
             <div>
