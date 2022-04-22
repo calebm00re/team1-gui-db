@@ -18,7 +18,7 @@ const getFilters = async (firstName, lastName, email, id) => {
     return filters;
 }
 
-const getUpdateFilters = async (firstName, lastName, email, bio, password, salt) => {
+const getUpdateFilters = async (firstName, lastName, email, bio, password, salt , imgurl) => {
     filters = {};
     if(!(firstName == null || firstName == '')){
         filters.firstName = firstName;
@@ -35,6 +35,9 @@ const getUpdateFilters = async (firstName, lastName, email, bio, password, salt)
     if(!(password == null || password == '')){
         filters.password = password;
         filters.salt = salt;
+    }
+    if(!(imgurl == null || imgurl == '')){
+        filters.imgurl = imgurl;
     }
     return filters;
 }
@@ -71,7 +74,7 @@ const deleteUser = async(id) => {
     }
 }
 
-const updateUser = async(id, firstName, lastName, email, password, bio) => {
+const updateUser = async(id, firstName, lastName, email, password, bio , imgurl) => {
     try{
         salt = null //have to declare here.
         //the first check is to see if the user exists
@@ -83,7 +86,7 @@ const updateUser = async(id, firstName, lastName, email, password, bio) => {
             };
         }
         //checks to see if the user inputed items to change
-        if((firstName == null || firstName == '') && (lastName == null || lastName == '') && (email == null || email == '') && (password == null || password == '') && (bio == null || bio == '')){
+        if((firstName == null || firstName == '') && (lastName == null || lastName == '') && (email == null || email == '') && (password == null || password == '') && (bio == null || bio == '') && (imgurl == null || imgurl == '')){
             return {
                 error: "No changes entered"
             };
@@ -108,7 +111,7 @@ const updateUser = async(id, firstName, lastName, email, password, bio) => {
             }
         }
         console.log("Reached here 1");
-        const filters = await getUpdateFilters(firstName, lastName, email, bio, password, salt);
+        const filters = await getUpdateFilters(firstName, lastName, email, bio, password, salt, imgurl);
         console.log("Reached here 2");
         console.log(filters);
         const result = await userModels.updateUser(id, filters);
