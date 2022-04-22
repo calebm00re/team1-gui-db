@@ -61,6 +61,8 @@ export const Login = () => {
           sessionStorage.setItem('firstName', response.data.firstName);
           sessionStorage.setItem('lastName', response.data.lastName);
           sessionStorage.setItem('email', response.data.email);
+          sessionStorage.setItem('bio', response.data.bio);
+          sessionStorage.setItem('imgurl', response.data.imgurl);
         }).catch(error => {
           console.log('this is the error for get_info: ')
           console.log(error)

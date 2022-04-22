@@ -44,6 +44,7 @@ DashboardSidebar.propTypes = {
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [imgurl, setImgurl] = useState(sessionStorage.getItem('imgurl'));
   const { pathname } = useLocation();
 
   const isDesktop = useResponsive('up', 'lg');
@@ -58,6 +59,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   useEffect(() => {
     setFirstName(sessionStorage.getItem('firstName'));
     setLastName(sessionStorage.getItem('lastName'));
+    setImgurl(sessionStorage.getItem('imgurl'));
   }, []);
 
   const renderContent = (
@@ -74,7 +76,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none" component={RouterLink} to="#">
           <AccountStyle>
-            <Avatar src={'https://www.irishtimes.com/polopoly_fs/1.4779598.1642525269!/image/image.jpg_gen/derivatives/ratio_1x1_w1200/image.jpg'} alt="photoURL" />
+            <Avatar src={imgurl} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
                 {firstName + ' ' + lastName}

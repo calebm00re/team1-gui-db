@@ -18,6 +18,10 @@ import { useNavigate } from "react-router-dom";
 export const Profile = () => {
     const theme = useTheme();
     const navigate = useNavigate();
+    const [nameF, setNameF] = React.useState(sessionStorage.getItem('firstName'));
+    const [nameL, setNameL] = React.useState(sessionStorage.getItem('lastName'));
+    const [email, setEmail] = React.useState(sessionStorage.getItem('email'));
+    const [bio, setBio] = React.useState(sessionStorage.getItem('bio'));
 
     const userRepository = new UserRepository();
 
@@ -33,14 +37,6 @@ export const Profile = () => {
             console.log(error)
             alert('There was an error updating your account, please try again.');
         });
-        // const data = new FormData(event.currentTarget);
-        // userRepository.register(data.get('firstName'), data.get('lastName'), data.get('email'), data.get('password')).then(res => {
-        //   if (res.status <= 201) {
-        //     navigate('/dashboard/app');
-        //   }
-        // }).catch(err => {
-        //   alert("email already in use");
-        // });
     };
 
     const handleDelete = async () => {
@@ -109,7 +105,7 @@ export const Profile = () => {
                                     <TextField
                                         fullWidth
                                         id="bio"
-                                        label="Bio"
+                                        label={bio == null ? 'Add your first bio here!' : bio}
                                         name="bio"
                                         autoComplete="bio"
                                         multiline
