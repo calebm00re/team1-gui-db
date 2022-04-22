@@ -46,7 +46,7 @@ router.get('/self', async(req, res, next) => {
 //PUT /users/self -- updates the user's information
 router.put('/self', async (req, res, next) => {
     try {
-        const result = await userController.updateUser(req.user.id, req.body.firstName, req.body.lastName, req.body.email, req.body.password, req.body.bio);
+        const result = await userController.updateUser(req.user.id, req.body.firstName, req.body.lastName, req.body.email, req.body.password, req.body.bio, req.body.imgurl);
         if (result.error === "User account Does not exist") {
             res.status(400).json({message: result.error});
         } else if (result.error === "No changes entered") {

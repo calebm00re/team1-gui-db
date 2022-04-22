@@ -41,7 +41,9 @@ const createNewUser = async (firstName, lastName, email, password) => {
         }
     }
 
-    const result = await userModels.createNewUser(firstName, lastName, email, hashedPassword,salt);
+    const imgurl = 'https://www.personality-insights.com/wp-content/uploads/2017/12/default-profile-pic-e1513291410505.jpg';
+
+    const result = await userModels.createNewUser(firstName, lastName, email, hashedPassword,salt, imgurl);
     return result;
 }
 
