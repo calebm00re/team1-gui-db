@@ -4,9 +4,7 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const cors = require('cors');
 
-
 const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
-
 
 // const mysqlConnect = require('./db');
 const userRoutes = require('./routes/users') //this includes userRoutes into the files
@@ -14,7 +12,6 @@ const sessionRoutes = require('./routes/session') //this includes session into t
 
 //sets up middleware
 const { authenticateJWT, authenticateWithClaims } = require('./middleware/auth');
-
 
 // set up some configs for express.
 const config = {

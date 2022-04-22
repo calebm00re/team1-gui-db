@@ -1,4 +1,5 @@
 const userModels = require('../models/users.js');
+const sitterModels = require('../models/sitters.js');
 const crypto = require('crypto');
 
 const getFilters = async (firstName, lastName, email, id) => {
@@ -119,11 +120,37 @@ const updateUser = async(id, firstName, lastName, email, password, bio) => {
     }
 }
 
+const blockSitter = async(sitterID) => {
+    try{
+        const checkSitter = await sitterModels.sitterExists(sitterID);
 
+        if (checkSitter) {
+            const result = await userModels.blockSitter(sitterID);
+            return result;
+        } else {
+            return {
+                error: "Sitter does not exist"
+            };
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const blockList = async(userID) => {
+    try{
+        const result = await userModels.blockList(userID);
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 module.exports = {
     getUsers,
     userDoesExist,
     deleteUser,
-    updateUser
+    updateUser,
+    blockSitter,
+    blockList
 }
