@@ -76,7 +76,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none" component={RouterLink} to="#">
           <AccountStyle>
-            <Avatar src={imgurl} alt="photoURL" />
+            <Avatar src={'https://www.hellomagazine.com/imagenes/celebrities/20211209128690/emma-raducano-face-of-evian/0-627-597/emma-raducano-evian-t.jpg'} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
                 {firstName + ' ' + lastName}

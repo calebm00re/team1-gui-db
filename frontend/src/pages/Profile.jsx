@@ -13,7 +13,9 @@ import Box from '@mui/material/Box';
 import { UserRepository } from '../api/userRepository.js'
 import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate } from "react-router-dom";
-
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import { AlertDelete } from '../components/AlertDelete';
 
 export const Profile = () => {
     const theme = useTheme();
@@ -22,6 +24,7 @@ export const Profile = () => {
     const [nameL, setNameL] = React.useState(sessionStorage.getItem('lastName'));
     const [email, setEmail] = React.useState(sessionStorage.getItem('email'));
     const [bio, setBio] = React.useState(sessionStorage.getItem('bio'));
+    const [open, setOpen] = React.useState(false);
 
     const userRepository = new UserRepository();
 
@@ -30,8 +33,8 @@ export const Profile = () => {
         const data = new FormData(event.currentTarget);
         userRepository.putInfo(data.get('firstName'), data.get('lastName'), data.get('email'), data.get('imgurl'), data.get('password'), data.get('bio')).then(res => {
             console.log('this is the response for update_info: ')
-            console.log(res)
-            alert('Your changes have been updated!');
+            console.log(res);
+            alert('Profile updated successfully!');
         }).catch(error => {
             console.log('this is the error for update_info: ')
             console.log(error)
@@ -158,11 +161,12 @@ export const Profile = () => {
                             variant="outlined"
                             color="error"
                             sx={{ mt: 3, mb: 2 }}
-                            onClick={() => handleDelete()}
+                            onClick={() => setOpen(true)}
                         >
                             Delete account
                         </Button>
                     </Box>
+                    <AlertDelete open={open} setOpen={setOpen} />
                 </Container>
             </ThemeProvider>
         </Page>
