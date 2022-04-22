@@ -59,7 +59,7 @@ getIDFromEmail = async (email) => { //so, this doesn't work when I set it to be 
 const getUsers = async (filters) => {
     return knex(USER_TABLE)
         .where(filters)
-        .select('id', 'firstName', 'lastName', 'email','bio');
+        .select('id', 'firstName', 'lastName', 'email','bio', 'imgurl');
 }
 
 const updateUser = async (id, filters) => {
