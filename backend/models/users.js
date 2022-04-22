@@ -69,17 +69,6 @@ const deleteUser = async(id) => {
     return result;
 }
 
-const blockSitter = async (id) => {
-    const query = knex('block').insert({sitter_id: id,parent_id: 0});
-    const result = await query;
-    return result;
-}
-
-const blockList = async (userID) => {
-    const query = knex('block').where({parent_id: userID});
-    const result = await query;
-    return result;
-}
 
 module.exports = {
     isUnique,
@@ -90,7 +79,5 @@ module.exports = {
     getIDFromEmail,
     getUsers,
     deleteUser,
-    updateUser,
-    blockSitter,
-    blockList
+    updateUser
 };

@@ -98,36 +98,5 @@ router.get('/id/:email', async (req, res, next) => {
     next();
 })
 
-// route for blocking sitter from parent
-router.post('/block/:id', async (req,res,next) => {
-    try {
-        const sitterID = req.params.id;
-        const userID = req.headers.authorization.userID;
-
-        const result = await userController.blockSitter(sitterID);
-
-        if (result.error == "Sitter does not exist") {
-            res.status(400).json({message: result.error});
-        } else {
-            res.status(200).json(result);
-        }
-    } catch (err) {
-        res.status(500).json({message: err.toString( )});
-    }
-
-    next();
-});
-
-router.get('/block', async (req,res,next) => {
-    try {
-        const userID = req.headers.authorization.userID;
-        const blockList = await userController.getBlockList(userID);
-        res.status(200).json(blockList);
-    } catch (err) {
-        res.status(500).json({message: err.toString( )});
-    }
-
-    next();
-});
 
 module.exports = router;
