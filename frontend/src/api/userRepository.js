@@ -55,6 +55,8 @@ export class UserRepository {
             .then(response => {
                 console.log('this is the response: ');
                 console.log(response);
+                // console.log('this is token', response.data.accessToken);
+                sessionStorage.setItem('token', response.data.accessToken);
                 resolve(response);
             })
             .catch(error => {
@@ -63,7 +65,7 @@ export class UserRepository {
                 reject(error);
             })
             .finally(() => {
-                console.log('im in this bitch');
+                console.log('im in this');
             });
         })
     }
@@ -71,17 +73,54 @@ export class UserRepository {
     register(firstname, lastname, email, pass) {
         return new Promise((resolve, reject) => {
             axios.post(URL + "/register", {firstName: firstname, lastName: lastname, email: email, password: pass})
-            .then(function (response) {
+            .then(response => {
                 console.log('this is the response: ');
                 resolve(response);
             })
-            .catch(function (error) {
+            .catch(error => {
                 console.log('this is the error: ');
                 console.log(error);
                 reject(error);
             })
-            .finally(function () {
-                console.log('im in this bitch');
+            .finally(() => {
+                console.log('im in this');
+            });
+        }
+    )}
+
+    getInfo() {
+        return new Promise((resolve, reject) => {
+            axios.get(URL + "/users/self", { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
+            .then(response => {
+                console.log('this is the response: ');
+                resolve(response);
+            })
+            .catch(error => {
+                console.log('this is the error: ');
+                console.log(error);
+                reject(error);
+            })
+            .finally(() => {
+                console.log('im in this');
+            });
+        }
+    )}
+
+    putInfo(firstname, lastname, email, imgurl, password, bio) {
+        return new Promise((resolve, reject) => {
+            axios.put(URL + "/users/self", {firstName: firstname, lastName: lastname, email: email, imgurl: imgurl, password: password, bio: bio},
+             { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
+            .then(response => {
+                console.log('this is the response: ');
+                resolve(response);
+            })
+            .catch(error => {
+                console.log('this is the error: ');
+                console.log(error);
+                reject(error);
+            })
+            .finally(() => {
+                console.log('im in this');
             });
         }
     )}
