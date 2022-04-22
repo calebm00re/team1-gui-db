@@ -75,7 +75,6 @@ router.post('/users/register', async (req, res, next) => {
     next();
 })
 
-//TODO POST /sitter/register
 router.post('/sitter/register', async (req, res, next) => {
     try {
         const body = req.body;
@@ -111,6 +110,34 @@ router.post('/sitter/register', async (req, res, next) => {
 })
 
 //TODO POST /sitter/login
+router.post('/sitter/login', async (req, res, next) => {
+    try {
+        const body = req.body;
+        const result = await sessionController.authenticateSitter(body.email, body.password); //TODO
+        console.log("result of authenticateUser: ", result);
+        if(result.error === "Email or password is missing"){
+            res.status(400).json({
+                error: result.error
+            });
+        }
+        else if(result.error === "Invalid credentials"){
+            res.status(401).json({
+                error: result.error
+            });
+        }
+        else{
+            //generates a session token
+            console.log("User has been AUTHENTICATED");
+            const token = await sessionController.generateAuthToken(body.email, 'sitter'); //this role is hardcoded to user based on route
+            res.status(200).json({"accessToken": token});
+        }
+    } catch (err) {
+        console.error('Failed to create new user:', err);
+        res.status(500).json({ message: err.toString() });
+    }
+
+    next();
+})
 
 
 
