@@ -1,7 +1,7 @@
 const userModels = require('../models/users.js');
 const crypto = require('crypto');
 
-const getFilters = async (firstName, lastName, email, id) => {
+const getFilters = async (firstName, lastName, email, id, location, startWorkTime, endWorkTime, minKidAge, maxKidAge, numKids,sym) => {
     filters = {};
     if(!(firstName == null || firstName == '')){
         filters.firstName = firstName;
@@ -15,10 +15,28 @@ const getFilters = async (firstName, lastName, email, id) => {
     if(!(id == null || id == '')){
         filters.id = id;
     }
+    if(!(location == null || location == '')){
+        filters.location = location;
+    }
+    if(!(startWorkTime == null || startWorkTime == '')){
+        filters.startWorkTime = startWorkTime;
+    }
+    if(!(endWorkTime == null || endWorkTime == '')){
+        filters.endWorkTime = endWorkTime;
+    }
+    if(!(minKidAge == null || minKidAge == '')){
+        filters.minKidAge = minKidAge;
+    }
+    if(!(maxKidAge == null || maxKidAge == '')){
+        filters.maxKidAge = maxKidAge;
+    }
+    if(!(numKids == null || numKids == '')) {
+        filters.numKids = numKids;
+    }
     return filters;
 }
 
-const getUpdateFilters = async (firstName, lastName, email, bio, password, salt , imgurl) => {
+const getUpdateFilters = async (firstName, lastName, email, bio, password, salt , imgurl, location, startWorkTime, endWorkTime, minKidAge, maxKidAge, numKids) => {
     filters = {};
     if(!(firstName == null || firstName == '')){
         filters.firstName = firstName;
@@ -39,13 +57,49 @@ const getUpdateFilters = async (firstName, lastName, email, bio, password, salt 
     if(!(imgurl == null || imgurl == '')){
         filters.imgurl = imgurl;
     }
+    if(!(location == null || location == '')){
+        filters.location = location;
+    }
+    if(!(startWorkTime == null || startWorkTime == '')){
+        filters.startWorkTime = startWorkTime;
+    }
+    if(!(endWorkTime == null || endWorkTime == '')){
+        filters.endWorkTime = endWorkTime;
+    }
+    if(!(minKidAge == null || minKidAge == '')){
+        filters.minKidAge = minKidAge;
+    }
+    if(!(maxKidAge == null || maxKidAge == '')){
+        filters.maxKidAge = maxKidAge;
+    }
+    if(!(numKids == null || numKids == '')){
+        filters.numKids = numKids;
+    }
+    if(!(sym == null || sym == '')){
+        filters.sym = sym;
+    }
     return filters;
 }
 
-const getUsers = async(firstName, lastName, email, id) => {
+const boolFilter = async(sym) => {
+    filters = {};
+
+    if((sym == null || sym == '') || sym == 'eq') {
+        filters.sym = '=';
+    } else if (sym == 'gt') {
+        filters.sym = '>';
+    } else if (sym == 'lt') {
+        filters.sym = '<';
+    }
+
+    return filters;
+}
+
+const getUsers = async(firstName, lastName, email, id,location,startWorkTime,endWorkTime,minKidAge,maxKidAge,numKids,sym) => {
     try{
-        const filters = await getFilters(firstName, lastName, email, id);
-        const users = await userModels.getUsers(filters);
+        const filters = await getFilters(firstName, lastName, email, id, location, startWorkTime, endWorkTime, minKidAge, maxKidAge, numKids);
+        const operatorFilter = await boolFilter(sym);
+        const users = await userModels.getUsers(filters,operatorFilter);
         return users;
     } catch (error) {
         console.log(error);
@@ -54,7 +108,7 @@ const getUsers = async(firstName, lastName, email, id) => {
 
 const userDoesExist = async(firstName, lastName, email, id) => {
     try{
-        const filters = await getFilters(firstName, lastName, email, id);
+        const filters = await getFilters(firstName, lastName, email, id,location, startWorkTime, endWorkTime, minKidAge, maxKidAge, numKids);
         const users = await userModels.getUsers(filters);
         if(users.length === 1){
             return true;
@@ -74,7 +128,7 @@ const deleteUser = async(id) => {
     }
 }
 
-const updateUser = async(id, firstName, lastName, email, password, bio , imgurl) => {
+const updateUser = async(id, firstName, lastName, email, password, bio , imgurl, location, startWorkTime, endWorkTime, minKidAge, maxKidAge, numKids) => {
     try{
         salt = null //have to declare here.
         //the first check is to see if the user exists
@@ -86,7 +140,7 @@ const updateUser = async(id, firstName, lastName, email, password, bio , imgurl)
             };
         }
         //checks to see if the user inputed items to change
-        if((firstName == null || firstName == '') && (lastName == null || lastName == '') && (email == null || email == '') && (password == null || password == '') && (bio == null || bio == '') && (imgurl == null || imgurl == '')){
+        if((firstName == null || firstName == '') && (lastName == null || lastName == '') && (email == null || email == '') && (password == null || password == '') && (bio == null || bio == '') && (imgurl == null || imgurl == '') && (location == null || location == '') && (startWorkTime == null || startWorkTime == '') && (endWorkTime == null || endWorkTime == '') && (minKidAge == null || iminKidAge == '') && (maxKidAge == null || maxKidAge == '') && (numKids == null || numKids == '')){
             return {
                 error: "No changes entered"
             };
@@ -111,7 +165,7 @@ const updateUser = async(id, firstName, lastName, email, password, bio , imgurl)
             }
         }
         console.log("Reached here 1");
-        const filters = await getUpdateFilters(firstName, lastName, email, bio, password, salt, imgurl);
+        const filters = await getUpdateFilters(firstName, lastName, email, bio, password, salt, imgurl, location, startWorkTime, endWorkTime, minKidAge, maxKidAge, numKids);
         console.log("Reached here 2");
         console.log(filters);
         const result = await userModels.updateUser(id, filters);
