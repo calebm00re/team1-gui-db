@@ -9,6 +9,16 @@ const router = express.Router();
 //Routes go here
 
 //TODO GET /sitter/ (returns all filters for given params)
+router.get('/', async(req, res, next) => {
+    try{
+        const result = await sitterController.getSitters(req.query.firstName, req.query.lastName, req.query.email, req.query.id, req.query.location, req.query.price, req.query.age);
+        res.status(200).json(result);
+    }catch(err){
+        console.error('Failed to get user info:', err);
+        res.status(500).json({ message: err.toString() });
+    }
+    next();
+});
 
 //GET /sitter/self (returns the content of the sitter's profile)
 router.get('/self', async(req, res, next) => {
@@ -31,7 +41,7 @@ router.get('/self', async(req, res, next) => {
 //PUT /sitter/self (updates the content of the sitter's profile)
 router.put('/self', async (req, res, next) => {
     try {
-        const result = await sitterController.updateSitter(req.user.id, req.body.firstName, req.body.lastName, req.body.email, req.body.password, req.body.location, req.body.price, req.body.age, req.body.experience, req.body.imgurl);
+        const result = await sitterController.updateSitter(req.user.id, req.body.firstName, req.body.lastName, req.body.email, req.body.password, req.body.location, req.body.price, req.body.age, req.body.experience, req.body.image);
         if (result.error === "User account Does not exist") {
             res.status(400).json({message: result.error});
         } else if (result.error === "No changes entered") {

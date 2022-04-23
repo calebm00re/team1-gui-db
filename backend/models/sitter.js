@@ -37,11 +37,19 @@ const deleteUser = async (id) => {
     return result;
 }
 
+const getSitters = async (exactFilters, rangeFilters) => {
+    const result = await knex(sitterTable)
+                         .where(exactFilters)
+                         .select('*');
+    return result;
+}
+
 
 
 module.exports = {
     createNewUser,
     find,
+    getSitters,
     updateSitter,
     deleteUser
 }

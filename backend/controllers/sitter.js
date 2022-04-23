@@ -86,8 +86,60 @@ const getUpdateFilters = async (firstName, lastName, email, password, salt, imgu
     return filters;
 }
 
+const getSitters = async (firstName, lastName, email, id, location, price, age) =>  {
+    //this query can be broken down into multiple queries
+    //the first of the exact matches ie firstName, lastName, email, id, location
+    //the second of the range matches ie price, age
+
+    //first of the exact matches
+    const exactFilters = await getExactFilters(firstName, lastName, email, id, location);
+
+    //second of the range matches
+    const rangeFilters = await getRangeFilters(price, age);
+
+
+    //combine the two filters during the query
+    const result = await sitterModel.getSitters(exactFilters, rangeFilters);
+    return result;
+
+}
+
+const getExactFilters = async (firstName, lastName, email, id, location) => {
+    filters = {};
+
+    if(firstName != null && firstName != ''){
+        filters.firstName = firstName;
+    }
+    if(lastName != null && lastName != ''){
+        filters.lastName = lastName;
+    }
+    if(email != null && email != ''){
+        filters.email = email;
+    }
+    if(id != null && id != ''){
+        filters.id = id;
+    }
+    if(location != null && location != ''){
+        filters.location = location;
+    }
+    return filters;
+}
+
+const getRangeFilters = async (price, age) => {
+    filters = {};
+    if(price != null && price != ''){
+        filters.price = price;
+    }
+    if(age != null && age != ''){
+        filters.age = age;
+    }
+    return filters;
+}
+
+
 
 module.exports = {
     doesSitterExist,
+    getSitters,
     updateSitter
 }
