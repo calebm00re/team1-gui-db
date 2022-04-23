@@ -28,7 +28,7 @@ router.get('/self', async(req, res, next) => {
     next();
 });
 
-//TODO PUT /sitter/self (updates the content of the sitter's profile)
+//PUT /sitter/self (updates the content of the sitter's profile)
 router.put('/self', async (req, res, next) => {
     try {
         const result = await sitterController.updateSitter(req.user.id, req.body.firstName, req.body.lastName, req.body.email, req.body.password, req.body.location, req.body.price, req.body.age, req.body.experience, req.body.imgurl);
@@ -50,7 +50,20 @@ router.put('/self', async (req, res, next) => {
 
 
 //(OPTIONAL) DELETE /sitter/self (deletes the content of the sitter's profile)
-
+router.delete('/self', async (req, res, next) => {
+    try{
+        const sitterDoesExist = await sitterController.doesSitterExist(req.user.email);
+        if(sitterDoesExist) {
+            const result = await sitterModel.deleteUser(req.user.id);
+            res.status(204).json({ message: 'User deleted' });
+        } else {
+            res.status(400).json({ message: 'User does not exist' });
+        }
+    } catch (err) {
+        console.error('Failed to delete user info:', err);
+        res.status(500).json({ message: err.toString() });
+    }
+});
 
 
 module.exports = router;

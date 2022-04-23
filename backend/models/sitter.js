@@ -30,10 +30,18 @@ const updateSitter = async (id, filters) => {
     return result;
 }
 
+const deleteUser = async (id) => {
+    const result = await knex(sitterTable)
+                         .where({id: id})
+                         .del();
+    return result;
+}
+
 
 
 module.exports = {
     createNewUser,
     find,
-    updateSitter
+    updateSitter,
+    deleteUser
 }
