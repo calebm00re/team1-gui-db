@@ -29,6 +29,24 @@ router.get('/self', async(req, res, next) => {
 });
 
 //TODO PUT /sitter/self (updates the content of the sitter's profile)
+router.put('/self', async (req, res, next) => {
+    try {
+        const result = await sitterController.updateSitter(req.user.id, req.body.firstName, req.body.lastName, req.body.email, req.body.password, req.body.location, req.body.price, req.body.age, req.body.experience, req.body.imgurl);
+        if (result.error === "User account Does not exist") {
+            res.status(400).json({message: result.error});
+        } else if (result.error === "No changes entered") {
+            res.status(400).json({message: result.error});
+        } else if (result.error === "Changes conflict with existing user") {
+            res.status(400).json({message: result.error});
+        } else {
+            const output = await sitterModel.find({id:req.user.id});
+            res.status(200).json(output[0]);
+        }
+    } catch (err) {
+        console.error('Failed to update user info:', err);
+        res.status(500).json({ message: err.toString() });
+    }
+});
 
 
 //(OPTIONAL) DELETE /sitter/self (deletes the content of the sitter's profile)

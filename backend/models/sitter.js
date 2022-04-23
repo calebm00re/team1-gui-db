@@ -23,9 +23,17 @@ const createNewUser = async(firstName, lastName, email, password,salt, imgurl) =
     return result;
 }
 
+const updateSitter = async (id, filters) => {
+    const result = await knex(sitterTable)
+                         .where({id: id})
+                         .update(filters);
+    return result;
+}
+
 
 
 module.exports = {
     createNewUser,
-    find
+    find,
+    updateSitter
 }
