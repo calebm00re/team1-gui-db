@@ -73,8 +73,8 @@ const createNewSitter = async(firstName, lastName, email, password) => {
 
     //checks to see if the user already exists
 
-    const isUnique = await sitterController.isUnique(email);
-    if (!isUnique) {
+    const doesExist = await sitterController.doesSitterExist(email);
+    if (doesExist) {
         return {
             error: 'User already exists'
         }
@@ -155,7 +155,7 @@ const authenticateSitter = async (email, password) => {
         };
     }
     //if they do, checks to see if password is correct
-    const authentication = await verifyPassword(email, password);
+    const authentication = await verifyPasswordSitter(email, password);
     if(authentication === false){
         console.error(`Password for email: ${email} is incorrect`);
         return {
@@ -167,7 +167,7 @@ const authenticateSitter = async (email, password) => {
     };
 }
 
-const verifyPassword = async (email,password) => {
+const verifyPasswordSitter = async (email,password) => {
     const sitter = await sitterModels.find({email:email});
     const storedPassword = sitter[0].password;
     const salt = sitter[0].salt;
