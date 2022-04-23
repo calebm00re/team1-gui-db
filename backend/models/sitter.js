@@ -39,7 +39,16 @@ const deleteUser = async (id) => {
 
 const getSitters = async (exactFilters, rangeFilters) => {
     const result = await knex(sitterTable)
+
                          .where(exactFilters)
+        .andWhere(function() {
+            if(rangeFilters.price != null) {
+                this.where('price', '<=', rangeFilters.price);
+            }
+            if(rangeFilters.age != null) {
+                this.where('age', '<=', rangeFilters.age);
+            }
+        })
                          .select('*');
     return result;
 }
