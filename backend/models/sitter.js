@@ -27,5 +27,5 @@ const createNewUser = async(firstName, lastName, email, password,salt, imgurl) =
 
 module.exports = {
     createNewUser,
-    find,
+    find
 }

@@ -81,26 +81,5 @@ router.delete('/self', async (req, res, next) => {
 });
 
 
-//This route is superflous once the GET /users route is implemented
-router.get('/id/:email', async (req, res, next) => {
-    try {
-        const email = req.params.email;
-
-
-        const result = await userModel.getIDFromEmail(email);
-        if(result === -1){
-            res.status(300).json({message: "User not found"});
-        } else {
-            res.status(200).json(result);
-        }
-    } catch (err) {
-        console.error('Failed to get user id:', err);
-        res.status(500).json({ message: err.toString() });
-    }
-
-    next();
-})
-
-
 
 module.exports = router;
