@@ -3,7 +3,6 @@ const express = require('express');
 const userController = require('../controllers/users.js');
 const userModel = require('../models/users.js');
 
-
 /**
  * https://expressjs.com/en/guide/routing.html#express-router
  *
