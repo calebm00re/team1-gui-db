@@ -109,11 +109,11 @@ router.post('/sitter/register', async (req, res, next) => {
     next();
 })
 
-//TODO POST /sitter/login
+//POST /sitter/login
 router.post('/sitter/login', async (req, res, next) => {
     try {
         const body = req.body;
-        const result = await sessionController.authenticateSitter(body.email, body.password); //TODO
+        const result = await sessionController.authenticateSitter(body.email, body.password);
         console.log("result of authenticateUser: ", result);
         if(result.error === "Email or password is missing"){
             res.status(400).json({

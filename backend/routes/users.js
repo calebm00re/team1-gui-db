@@ -30,9 +30,16 @@ router.get('/', async(req, res, next) => {
 //GET /users/self -- returns the current user information (basically just a call to the GET /users route with the current user's ID)
 router.get('/self', async(req, res, next) => {
     try{
+        console.log('Getting user info for user:', req.user.id);
+        console.log(req.user.id);
+        console.log("Check 1");
         const userDoesExist = await userController.userDoesExist(null,null,null,req.user.id);
+        console.log("Check 2");
+        console.log(userDoesExist);
         if(userDoesExist){
+            console.log("Check 3");
             const result = await userController.getUsers(null, null, null,req.user.id);
+            console.log("Check 4");
             res.status(200).json(result[0]);
         }else{
             res.status(500).json({ message: 'Failed to get user info' });

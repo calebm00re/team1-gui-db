@@ -98,7 +98,7 @@ const generateAuthToken = async (email , role) => {
     }
     else if(role === 'user'){
         console.log("User role");
-        const users = await userModels.findUserByEmail({email : email});
+        const users = await userModels.getUsers({email : email});
         const accessToken = jwt.sign({...users[0], claims: [role]}, accessTokenSecret);
         return accessToken;
     } else {
