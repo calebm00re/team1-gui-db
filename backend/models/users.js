@@ -9,8 +9,6 @@ const isUnique = async (email) => {
   return user ? false : true;
 };
 
-
-
 const createNewUser = async (firstName, lastName, email, hashedPassword , salt, imgurl) => {
     //inserts the new user into the database
     const query = knex(USER_TABLE).insert({lastName, firstName, email, password: hashedPassword, salt, imgurl});
@@ -18,8 +16,6 @@ const createNewUser = async (firstName, lastName, email, hashedPassword , salt, 
     //adds the error property to the result object when there isn't an errorresult["error"] = "none";
     return result;
 };
-
-
 
 const findUserByEmail = async (email) => {
     const query = knex(USER_TABLE).where({ email });
@@ -39,7 +35,6 @@ const authenticateUser = async (email, password) => {
     return false;
 }
 
-
 const getUserById = async (id) => {
     const query = knex(USER_TABLE).where({ id });
     const result = await query;
@@ -56,10 +51,11 @@ getIDFromEmail = async (email) => { //so, this doesn't work when I set it to be 
     return user.id;
 }
 
-const getUsers = async (filters) => {
+const getUsers = async (filters,symbol) => {
     return knex(USER_TABLE)
         .where(filters)
-        .select('id', 'firstName', 'lastName', 'email','bio', 'imgurl');
+        //.andWhere('numKids',symbol,filters.numKids)
+        .select('id', 'firstName', 'lastName', 'email','bio', 'imgurl','location','startWorkTime','endWorkTime','minKidAge','maxKidAge','numKids');
 }
 
 const updateUser = async (id, filters) => {
@@ -73,8 +69,6 @@ const deleteUser = async(id) => {
     const result = await query;
     return result;
 }
-
-
 
 module.exports = {
     isUnique,

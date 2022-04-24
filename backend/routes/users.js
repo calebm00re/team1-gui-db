@@ -18,7 +18,7 @@ const router = express.Router();
 //Can search based off of firstName, lastName, email, or ID
 router.get('/', async(req, res, next) => {
     try{
-        const result = await userController.getUsers(req.query.firstName, req.query.lastName, req.query.email, req.query.id);
+        const result = await userController.getUsers(req.query.firstName, req.query.lastName, req.query.email, req.query.id, req.query.location, req.query.startWorkTime, req.query.endWorkTime, req.query.minKidAge, req.query.maxKidAge, req.query.numKids,req.query.sym);
         res.status(200).json(result);
     }catch(err){
         console.error('Failed to get user info:', err);
@@ -47,7 +47,7 @@ router.get('/self', async(req, res, next) => {
 //PUT /users/self -- updates the user's information
 router.put('/self', async (req, res, next) => {
     try {
-        const result = await userController.updateUser(req.user.id, req.body.firstName, req.body.lastName, req.body.email, req.body.password, req.body.bio, req.body.imgurl);
+        const result = await userController.updateUser(req.user.id, req.body.firstName, req.body.lastName, req.body.email, req.body.password, req.body.bio, req.body.imgurl,req.body.location,req.body.startWorkTime,req.body.endWorkTime,req.body.minKidAge,req.body.maxKidAge,req.body.numKids);
         if (result.error === "User account Does not exist") {
             res.status(400).json({message: result.error});
         } else if (result.error === "No changes entered") {
