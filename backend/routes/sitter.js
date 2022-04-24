@@ -8,7 +8,7 @@ const router = express.Router();
 
 //Routes go here
 
-//TODO GET /sitter/ (returns all filters for given params)
+//GET /sitter/ (returns all filters for given params)
 router.get('/', async(req, res, next) => {
     try{
         const result = await sitterController.getSitters(req.query.firstName, req.query.lastName, req.query.email, req.query.id, req.query.location, req.query.price, req.query.age);
@@ -59,7 +59,7 @@ router.put('/self', async (req, res, next) => {
 });
 
 
-//(OPTIONAL) DELETE /sitter/self (deletes the content of the sitter's profile)
+// DELETE /sitter/self (deletes the content of the sitter's profile)
 router.delete('/self', async (req, res, next) => {
     try{
         const sitterDoesExist = await sitterController.doesSitterExist(req.user.email);

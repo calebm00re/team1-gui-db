@@ -3,12 +3,6 @@ const userModels = require("./users");
 
 const sitterTable = 'sitter';
 
-const find = async(filters) => {
-    const result = await knex(sitterTable)
-                         .where(filters)
-                         .select('*'); //TODO reduce the number of items selected to everything but the password & salt
-    return result;
-}
 
 const createNewUser = async(firstName, lastName, email, password,salt, imgurl) => {
     const result = await knex(sitterTable)
@@ -23,19 +17,13 @@ const createNewUser = async(firstName, lastName, email, password,salt, imgurl) =
     return result;
 }
 
-const updateSitter = async (id, filters) => {
+const find = async(filters) => {
     const result = await knex(sitterTable)
-                         .where({id: id})
-                         .update(filters);
+        .where(filters)
+        .select('*');
     return result;
 }
 
-const deleteUser = async (id) => {
-    const result = await knex(sitterTable)
-                         .where({id: id})
-                         .del();
-    return result;
-}
 
 const getSitters = async (exactFilters, rangeFilters) => {
     const result = await knex(sitterTable)
@@ -53,6 +41,19 @@ const getSitters = async (exactFilters, rangeFilters) => {
     return result;
 }
 
+const updateSitter = async (id, filters) => {
+    const result = await knex(sitterTable)
+        .where({id: id})
+        .update(filters);
+    return result;
+}
+
+const deleteUser = async (id) => {
+    const result = await knex(sitterTable)
+        .where({id: id})
+        .del();
+    return result;
+}
 
 
 module.exports = {

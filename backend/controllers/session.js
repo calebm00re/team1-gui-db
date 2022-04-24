@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const userModels = require('../models/users.js');
+const userController = require('../controllers/users.js');
 const sitterModels = require('../models/sitter.js');
 const sitterController = require('../controllers/sitter.js');
 const crypto = require("crypto");
@@ -36,8 +37,8 @@ const createNewUser = async (firstName, lastName, email, password) => {
 
     //checks to see if the user already exists
 
-    const isUnique = await userModels.isUnique(email);
-    if (!isUnique) {
+    const doesExist = await userController.doesUserExist(email);
+    if (doesExist) {
         return {
             error: 'User already exists'
         }
@@ -98,7 +99,7 @@ const generateAuthToken = async (email , role) => {
     }
     else if(role === 'user'){
         console.log("User role");
-        const users = await userModels.getUsers({email : email});
+        const users = await userModels.find({email : email});
         const accessToken = jwt.sign({...users[0], claims: [role]}, accessTokenSecret);
         return accessToken;
     } else {
@@ -116,7 +117,7 @@ const authenticateUser = async (email, password) => {
             error: 'Email or password is missing'
         };
     }
-    const users = await userModels.findUserByEmail(email);
+    const users = await userModels.find({email: email});
     console.log('Results of users query', users);
     //checks to see if user exists
     if (users.length === 0) {
@@ -126,7 +127,7 @@ const authenticateUser = async (email, password) => {
         };
     }
     //if they do, checks to see if password is correct
-    const authentication = await userModels.authenticateUser(email, password);
+    const authentication = await verifyPasswordUser(email, password);
     if(authentication === false){
         console.error(`Password for email: ${email} is incorrect`);
         return {
@@ -136,6 +137,17 @@ const authenticateUser = async (email, password) => {
     return {
         error: ''
     };
+}
+
+const verifyPasswordUser = async (email, password) => {
+    const user = await userModels.find({email: email});
+    const storedPassword = user[0].password;
+    const salt = user[0].salt;
+    const hashedPassword = crypto.createHash('sha256').update(salt + password).digest('hex');
+    console.log('Hashed password', hashedPassword);
+    console.log('Stored password', storedPassword);
+
+    return storedPassword === hashedPassword;
 }
 
 const authenticateSitter = async (email, password) => {
