@@ -97,4 +97,21 @@ export class UserRepository {
             });
         }
     )}
+
+    getSitters() {
+        return new Promise((resolve, reject) => {
+            axios.get(URL + "/sitter", { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
+            .then(response => {
+                console.log('this is the response for get/sitters');
+                console.log(response);
+                resolve(response);
+            })
+            .catch(error => {
+                console.log('this is the error for get/sitters');
+                console.log(error);
+                reject(error);
+            })
+        })
+    }
+
 }

@@ -1,6 +1,6 @@
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import {
@@ -27,6 +27,8 @@ import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashboard/user';
 // mock
 import USERLIST from '../_mock/user';
+import { UserRepository } from '../api/userRepository.js'
+import { Sitter } from '../models/sitter';
 
 // ----------------------------------------------------------------------
 
@@ -71,18 +73,56 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function Sitters() {
+  const userRepository = new UserRepository();
   const [page, setPage] = useState(0);
-
   const [order, setOrder] = useState('asc');
-
   const [selected, setSelected] = useState([]);
-
   const [orderBy, setOrderBy] = useState('name');
-
   const [filterName, setFilterName] = useState('');
-
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [sitters, setSitters] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
+  const getSitter = (i, sitterList) => {
+    var sittersTemp = sitters;
+    let currentSitter = sitterList[i];
+    // console.log('sitterList[i]');
+    // console.log(currentSitter);
+    sittersTemp[i] = currentSitter;
+    setSitters(sittersTemp);
+  }
+
+  const loadSitters = () => {
+    userRepository.getSitters().then(res => {
+      console.log('this is the response for get_sitters13: ')
+      let allSitters = res.data;
+      for (var i in allSitters) {
+        getSitter(i, allSitters);
+      }
+      console.log(sitters);
+    }).catch(error => {
+      console.log('this is the error for get_sitters: ')
+      console.log(error)
+    })
+    .finally(() => {
+      console.log('in the sitter finally');
+      console.log(sitters);
+      setLoaded(true);
+    });
+  }
+
+  useEffect(() => {
+    loadSitters();
+    setTimeout(function () {
+      if (sitters) {
+        setLoaded(true)
+        // console.log('here are your sitters');
+        // console.log(sitters);
+      } else {
+        console.log("taking too long to load info")
+      }
+    }, 1000);
+  }, [])
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
