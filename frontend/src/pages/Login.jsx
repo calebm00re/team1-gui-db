@@ -53,6 +53,7 @@ export const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+
     userRepository.login(data.get('email'), data.get('password')).then(res => {
       if (res.status <= 201) {
         userRepository.getInfo().then(response => {
