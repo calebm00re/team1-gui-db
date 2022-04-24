@@ -25,6 +25,7 @@ export const Profile = () => {
     const [email, setEmail] = React.useState(sessionStorage.getItem('email'));
     const [bio, setBio] = React.useState(sessionStorage.getItem('bio'));
     const [open, setOpen] = React.useState(false);
+    const [sitters, setSitters] = React.useState([]);
 
     const userRepository = new UserRepository();
 
@@ -113,7 +114,6 @@ export const Profile = () => {
                                         autoComplete="bio"
                                         multiline
                                         rows={2}
-                                        maxRows={4}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
