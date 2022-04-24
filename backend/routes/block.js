@@ -21,7 +21,7 @@ router.post('/', async (req,res,next) => {
         res.status(200).json({message: "Successfully blocked user"});
 
     } catch (err) {
-        res.status(500).json({message: err.toString( )});
+        res.status(500).json({message: err.toString()});
     }
 
     next();

@@ -1,17 +1,23 @@
 const userController = require('../controllers/users');
+const sitterModel = require('../models/sitter');
 const userModels = require("../models/users");
 const blockModels = require("../models/block");
 
 
 const blockSitter = async(parentID, sitterID) => {
     try{
-        const doesParentExist = await userController.userDoesExist(null, null, null, parentID);
-        const doesSitterExist = await userController.userDoesExist(null, null, null, sitterID);
-
-        if(!doesParentExist || !doesSitterExist){
+        const user = await userModels.find({id: parentID});
+        if(user.length === 0){
             return {
                 error: "User does not exist"
-            }
+            };
+        }
+
+        const sitter = await sitterModel.find({id: sitterID});
+        if(sitter.length === 0){
+            return {
+                error: "User does not exist"
+            };
         }
 
         result = await blockModels.blockSitter(parentID, sitterID);
