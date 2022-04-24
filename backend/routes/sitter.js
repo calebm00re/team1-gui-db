@@ -1,22 +1,17 @@
 const { application } = require('express');
 const express = require('express');
-const userController = require('../controllers/users.js');
-const userModel = require('../models/users.js');
+const sitterController = require('../controllers/sitter.js');
+const sitterModel = require('../models/sitter.js');
+const userController = require("../controllers/users");
 
-/**
- * https://expressjs.com/en/guide/routing.html#express-router
- *
- * A router is a special Express object that can be used to define how to route and manage
- * requests. We configure a router here to handle a few routes specific to students
- */
 const router = express.Router();
 
-//ROUTES FOR USERS
+//Routes go here
 
-//GET /users -- returns all users for a given search parameter
+//GET /sitter/ (returns all filters for given params)
 router.get('/', async(req, res, next) => {
     try{
-        const result = await userController.getUsers(req.query.firstName, req.query.lastName, req.query.email, req.query.id, req.query.location, req.query.startWorkTime, req.query.endWorkTime, req.query.minKidAge, req.query.maxKidAge, req.query.numKids);
+        const result = await sitterController.getSitters(req.query.firstName, req.query.lastName, req.query.email, req.query.id, req.query.location, req.query.price, req.query.age);
         res.status(200).json(result);
     }catch(err){
         console.error('Failed to get user info:', err);
@@ -25,13 +20,13 @@ router.get('/', async(req, res, next) => {
     next();
 });
 
-//GET /users/self -- returns the current user information (basically just a call to the GET /users route with the current user's ID)
+//GET /sitter/self (returns the content of the sitter's profile)
 router.get('/self', async(req, res, next) => {
     try{
-        const userDoesExist = await userController.doesUserExist(req.user.email);
-        if(userDoesExist){
-            const result = await userModel.find({id: req.user.id});
-            console.log("Check 4");
+        const sitterDoesExist = await sitterController.doesSitterExist(req.user.email);
+        if(sitterDoesExist){
+            console.log("Sitter exists");
+            const result = await sitterModel.find({id : req.user.id});
             res.status(200).json(result[0]);
         }else{
             res.status(500).json({ message: 'Failed to get user info' });
@@ -43,10 +38,10 @@ router.get('/self', async(req, res, next) => {
     next();
 });
 
-//PUT /users/self -- updates the user's information
+//PUT /sitter/self (updates the content of the sitter's profile)
 router.put('/self', async (req, res, next) => {
     try {
-        const result = await userController.updateUser(req.user.id, req.body.firstName, req.body.lastName, req.body.email, req.body.password, req.body.bio, req.body.imgurl, req.body.location, req.body.startWorkTime, req.body.endWorkTime, req.body.minKidAge, req.body.maxKidAge, req.body.numKids);
+        const result = await sitterController.updateSitter(req.user.id, req.body.firstName, req.body.lastName, req.body.email, req.body.password, req.body.location, req.body.price, req.body.age, req.body.experience, req.body.image);
         if (result.error === "User account Does not exist") {
             res.status(400).json({message: result.error});
         } else if (result.error === "No changes entered") {
@@ -54,7 +49,7 @@ router.put('/self', async (req, res, next) => {
         } else if (result.error === "Changes conflict with existing user") {
             res.status(400).json({message: result.error});
         } else {
-            const output = await userController.getUsers(null, null, null, req.user.id);
+            const output = await sitterModel.find({id:req.user.id});
             res.status(200).json(output[0]);
         }
     } catch (err) {
@@ -63,12 +58,13 @@ router.put('/self', async (req, res, next) => {
     }
 });
 
-//DELETE /users/self -- deletes the user's information
+
+// DELETE /sitter/self (deletes the content of the sitter's profile)
 router.delete('/self', async (req, res, next) => {
     try{
-        const userDoesExist = await userController.doesUserExist(req.user.email);
-        if(userDoesExist) {
-            const result = await userController.deleteUser(req.user.id);
+        const sitterDoesExist = await sitterController.doesSitterExist(req.user.email);
+        if(sitterDoesExist) {
+            const result = await sitterModel.deleteUser(req.user.id);
             res.status(204).json({ message: 'User deleted' });
         } else {
             res.status(400).json({ message: 'User does not exist' });

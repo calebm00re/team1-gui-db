@@ -4,62 +4,52 @@ const crypto = require('crypto');
 
 const USER_TABLE = 'users';
 
-const isUnique = async (email) => {
-  const user = await knex(USER_TABLE).where({email}).first();
-  return user ? false : true;
-};
-
-
 
 const createNewUser = async (firstName, lastName, email, hashedPassword , salt, imgurl) => {
     //inserts the new user into the database
-    const query = knex(USER_TABLE).insert({lastName, firstName, email, password: hashedPassword, salt, imgurl});
-    const result = await query;
+    const result = await knex(USER_TABLE)
+        .insert({
+            lastName,
+            firstName,
+            email, password: hashedPassword,
+            salt,
+            imgurl
+        });
     //adds the error property to the result object when there isn't an errorresult["error"] = "none";
     return result;
 };
 
-
-
-const findUserByEmail = async (email) => {
-    const query = knex(USER_TABLE).where({ email });
-    const result = await query;
-    return result;
-}
-
-const authenticateUser = async (email, password) => {
-    const users = await findUserByEmail(email);
-    const user = users[0];
- //   const validPassword = await bcrypt.compare(password, user.password);
-
-    const validPassword = crypto.createHash('sha256').update(user.salt + password).digest('hex') === user.password;
-    if (validPassword) {
-        return true;
-    }
-    return false;
-}
-
-
-const getUserById = async (id) => {
-    const query = knex(USER_TABLE).where({ id });
-    const result = await query;
-    return result;
-}
-
-getIDFromEmail = async (email) => { //so, this doesn't work when I set it to be constant
-    const users = await findUserByEmail(email); //checks that email is valid
-    if (users.length === 0) {
-        console.error(`No users matched the email: ${email}`);
-        return -1;
-    }
-    const user = users[0];
-    return user.id;
-}
-
-const getUsers = async (filters) => {
-    return knex(USER_TABLE)
+//This is the basic lookup function (useful for basic things)
+const find = async(filters) => {
+    const result = await knex(USER_TABLE)
         .where(filters)
-        .select('id', 'firstName', 'lastName', 'email','bio', 'imgurl');
+        .select('*');
+    return result;
+};
+
+
+//This is the through search function
+const getUsers = async (exactFilters, rangeFilters) => {
+    return knex(USER_TABLE)
+        .where(exactFilters)
+        .andWhere(function() {
+            if(rangeFilters.startWorkTime != null){
+                this.where('startWorkTime', '>=', rangeFilters.startWorkTime);
+            }
+            if(rangeFilters.endWorkTime != null){
+                this.where('endWorkTime', '<=', rangeFilters.endWorkTime);
+            }
+            if(rangeFilters.minKidAge != null){
+                this.where('minKidAge', '>=', rangeFilters.minKidAge);
+            }
+            if(rangeFilters.maxKidAge != null){
+                this.where('maxKidAge', '<=', rangeFilters.maxKidAge);
+            }
+            if(rangeFilters.numKids != null){
+                this.where('numKids', '<=', rangeFilters.numKids);
+            }
+        })
+        .select('*');
 }
 
 const updateUser = async (id, filters) => {
@@ -75,14 +65,9 @@ const deleteUser = async(id) => {
 }
 
 
-
 module.exports = {
-    isUnique,
     createNewUser,
-    findUserByEmail,
-    authenticateUser,
-    getUserById,
-    getIDFromEmail,
+    find,
     getUsers,
     deleteUser,
     updateUser

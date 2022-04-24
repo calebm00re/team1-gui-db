@@ -53,6 +53,7 @@ export const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+
     userRepository.login(data.get('email'), data.get('password')).then(res => {
       if (res.status <= 201) {
         userRepository.getInfo().then(response => {
@@ -61,6 +62,8 @@ export const Login = () => {
           sessionStorage.setItem('firstName', response.data.firstName);
           sessionStorage.setItem('lastName', response.data.lastName);
           sessionStorage.setItem('email', response.data.email);
+          sessionStorage.setItem('bio', response.data.bio);
+          sessionStorage.setItem('imgurl', response.data.imgurl);
         }).catch(error => {
           console.log('this is the error for get_info: ')
           console.log(error)

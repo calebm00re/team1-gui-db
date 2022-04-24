@@ -10,6 +10,8 @@ const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
 const userRoutes = require('./routes/users') //this includes userRoutes into the files
 const sessionRoutes = require('./routes/session') //this includes session into the files
 const blockRoutes = require('./routes/block') //this includes block into the files
+const sitterRoutes = require('./routes/sitter') //this includes sitter into the files
+
 
 //sets up middleware
 const { authenticateJWT, authenticateWithClaims } = require('./middleware/auth');
@@ -40,6 +42,8 @@ app.use(ExpressAPILogMiddleware(logger, { request: true }));
 app.use(sessionRoutes); //this incorperates session routes into express (the only routes which do not require authentication)
 app.use('/users', authenticateJWT ,userRoutes); //this makes userRoutes a route file
 app.use('/block', authenticateJWT , blockRoutes); //this makes blockRoutes a route file
+app.use('/sitter', authenticateJWT, sitterRoutes); //this makes sitterRoutes a route file
+
 
 
 // connecting the express object to listen on a particular port as defined in the config object.

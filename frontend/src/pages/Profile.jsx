@@ -13,11 +13,19 @@ import Box from '@mui/material/Box';
 import { UserRepository } from '../api/userRepository.js'
 import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate } from "react-router-dom";
-
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import { AlertDelete } from '../components/AlertDelete';
 
 export const Profile = () => {
     const theme = useTheme();
     const navigate = useNavigate();
+    const [nameF, setNameF] = React.useState(sessionStorage.getItem('firstName'));
+    const [nameL, setNameL] = React.useState(sessionStorage.getItem('lastName'));
+    const [email, setEmail] = React.useState(sessionStorage.getItem('email'));
+    const [bio, setBio] = React.useState(sessionStorage.getItem('bio'));
+    const [open, setOpen] = React.useState(false);
+    const [sitters, setSitters] = React.useState([]);
 
     const userRepository = new UserRepository();
 
@@ -26,21 +34,13 @@ export const Profile = () => {
         const data = new FormData(event.currentTarget);
         userRepository.putInfo(data.get('firstName'), data.get('lastName'), data.get('email'), data.get('imgurl'), data.get('password'), data.get('bio')).then(res => {
             console.log('this is the response for update_info: ')
-            console.log(res)
-            alert('Your changes have been updated!');
+            console.log(res);
+            alert('Profile updated successfully!');
         }).catch(error => {
             console.log('this is the error for update_info: ')
             console.log(error)
             alert('There was an error updating your account, please try again.');
         });
-        // const data = new FormData(event.currentTarget);
-        // userRepository.register(data.get('firstName'), data.get('lastName'), data.get('email'), data.get('password')).then(res => {
-        //   if (res.status <= 201) {
-        //     navigate('/dashboard/app');
-        //   }
-        // }).catch(err => {
-        //   alert("email already in use");
-        // });
     };
 
     const handleDelete = async () => {
@@ -109,12 +109,11 @@ export const Profile = () => {
                                     <TextField
                                         fullWidth
                                         id="bio"
-                                        label="Bio"
+                                        label={bio == null ? 'Add your first bio here!' : bio}
                                         name="bio"
                                         autoComplete="bio"
                                         multiline
                                         rows={2}
-                                        maxRows={4}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -162,11 +161,12 @@ export const Profile = () => {
                             variant="outlined"
                             color="error"
                             sx={{ mt: 3, mb: 2 }}
-                            onClick={() => handleDelete()}
+                            onClick={() => setOpen(true)}
                         >
                             Delete account
                         </Button>
                     </Box>
+                    <AlertDelete open={open} setOpen={setOpen} />
                 </Container>
             </ThemeProvider>
         </Page>
