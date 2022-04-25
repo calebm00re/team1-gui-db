@@ -12,6 +12,7 @@ const sessionRoutes = require('./routes/session') //this includes session into t
 const blockRoutes = require('./routes/block') //this includes block into the files
 const sitterRoutes = require('./routes/sitter') //this includes sitter into the files
 const sitterScheduleRoutes = require('./routes/sitterSchedule') //this includes sitter_schedule into the files
+const parentScheduleRoutes = require('./routes/parentSchedule') //this includes parent_schedule into the files
 
 
 //sets up middleware
@@ -44,7 +45,8 @@ app.use(sessionRoutes); //this incorperates session routes into express (the onl
 app.use('/users', authenticateJWT ,userRoutes); //this makes userRoutes a route file
 app.use('/block', authenticateJWT , blockRoutes); //this makes blockRoutes a route file
 app.use('/sitter', authenticateJWT, sitterRoutes); //this makes sitterRoutes a route file
-app.use('/sitter_schedule', authenticateJWT, sitterScheduleRoutes); //this makes sitter_scheduleRoutes a route file
+app.use('/sitter_schedule', authenticateJWT, sitterScheduleRoutes); //this makes sitterScheduleRoutes a route file
+app.use('/parent_schedule', authenticateJWT, parentScheduleRoutes); //this makes parentScheduleRoutes a route file
 
 
 
