@@ -1,9 +1,11 @@
 const sitterScheduleModels = require('../models/sitterSchedule');
+const sitterController = require('../controllers/sitter');
 
 const getSitterSchedules = async (id, date, eventId) => {
   try{
     const filters = await makeFilters(id, eventId);
-    const result = await sitterScheduleModels.getSitterSchedules(filters , date);
+    const query = await sitterScheduleModels.getSitterSchedules(filters , date);
+    const result = await addSitterName(query);
     return result;
   } catch (error) {
     console.log(error);
@@ -19,6 +21,21 @@ const makeFilters = async (id, eventID) => {
       filters.id = eventID;
   }
   return filters;
+}
+
+const addSitterName = async (query) => {
+    result = query;
+    //the first step is iterating through each result of the query
+    for(i = 0; i < result.length; i++){
+        //the second step is getting the sitter id from the result
+        const sitterID = result[i].sitter_id;
+        //the third step is getting the sitter name from the sitter controller
+        const sitters = await sitterController.getSitters(null, null, null, sitterID, null, null);
+        //the fourth step is adding the sitter name to the result
+        result[i].firstName = sitters[0].firstname;
+        result[i].lastName = sitters[0].lastname;
+    }
+  return result;
 }
 
 
