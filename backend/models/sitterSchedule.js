@@ -5,7 +5,12 @@ const sitterSchedule = 'sitter_schedule';
 const getSitterSchedules = async (filters , date) => {
     const result = await knex(sitterSchedule)
         .where(filters)
-        //TODO, implement  .andWhere('start_time'.date, '=', date)
+        .andWhere(function() {
+            if(date != null){
+                this.where('start_time', '>=' , date)
+                    .andWhere('start_time', '<=', date + ' 23:59:59');
+            }
+        })
         .select('*');
     return result;
 }
