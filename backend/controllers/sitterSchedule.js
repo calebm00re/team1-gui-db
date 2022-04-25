@@ -13,7 +13,7 @@ const getSitterSchedules = async (id, date, eventId) => {
 const makeFilters = async (id, eventID) => {
   const filters = {};
   if(id != null){
-      filters.sitterId = id;
+      filters.sitter_id = id;
   }
   if(eventID != null){
       filters.id = eventID;
@@ -56,7 +56,13 @@ const getUpdateFilters = (startTime, endTime) => {
 
 const createSitterSchedule = async (id, startTime, endTime) => {
     try {
-        const result = await sitterScheduleModels.createSitterSchedule(id, startTime, endTime);
+        if(id == null || startTime == null || endTime == null){
+            return {
+                error: 'No data to create'
+            };
+        }
+        result = await sitterScheduleModels.createSitterSchedule(id, startTime, endTime);
+        result.error = '';
         return result;
     }   catch (error) {
         console.log(error);

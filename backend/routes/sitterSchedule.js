@@ -37,14 +37,15 @@ router.get('/self',
         }
 });
 
-//TODO PUT /self/:id updates the sitter's schedule (changes the start and end dates and times)
+
 router.put('/self/:eventID',
     async (req, res, next) => {
         try {
             const doesSitterExist = await sitterController.doesSitterExist(req.user.email);
             if(doesSitterExist){
-                const schedule = await sitterScheduleController.updateSitterSchedule(req.params.eventID, req.body.startTime, req.body.endTime);
-                res.status(200).json(schedule);
+                const update = await sitterScheduleController.updateSitterSchedule(req.params.eventID, req.body.startTime, req.body.endTime);
+                const result = await sitterScheduleController.getSitterSchedules(req.user.id, null, req.params.eventID);
+                res.status(200).json(result);
             } else {
                 res.status(404).json({message: "Sitter not found"});
             }
@@ -56,14 +57,18 @@ router.put('/self/:eventID',
         }
     });
 
-//TODO POST /self creates a new schedule for the sitter
+// POST /self creates a new schedule for the sitter
 router.post('/self',
     async (req, res, next) => {
         try {
             const doesSitterExist = await sitterController.doesSitterExist(req.user.email);
             if(doesSitterExist){
                 const schedule = await sitterScheduleController.createSitterSchedule(req.user.id, req.body.startTime, req.body.endTime);
-                res.status(200).json(schedule);
+                if(schedule.error === 'No data to create'){
+                    res.status(400).json({message: "No data to create"});
+                }
+                const result = await sitterScheduleController.getSitterSchedules(req.user.id, null, schedule);
+                res.status(200).json(result);
             } else {
                 res.status(404).json({message: "Sitter not found"});
             }
@@ -75,14 +80,14 @@ router.post('/self',
         }
     });
 
-//TODO DELETE /self/:eventID deletes an entry in the schedule
+// DELETE /self/:eventID deletes an entry in the schedule
 router.delete('/self/:eventID',
     async (req, res, next) => {
         try {
             const doesSitterExist = await sitterController.doesSitterExist(req.user.email);
             if(doesSitterExist){
                 const schedule = await sitterScheduleController.deleteSitterSchedule(req.params.eventID);
-                res.status(200).json(schedule);
+                res.status(204).json(schedule);
             } else {
                 res.status(404).json({message: "Sitter not found"});
             }
