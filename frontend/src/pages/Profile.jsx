@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import { AlertDelete } from '../components/AlertDelete';
+import ProfileImg from '../Assets/images/emma.jpeg';
 
 export const Profile = () => {
     const theme = useTheme();
@@ -24,6 +25,11 @@ export const Profile = () => {
     const [nameL, setNameL] = React.useState(sessionStorage.getItem('lastName'));
     const [email, setEmail] = React.useState(sessionStorage.getItem('email'));
     const [bio, setBio] = React.useState(sessionStorage.getItem('bio'));
+    const [minage, setMinage] = React.useState(sessionStorage.getItem('minage'));
+    const [maxage, setMaxage] = React.useState(sessionStorage.getItem('maxage'));
+    const [startTime, setStartTime] = React.useState(sessionStorage.getItem('startTime'));
+    const [endTime, setEndTime] = React.useState(sessionStorage.getItem('endTime'));
+    const [imgurl, setImgurl] = React.useState(sessionStorage.getItem('imgurl'));
     const [open, setOpen] = React.useState(false);
     const [sitters, setSitters] = React.useState([]);
 
@@ -70,9 +76,7 @@ export const Profile = () => {
                             justifyContent: 'space-around',
                         }}
                     >
-                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                            <PersonIcon />
-                        </Avatar>
+                        <Avatar alt={nameF} src={ProfileImg} />
                         <Typography component="h1" variant="h5">
                             Update Account
                         </Typography>
@@ -84,14 +88,16 @@ export const Profile = () => {
                                         name="firstName"
                                         fullWidth
                                         id="firstName"
-                                        label={sessionStorage.getItem('firstName')}
+                                        label={'First Name'}
+                                        defaultValue={nameF}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
                                         fullWidth
                                         id="lastName"
-                                        label={sessionStorage.getItem('lastName')}
+                                        label={'Last Name'}
+                                        defaultValue={nameL}
                                         name="lastName"
                                         autoComplete="family-name"
                                     />
@@ -100,7 +106,8 @@ export const Profile = () => {
                                     <TextField
                                         fullWidth
                                         id="email"
-                                        label={sessionStorage.getItem('email')}
+                                        label={'Email'}
+                                        defaultValue={email}
                                         name="email"
                                         autoComplete="email"
                                     />
@@ -109,11 +116,54 @@ export const Profile = () => {
                                     <TextField
                                         fullWidth
                                         id="bio"
-                                        label={bio == null ? 'Add your first bio here!' : bio}
+                                        label={'Bio'}
+                                        // defaultValue={bio}
+                                        placeholder={'Tell us about yourself!'}
+                                        defaultValue={bio == 'null' ? '' : bio}
                                         name="bio"
                                         autoComplete="bio"
                                         multiline
                                         rows={2}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        autoComplete="minage"
+                                        name="minage"
+                                        fullWidth
+                                        id="minage"
+                                        label={'Min Child Age'}
+                                        placeholder={'Add your youngest Child\'s age here!'}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        fullWidth
+                                        id="maxage"
+                                        label={'Max Child Age'}
+                                        name="maxage"
+                                        autoComplete="maxage"
+                                        placeholder={'Add your oldest Child\'s age here!'}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        autoComplete="starttime"
+                                        name="starttime"
+                                        fullWidth
+                                        id="starttime"
+                                        label={'Start Work Time'}
+                                        placeholder={'Add your work\'s starting time!'}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        fullWidth
+                                        id="endtime"
+                                        label={'End Work Time'}
+                                        name="endtime"
+                                        autoComplete="endtime"
+                                        placeholder={'Add your work\'s ending time!'}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
