@@ -1,14 +1,14 @@
 const { application } = require('express');
 const express = require('express');
-const sitterScheduleController = require('../controllers/sitterSchedule');
-const sitterController = require('../controllers/sitter');
+const parentScheduleController = require('../controllers/parentSchedule');
+const usersController = require('../controllers/users');
 
 const router = express.Router();
 
 //GET / returns all of the sitter's schedules (can filter by date and sitter ID or event ID)
 router.get('/',  async  (req, res, next) => {
     try {
-        const schedules = await sitterScheduleController.getSitterSchedules(req.query.id, req.query.date, req.query.eventId);
+        const schedules = await parentScheduleController.getParentSchedules(req.query.id, req.query.date, req.query.eventId);
         res.status(200).json(schedules);
     } catch (err) {
         console.error(err);
@@ -22,9 +22,9 @@ router.get('/',  async  (req, res, next) => {
 router.get('/self',
     async (req, res, next) => {
         try {
-            const doesSitterExist = await sitterController.doesSitterExist(req.user.email);
+            const doesSitterExist = await usersController.doesSitterExist(req.user.email); //TODO check this against users
             if(doesSitterExist){
-                const schedules = await sitterScheduleController.getSitterSchedules(req.user.id, req.query.date , null);
+                const schedules = await parentScheduleController.getParentSchedules(req.user.id, req.query.date , null);
                 res.status(200).json(schedules);
             } else {
                 res.status(404).json({message: "Sitter not found"});
@@ -37,14 +37,14 @@ router.get('/self',
         }
     });
 
-
+//TODO: ADD THE event_description field and allow it to be changed by the parent
 router.put('/self/:eventID',
     async (req, res, next) => {
         try {
-            const canEdit = await sitterScheduleController.isSelf(req.user.id, req.params.eventID);
+            const canEdit = await parentScheduleController.isSelf(req.user.id, req.params.eventID);
             if(canEdit){
-                const update = await sitterScheduleController.updateSitterSchedule(req.params.eventID, req.body.startTime, req.body.endTime);
-                const result = await sitterScheduleController.getSitterSchedules(req.user.id, null, req.params.eventID);
+                const update = await parentScheduleController.updateParentSchedule(req.params.eventID, req.body.startTime, req.body.endTime);
+                const result = await parentScheduleController.getParentSchedules(req.user.id, null, req.params.eventID);
                 res.status(200).json(result);
             } else {
                 res.status(404).json({message: "Cannot edit schedule"});
@@ -58,16 +58,17 @@ router.put('/self/:eventID',
     });
 
 // POST /self creates a new schedule for the sitter
+//TODO: expand this to allow for the addition of the event_description field
 router.post('/self',
     async (req, res, next) => {
         try {
-            const doesSitterExist = await sitterController.doesSitterExist(req.user.email);
+            const doesSitterExist = await usersController.doesSitterExist(req.user.email); //TODO check this against users
             if(doesSitterExist){
-                const schedule = await sitterScheduleController.createSitterSchedule(req.user.id, req.body.startTime, req.body.endTime);
+                const schedule = await parentScheduleController.createParentSchedule(req.user.id, req.body.startTime, req.body.endTime); //TODO: add event_description
                 if(schedule.error === 'No data to create'){
                     res.status(400).json({message: "No data to create"});
                 }
-                const result = await sitterScheduleController.getSitterSchedules(req.user.id, null, schedule);
+                const result = await parentScheduleController.getParentSchedules(req.user.id, null, schedule);
                 res.status(200).json(result);
             } else {
                 res.status(404).json({message: "Sitter not found"});
@@ -84,9 +85,9 @@ router.post('/self',
 router.delete('/self/:eventID',
     async (req, res, next) => {
         try {
-            const canDelete = await sitterScheduleController.isSelf(req.user.id, req.params.eventID);
+            const canDelete = await parentScheduleController.isSelf(req.user.id, req.params.eventID);
             if(canDelete){
-                const schedule = await sitterScheduleController.deleteSitterSchedule(req.params.eventID);
+                const schedule = await parentScheduleController.deleteParentSchedule(req.params.eventID);
                 res.status(204).json(schedule);
             } else {
                 res.status(404).json({message: "Do not have permission to delete"});

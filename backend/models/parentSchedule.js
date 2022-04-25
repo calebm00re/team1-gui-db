@@ -1,9 +1,11 @@
 const knex = require('../database/knex.js');
 
-const sitterSchedule = 'sitter_schedule';
+const parentSchedule = 'parent_schedule';
 
-const getSitterSchedules = async (filters , date) => {
-    const result = await knex(sitterSchedule)
+//NOTE: I may be wrong but, you shouldn't have to change anything in this file.
+
+const getParentSchedules = async (filters , date) => {
+    const result = await knex(parentSchedule)
         .where(filters)
         .andWhere(function() {
             if(date != null){
@@ -16,15 +18,17 @@ const getSitterSchedules = async (filters , date) => {
 }
 
 
-const updateSitterSchedule = async (eventID,filters) => {
-    const result = await knex(sitterSchedule)
+const updateParentSchedule = async (eventID,filters) => {
+    const result = await knex(parentSchedule)
         .where('id', eventID)
         .update(filters);
     return result;
 }
 
-const createSitterSchedule = async (sitterID, startTime, endTime) => {
-    const result = await knex(sitterSchedule)
+//NOTE: As I mentioned previously, as the event_description is an optional field it should not be included here.
+//Instead, a call to updateParentSchedule should be made with the event_description as a parameter (even when made at the POST).
+const createParentSchedule = async (sitterID, startTime, endTime) => {
+    const result = await knex(parentSchedule)
         .insert({
             sitter_id: sitterID,
             start_time: startTime,
@@ -33,16 +37,16 @@ const createSitterSchedule = async (sitterID, startTime, endTime) => {
     return result;
 }
 
-const deleteSitterSchedule = async (eventID) => {
-    const result = await knex(sitterSchedule)
+const deleteParentSchedule = async (eventID) => {
+    const result = await knex(parentSchedule)
         .where('id', eventID)
         .del();
     return result;
 };
 
 module.exports = {
-    getSitterSchedules,
-    updateSitterSchedule,
-    createSitterSchedule,
-    deleteSitterSchedule
+    getParentSchedules,
+    updateParentSchedule,
+    createParentSchedule,
+    deleteParentSchedule
 };
