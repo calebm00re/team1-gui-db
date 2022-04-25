@@ -5,7 +5,7 @@ const sitterController = require('../controllers/sitter');
 
 const router = express.Router();
 
-//TODO GET / returns all of the sitter's schedules (can filter by date and sitter ID or event ID)
+//GET / returns all of the sitter's schedules (can filter by date and sitter ID or event ID)
 router.get('/',  async  (req, res, next) => {
     try {
         const schedules = await sitterScheduleController.getSitterSchedules(req.query.id, req.query.date, req.query.eventId);
@@ -18,7 +18,7 @@ router.get('/',  async  (req, res, next) => {
     }
 });
 
-//TODO GET /Self returns all of the sitter's schedules (can filter by date)
+//GET /Self returns all of the sitter's schedules (can filter by date)
 router.get('/self',
     async (req, res, next) => {
         try {
@@ -41,13 +41,13 @@ router.get('/self',
 router.put('/self/:eventID',
     async (req, res, next) => {
         try {
-            const doesSitterExist = await sitterController.doesSitterExist(req.user.email);
-            if(doesSitterExist){
+            const canEdit = await sitterScheduleController.isSelf(req.user.id, req.params.eventID);
+            if(canEdit){
                 const update = await sitterScheduleController.updateSitterSchedule(req.params.eventID, req.body.startTime, req.body.endTime);
                 const result = await sitterScheduleController.getSitterSchedules(req.user.id, null, req.params.eventID);
                 res.status(200).json(result);
             } else {
-                res.status(404).json({message: "Sitter not found"});
+                res.status(404).json({message: "Cannot edit schedule"});
             }
         } catch (err) {
             console.error(err);
@@ -84,12 +84,12 @@ router.post('/self',
 router.delete('/self/:eventID',
     async (req, res, next) => {
         try {
-            const doesSitterExist = await sitterController.doesSitterExist(req.user.email);
-            if(doesSitterExist){
+            const canDelete = await sitterScheduleController.isSelf(req.user.id, req.params.eventID);
+            if(canDelete){
                 const schedule = await sitterScheduleController.deleteSitterSchedule(req.params.eventID);
                 res.status(204).json(schedule);
             } else {
-                res.status(404).json({message: "Sitter not found"});
+                res.status(404).json({message: "Do not have permission to delete"});
             }
         } catch (err) {
             console.error(err);

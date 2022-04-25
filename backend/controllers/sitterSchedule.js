@@ -43,7 +43,7 @@ const updateSitterSchedule = async (eventID, startTime, endTime) => {
     }
 };
 
-const getUpdateFilters = (startTime, endTime) => {
+const getUpdateFilters = async (startTime, endTime) => {
     const filters = {};
     if(startTime != null){
         filters.start_time = startTime;
@@ -85,9 +85,18 @@ const deleteSitterSchedule = async (eventID) => {
     }
 };
 
+const isSelf = async (sitterID, eventID) => {
+    const event = getSitterSchedules(sitterID, null, eventID);
+    if(event.length === 0){
+        return false;
+    }
+    return true;
+}
+
 module.exports = {
     getSitterSchedules,
     updateSitterSchedule,
     createSitterSchedule,
-    deleteSitterSchedule
+    deleteSitterSchedule,
+    isSelf
 };
