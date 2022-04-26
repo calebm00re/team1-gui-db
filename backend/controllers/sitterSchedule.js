@@ -103,7 +103,7 @@ const deleteSitterSchedule = async (eventID) => {
 };
 
 const isSelf = async (sitterID, eventID) => {
-    const event = getSitterSchedules(sitterID, null, eventID);
+    const event = await getSitterSchedules(sitterID, null, eventID);
     if(event.length === 0){
         return false;
     }

@@ -73,22 +73,18 @@ const getUpdateFilters = async (event_description,startTime, endTime) => {
     return filters;
 };
 
-//TODO: add the event_description to list of fields
+
 const createParentSchedule = async (id, event_description, startTime, endTime) => {
     try {
         //NOTE: as the event_description is optional, we need to check if it is null
         if(id == null || startTime == null || endTime == null){
-            return "Missing data";
+            return {"error":"Missing data"}; //this is aded for consistency with other routes
         }
-
-        if (event_description === null) {
-            result = await parentScheduleModels.createParentSchedule(id, startTime, endTime);
-        } else {
+        result = await parentScheduleModels.createParentSchedule(id, startTime, endTime);
+        if (event_description != null) { //having a === null will not return true if the value is undefined
             const filters = await getUpdateFilters(event_description,null,null);
             result = await parentScheduleModels.updateParentSchedule(id, filters);
         }
-
-        //TODO: add the event_description to list of fields (as it is optional, we don't pass it in model call)
         //Rather, if it exists, we make a call to the updateParentSchedule method (changing the value from null to the actual value)
         result.error = '';
         return result;
@@ -100,14 +96,16 @@ const createParentSchedule = async (id, event_description, startTime, endTime) =
 const deleteParentSchedule = async (eventID) => {
     try {
         //first we need to check if the event exists
-        const filter = await makeFilters(null, eventID);
-        const event = await parentScheduleModels.getParentSchedules(filter, null);
+        const event = await parentScheduleModels.getParentSchedules({id:eventID}, null);
 
         if(event.length === 0){
-            return "Event not found";
+            return {
+                "error":"Event not found"
+            };
         }
         
-        const result = await parentScheduleModels.deleteParentSchedule(eventID);
+        result = await parentScheduleModels.deleteParentSchedule(eventID);
+        result.error = '';
         return result;
     }   catch (error) {
         console.log(error);
@@ -115,7 +113,7 @@ const deleteParentSchedule = async (eventID) => {
 };
 
 const isSelf = async (parentID, eventID) => {
-    const event = getParentSchedules(parentID, null, eventID);
+    const event = await getParentSchedules(parentID, null, eventID);
     if(event.length === 0){
         return false;
     }

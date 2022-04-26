@@ -26,12 +26,7 @@ router.get('/self',
             const doesUserExist = await usersController.doesUserExist(req.user.email);
             if(doesUserExist) {
                 const schedules = await parentScheduleController.getParentSchedules(req.user.id, req.query.date, null);
-
-                if (schedules.length === 0) {
-                    res.status(404).json({message: "Sitter not found"})
-                } else {
-                    res.status(200).json(schedules);
-                }
+                res.status(200).json(schedules); //users can have no schedules
             } else {
                 res.status(404).json({message: "User not found"});
             }
@@ -46,19 +41,20 @@ router.get('/self',
 router.put('/self/:eventID',
     async (req, res, next) => {
         try {
-            const eventVal = req.params.eventID.split('=')[1];
-            const canEdit = await parentScheduleController.isSelf(req.user.id,eventVal);
+            const eventID= req.params.eventID; //recall, /self/14 is a valid call but, /self/=14 is not a valid call
+            const canEdit = await parentScheduleController.isSelf(req.user.id,eventID);
             if (canEdit) {
-                const update = await parentScheduleController.updateParentSchedule(eventVal, req.body.event_description, req.body.startTime, req.body.endTime);
+                //changes the inputs to be consistent with rest of the program
+                const update = await parentScheduleController.updateParentSchedule(eventID, req.body.eventDescription, req.body.startTime, req.body.endTime);
                 
                 if (update === "Event not found" || update === "No data to update") {
                     res.status(404).json({message: update});
                 } else {
-                    const result = await parentScheduleController.getParentSchedules(req.user.id, null, eventVal);
+                    const result = await parentScheduleController.getParentSchedules(req.user.id, null, eventID);
                     res.status(200).json(result);
                 }
             } else {
-                res.status(404).json({message: canEdit});
+                res.status(404).json({message: "User does not own this event"});
             }
         } catch (err) {
             console.error(err);
@@ -69,14 +65,13 @@ router.put('/self/:eventID',
     });
 
 // POST /self creates a new schedule for the sitter
-//TODO: expand this to allow for the addition of the event_description field
 router.post('/self', async (req, res, next) => {
     try {
-        const doesUserExist = await usersController.doesUserExist(req.user.email); //TODO check this against users
+        const doesUserExist = await usersController.doesUserExist(req.user.email);
         if(doesUserExist){
-            const schedule = await parentScheduleController.createParentSchedule(req.user.id,req.body.event_description,req.body.startTime, req.body.endTime);
-            if(schedule.error === 'No data to create'){
-                res.status(400).json({message: "No data to create"});
+            const schedule = await parentScheduleController.createParentSchedule(req.user.id,req.body.eventDescription,req.body.startTime, req.body.endTime);
+            if(schedule.error === "Missing data"){
+                res.status(400).json({message: "Missing data"});
             }
             const result = await parentScheduleController.getParentSchedules(req.user.id, null, schedule);
             res.status(200).json(result);
@@ -95,16 +90,16 @@ router.post('/self', async (req, res, next) => {
 router.delete('/self/:eventID',
     async (req, res, next) => {
         try {
-            const eventVal = req.params.eventID.split("=")[1];
-            const canDelete = await parentScheduleController.isSelf(req.user.id, eventVal);
+            const canDelete = await parentScheduleController.isSelf(req.user.id, req.params.eventID);
             if(canDelete){
-                const schedule = await parentScheduleController.deleteParentSchedule(eventVal);
+                const schedule = await parentScheduleController.deleteParentSchedule(req.params.eventID);
 
-                if (schedule === "Event not found") {
-                    res.status(404).json({message: schedule});
+                if (schedule.error === "Event not found") {
+                    res.status(404).json({message: schedule.error.toString()});
                 }
+                console.log("I made it here");
 
-                res.status(204).json({message: "Schedule deleted!"});
+                res.status(204); //a 204 is a successful deletion (and returns no content)
             } else {
                 res.status(404).json({message: "Do not have permission to delete"});
             }
