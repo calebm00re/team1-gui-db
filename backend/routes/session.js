@@ -135,7 +135,6 @@ router.post('/sitter/login', async (req, res, next) => {
         console.error('Failed to create new user:', err);
         res.status(500).json({ message: err.toString() });
     }
-
     next();
 })
 
