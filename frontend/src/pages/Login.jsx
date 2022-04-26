@@ -24,6 +24,7 @@ import Page from '../components/Page';
 export const Login = () => {
 
   const [value, setValue] = React.useState('Parent');
+  // const [loaded, setLoaded] = React.useState(false);
 
   const userChange = (event) => {
     setValue(event.target.value);
@@ -47,6 +48,7 @@ export const Login = () => {
   //     });
   // }
 
+
   const userRepository = new UserRepository();
   const navigate = useNavigate();
 
@@ -64,6 +66,10 @@ export const Login = () => {
           sessionStorage.setItem('email', response.data.email);
           sessionStorage.setItem('bio', response.data.bio);
           sessionStorage.setItem('imgurl', response.data.imgurl);
+          sessionStorage.setItem('minage', response.data.minKidAge);
+          sessionStorage.setItem('maxage', response.data.maxKidAge);
+          sessionStorage.setItem('startTime', response.data.startWorkTime);
+          sessionStorage.setItem('endTime', response.data.endWorkTime);
         }).catch(error => {
           console.log('this is the error for get_info: ')
           console.log(error)
