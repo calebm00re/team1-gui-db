@@ -44,27 +44,6 @@ export const Profile = () => {
     const workTimes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
     const numkids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-    // console.log(ages);
-    const handleChangeMinAge = (event) => {
-        setMinage(event.target.value);
-    };
-
-    const handleChangeMaxAge = (event) => {
-        setMaxage(event.target.value);
-    };
-
-    const handleChangeStartTime = (event) => {
-        setStartTime(event.target.value);
-    };
-
-    const handleChangeEndTime = (event) => {
-        setEndTime(event.target.value);
-    };
-
-    const handleChangeNumKids = (event) => {
-        setNumKids(event.target.value);
-    };
-
     const userRepository = new UserRepository();
 
     const handleSubmit = async (event) => {
@@ -178,7 +157,7 @@ export const Profile = () => {
                                             id="minage"
                                             value={minage}
                                             label="Youngest Child Age"
-                                            onChange={handleChangeMinAge}
+                                            onChange={(event) => { setMinage(event.target.value) }}
                                         >
                                             {ages.map((n, index) => (
                                                 <MenuItem key={index} value={n}>{n}</MenuItem>
@@ -194,7 +173,7 @@ export const Profile = () => {
                                             id="maxage"
                                             value={maxage}
                                             label="Oldest Child Age"
-                                            onChange={handleChangeMaxAge}
+                                            onChange={(event) => { setMaxage(event.target.value) }}
                                         >
                                             {ages.map((n, index) => (
                                                 <MenuItem key={index} value={n}>{n}</MenuItem>
@@ -210,7 +189,7 @@ export const Profile = () => {
                                             id="numkids"
                                             value={numKids}
                                             label="Number of Kids"
-                                            onChange={handleChangeNumKids}
+                                            onChange={(event) => { setNumKids(event.target.value) }}
                                         >
                                             {numkids.map((n, index) => (
                                                 <MenuItem key={index} value={n}>{n}</MenuItem>
@@ -226,7 +205,7 @@ export const Profile = () => {
                                             id="starttime"
                                             value={startTime}
                                             label="Start Work Time"
-                                            onChange={handleChangeStartTime}
+                                            onChange={(event) => { setStartTime(event.target.value) }}
                                         >
                                             {workTimes.map((n, index) => (
                                                 <MenuItem key={index} value={n}>{n}</MenuItem>
@@ -242,7 +221,7 @@ export const Profile = () => {
                                             id="endtime"
                                             value={endTime}
                                             label="End Work Time"
-                                            onChange={handleChangeEndTime}
+                                            onChange={(event) => { setEndTime(event.target.value) }}
                                         >
                                             {workTimes.map((n, index) => (
                                                 <MenuItem key={index} value={n}>{n}</MenuItem>
