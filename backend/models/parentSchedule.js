@@ -27,10 +27,10 @@ const updateParentSchedule = async (eventID,filters) => {
 
 //NOTE: As I mentioned previously, as the event_description is an optional field it should not be included here.
 //Instead, a call to updateParentSchedule should be made with the event_description as a parameter (even when made at the POST).
-const createParentSchedule = async (sitterID, startTime, endTime) => {
+const createParentSchedule = async (parentID, startTime, endTime) => {
     const result = await knex(parentSchedule)
         .insert({
-            sitter_id: sitterID,
+            parent_id: parentID,
             start_time: startTime,
             end_time: endTime
         });

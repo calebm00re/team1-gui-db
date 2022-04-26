@@ -74,7 +74,7 @@ router.post('/self', async (req, res, next) => {
     try {
         const doesUserExist = await usersController.doesUserExist(req.user.email); //TODO check this against users
         if(doesUserExist){
-            const schedule = await parentScheduleController.createParentSchedule(req.user.id, req.body.startTime, req.body.endTime); //TODO: add event_description
+            const schedule = await parentScheduleController.createParentSchedule(req.user.id,req.body.event_description,req.body.startTime, req.body.endTime);
             if(schedule.error === 'No data to create'){
                 res.status(400).json({message: "No data to create"});
             }
@@ -95,10 +95,16 @@ router.post('/self', async (req, res, next) => {
 router.delete('/self/:eventID',
     async (req, res, next) => {
         try {
-            const canDelete = await parentScheduleController.isSelf(req.user.id, req.params.eventID);
+            const eventVal = req.params.eventID.split("=")[1];
+            const canDelete = await parentScheduleController.isSelf(req.user.id, eventVal);
             if(canDelete){
-                const schedule = await parentScheduleController.deleteParentSchedule(req.params.eventID);
-                res.status(204).json(schedule);
+                const schedule = await parentScheduleController.deleteParentSchedule(eventVal);
+
+                if (schedule === "Event not found") {
+                    res.status(404).json({message: schedule});
+                }
+
+                res.status(204).json({message: "Schedule deleted!"});
             } else {
                 res.status(404).json({message: "Do not have permission to delete"});
             }

@@ -74,15 +74,20 @@ const getUpdateFilters = async (event_description,startTime, endTime) => {
 };
 
 //TODO: add the event_description to list of fields
-const createParentSchedule = async (id, startTime, endTime) => {
+const createParentSchedule = async (id, event_description, startTime, endTime) => {
     try {
         //NOTE: as the event_description is optional, we need to check if it is null
         if(id == null || startTime == null || endTime == null){
-            return {
-                error: 'No data to create'
-            };
+            return "Missing data";
         }
-        result = await parentScheduleModels.createParentSchedule(id, startTime, endTime);
+
+        if (event_description === null) {
+            result = await parentScheduleModels.createParentSchedule(id, startTime, endTime);
+        } else {
+            const filters = await getUpdateFilters(event_description,startTime,endTime);
+            result = await parentScheduleModels.updateParentSchedule(id, filters);
+        }
+
         //TODO: add the event_description to list of fields (as it is optional, we don't pass it in model call)
         //Rather, if it exists, we make a call to the updateParentSchedule method (changing the value from null to the actual value)
         result.error = '';
@@ -95,12 +100,13 @@ const createParentSchedule = async (id, startTime, endTime) => {
 const deleteParentSchedule = async (eventID) => {
     try {
         //first we need to check if the event exists
-        const event = await parentScheduleModels.getParentSchedules({id: eventID}, null);
+        const filter = await makeFilters(null, eventID);
+        const event = await parentScheduleModels.getParentSchedules(filter, null);
+
         if(event.length === 0){
-            return {
-                error: 'Event not found'
-            };
+            return "Event not found";
         }
+        
         const result = await parentScheduleModels.deleteParentSchedule(eventID);
         return result;
     }   catch (error) {
