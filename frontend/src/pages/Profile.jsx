@@ -33,8 +33,8 @@ export const Profile = () => {
     const [location, setLocation] = React.useState(sessionStorage.getItem('location'));
     const [minage, setMinage] = React.useState(sessionStorage.getItem('minage') !== 'null' ? sessionStorage.getItem('minage') : '');
     const [maxage, setMaxage] = React.useState(sessionStorage.getItem('maxage') !== 'null' ? sessionStorage.getItem('maxage') : '');
-    const [startTime, setStartTime] = React.useState(sessionStorage.getItem('startTime') !== 'null' ? sessionStorage.getItem('startTime') : '');
-    const [endTime, setEndTime] = React.useState(sessionStorage.getItem('endTime') !== 'null' ? sessionStorage.getItem('endTime') : '');
+    const [startTime, setStartTime] = React.useState(sessionStorage.getItem('startTime') !== 'null' ? sessionStorage.getItem('startTime').slice(-2) : '');
+    const [endTime, setEndTime] = React.useState(sessionStorage.getItem('endTime') !== 'null' ? sessionStorage.getItem('endTime').slice(-2) : '');
     const [numKids, setNumKids] = React.useState(sessionStorage.getItem('numKids') !== 'null' ? sessionStorage.getItem('numKids') : '');
     const [imgurl, setImgurl] = React.useState(sessionStorage.getItem('imgurl'));
     const [open, setOpen] = React.useState(false);
@@ -49,7 +49,7 @@ export const Profile = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        userRepository.putInfo(data.get('firstName'), data.get('lastName'), data.get('email'), data.get('imgurl'), data.get('password'), data.get('bio'),
+        userRepository.putInfo(data.get('firstName'), data.get('lastName'), data.get('imgurl'), data.get('password'), data.get('bio'),
                                minage, maxage, startTime, endTime, numKids, data.get('location') ).then(res => {
             console.log('this is the response for update_info: ')
             console.log(res);
@@ -58,6 +58,20 @@ export const Profile = () => {
             console.log('this is the error for update_info: ')
             console.log(error)
             alert('There was an error updating your account, please try again.');
+        }).finally(() => {
+            setNameF(data.get('firstName'));
+            setNameL(data.get('lastName'));
+            setBio(data.get('bio'));
+            setLocation(data.get('location'));
+            sessionStorage.setItem('firstName', data.get('firstName'));
+            sessionStorage.setItem('lastName', data.get('lastName'));
+            sessionStorage.setItem('bio', data.get('bio'));
+            sessionStorage.setItem('location', data.get('location'));
+            sessionStorage.setItem('numKids', numKids);
+            sessionStorage.setItem('startTime', startTime);
+            sessionStorage.setItem('endTime', endTime);
+            sessionStorage.setItem('minage', minage);
+            sessionStorage.setItem('maxage', maxage);
         });
     };
 
@@ -122,6 +136,7 @@ export const Profile = () => {
                                         defaultValue={email}
                                         name="email"
                                         autoComplete="email"
+                                        disabled
                                     />
                                 </Grid>
                                 <Grid item xs={12}>

@@ -55,6 +55,7 @@ export default function DashboardLayout() {
       sessionStorage.setItem('startTime', response.data.startWorkTime);
       sessionStorage.setItem('endTime', response.data.endWorkTime);
       sessionStorage.setItem('numKids', response.data.numKids);
+      sessionStorage.setItem('location', response.data.location);
     }).catch(error => {
       console.log('this is the error for get_info: ')
       console.log(error)
