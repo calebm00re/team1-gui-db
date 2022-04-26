@@ -19,6 +19,7 @@ const postMessage = async (parent_id, sitter_id,message, is_urgent, parent_sent,
     try{
         const result = await messageModels.postMessage(parent_id, sitter_id,message, is_urgent, parent_sent, timestamp);
         //mainly, the above means turning the call into having the one parameter updateFilters
+        //TODO: also, you need to take note that while some of the items are required above, others are not.
         return result;
     }
     catch(error){

@@ -9,6 +9,9 @@ const router = express.Router();
 router.get('/self', async(req, res, next) => {
     try{
         //TODO: There is a smarter wat to do this using the roles in the token of the user
+        //TODO: change the form of this from taking in all the messages from two users to return all messages from the *this user
+        //and filtering by three optional query parameters: otherID, urgency, and date
+
         //console.log("Request's User:" , req.user.numKids);
         //console.log("Other ID:" , req.body.otherID);
         let parent_id = req.user.id;
