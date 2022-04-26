@@ -63,6 +63,7 @@ export const Profile = () => {
             setNameL(data.get('lastName'));
             setBio(data.get('bio'));
             setLocation(data.get('location'));
+            setImgurl(data.get('imgurl'));
             sessionStorage.setItem('firstName', data.get('firstName'));
             sessionStorage.setItem('lastName', data.get('lastName'));
             sessionStorage.setItem('bio', data.get('bio'));
@@ -72,6 +73,7 @@ export const Profile = () => {
             sessionStorage.setItem('endTime', endTime);
             sessionStorage.setItem('minage', minage);
             sessionStorage.setItem('maxage', maxage);
+            sessionStorage.setItem('imgurl', data.get('imgurl'));
         });
     };
 
@@ -257,6 +259,7 @@ export const Profile = () => {
                                 <Grid item xs={12}>
                                     <TextField
                                         fullWidth
+                                        value={imgurl}
                                         name="imgurl"
                                         label="Profile Image Link"
                                         type="imgurl"
