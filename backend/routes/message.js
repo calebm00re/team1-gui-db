@@ -5,8 +5,10 @@ const userController = require("../controllers/users");
 
 const router = express.Router();
 
-router.get('/', async(req, res, next) => {
+//The /self is to indicate only messages which pertain to the user are retained (standard for schema in rest of tables)
+router.get('/self', async(req, res, next) => {
     try{
+        //TODO: There is a smarter wat to do this using the roles in the token of the user
         //console.log("Request's User:" , req.user.numKids);
         //console.log("Other ID:" , req.body.otherID);
         let parent_id = req.user.id;
@@ -31,7 +33,7 @@ router.get('/', async(req, res, next) => {
 
 router.post('/', async(req, res, next) => {
     try{
-        console.log("THA BODY",req.body)
+        //TODO: again, smarter way to do this using the roles in the token of the user
         let parent_id = req.user.id;
         let sitter_id = req.body.otherID;
 
@@ -42,6 +44,7 @@ router.post('/', async(req, res, next) => {
 
         const result = await messageController.postMessage(parent_id, sitter_id, req.body.message,
             req.body.is_urgent, req.body.parent_sent, req.body.timestamp);
+        //TODO: add checks to see if the reciever exists and if all mandatory fields are filled in
 
         res.status(200).json(result);
     }

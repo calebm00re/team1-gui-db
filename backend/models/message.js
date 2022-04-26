@@ -1,6 +1,8 @@
 const knex = require('../database/knex.js');
 const MESSAGE_TABLE = 'message';
 
+//TODO: change this header to be:
+//const getMessage = async (filter)
 const getMessagesFromUser = async(parentID,sitterID) =>{
     return knex(MESSAGE_TABLE)
         .where('parent_id' , parentID)
@@ -8,6 +10,8 @@ const getMessagesFromUser = async(parentID,sitterID) =>{
         .orderBy('timestamp');
 }
 
+//TODO change this header to be:
+//const getMessage = async (updateFilter)
 const postMessage = async(parent_id, sitter_id,message, is_urgent, parent_sent, timestamp)=>{
     const result = await knex(MESSAGE_TABLE)
         .insert({
