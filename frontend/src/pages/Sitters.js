@@ -34,7 +34,7 @@ import ProfileImg from '../Assets/images/imgurl.jpg';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
+  { id: 'firstname', label: 'Name', alignRight: false },
   // { id: 'nameL', label: 'Last Name', alignRight: false },
   { id: 'location', label: 'Location', alignRight: false },
   { id: 'age', label: 'Age', alignRight: false },
@@ -78,7 +78,7 @@ export default function Sitters() {
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('firstname');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sitters, setSitters] = useState([]);
@@ -117,8 +117,6 @@ export default function Sitters() {
     setTimeout(function () {
       if (sitters) {
         setLoaded(true)
-        // console.log('here are your sitters');
-        // console.log(sitters);
       } else {
         console.log("taking too long to load info")
       }
@@ -128,30 +126,6 @@ export default function Sitters() {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = sitters.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-    }
-    setSelected(newSelected);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -198,7 +172,7 @@ export default function Sitters() {
                   rowCount={sitters.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
+                  // onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
@@ -219,9 +193,9 @@ export default function Sitters() {
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={firstname} src={imgurl ? imgurl : ProfileImg} />
+                            <Avatar alt={firstname} src={imgurl == 'null' ? ProfileImg : imgurl} />
                             <Typography variant="subtitle2" noWrap>
-                              {firstname}
+                              {firstname + ' ' + lastname}
                             </Typography>
                           </Stack>
                         </TableCell>
