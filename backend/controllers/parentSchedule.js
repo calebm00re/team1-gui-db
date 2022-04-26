@@ -84,7 +84,7 @@ const createParentSchedule = async (id, event_description, startTime, endTime) =
         if (event_description === null) {
             result = await parentScheduleModels.createParentSchedule(id, startTime, endTime);
         } else {
-            const filters = await getUpdateFilters(event_description,startTime,endTime);
+            const filters = await getUpdateFilters(event_description,null,null);
             result = await parentScheduleModels.updateParentSchedule(id, filters);
         }
 
