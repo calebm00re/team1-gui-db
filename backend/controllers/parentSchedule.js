@@ -1,10 +1,11 @@
 const parentScheduleModels = require('../models/parentSchedule');
 const usersController = require('../controllers/users');
+const sitterController = require('../controllers/sitter');
 
 const getParentSchedules = async (id, date, eventId) => {
     try{
         const filters = await makeFilters(id, eventId);
-        const query = await parentScheduleModels.getParentSchedules(filters , date);
+        const query = await parentScheduleModels.getParentSchedules(filters, date);
         const result = await addParentName(query);
         return result;
     } catch (error) {
@@ -31,7 +32,7 @@ const addParentName = async (query) => {
         //the second step is getting the sitter id from the result
         const sitterID = result[i].sitter_id;
         //the third step is getting the sitter name from the sitter controller
-        const sitters = await sitterController.getSitters(null, null, null, sitterID, null, null);
+        const sitters = await sitterController.getSitters(null, null, null, sitterID, null, null, null);
         //the fourth step is adding the sitter name to the result
         result[i].firstName = sitters[0].firstname;
         result[i].lastName = sitters[0].lastname;
@@ -40,7 +41,7 @@ const addParentName = async (query) => {
 }
 
 //TODO: add the event_description to list of fields
-const updateParentSchedule = async (eventID, startTime, endTime) => {
+const updateParentSchedule = async (eventID, event_description, startTime, endTime) => {
     try{
         const event = await parentScheduleModels.getParentSchedules({id: eventID}, null);
         if(event.length === 0){
@@ -48,12 +49,12 @@ const updateParentSchedule = async (eventID, startTime, endTime) => {
                 error: 'Event not found'
             };
         }
-        if(eventID == null && startTime == null && endTime == null){
+        if(eventID == null && event_description == null && startTime == null && endTime == null){
             return {
                 error: 'No data to update'
             };
         }
-        const filters = await getUpdateFilters(startTime, endTime);
+        const filters = await getUpdateFilters(event_descriptions,startTime,endTime);
         const result = await parentScheduleModels.updateParentSchedule(eventID,filters);
         return result;
     } catch (error) {
@@ -61,8 +62,11 @@ const updateParentSchedule = async (eventID, startTime, endTime) => {
     }
 };
 
-const getUpdateFilters = async (startTime, endTime) => {
+const getUpdateFilters = async (event_description,startTime, endTime) => {
     const filters = {};
+    if(event_description != null){
+        filters.event_description = event_description;
+    }
     if(startTime != null){
         filters.start_time = startTime;
     }

@@ -43,7 +43,7 @@ router.put('/self/:eventID',
         try {
             const canEdit = await parentScheduleController.isSelf(req.user.id, req.params.eventID);
             if(canEdit){
-                const update = await parentScheduleController.updateParentSchedule(req.params.eventID, req.body.startTime, req.body.endTime);
+                const update = await parentScheduleController.updateParentSchedule(req.params.eventID, req.params.event_description, req.body.startTime, req.body.endTime);
                 const result = await parentScheduleController.getParentSchedules(req.user.id, null, req.params.eventID);
                 res.status(200).json(result);
             } else {
@@ -59,27 +59,26 @@ router.put('/self/:eventID',
 
 // POST /self creates a new schedule for the sitter
 //TODO: expand this to allow for the addition of the event_description field
-router.post('/self',
-    async (req, res, next) => {
-        try {
-            const doesSitterExist = await usersController.doesSitterExist(req.user.email); //TODO check this against users
-            if(doesSitterExist){
-                const schedule = await parentScheduleController.createParentSchedule(req.user.id, req.body.startTime, req.body.endTime); //TODO: add event_description
-                if(schedule.error === 'No data to create'){
-                    res.status(400).json({message: "No data to create"});
-                }
-                const result = await parentScheduleController.getParentSchedules(req.user.id, null, schedule);
-                res.status(200).json(result);
-            } else {
-                res.status(404).json({message: "Sitter not found"});
+router.post('/self', async (req, res, next) => {
+    try {
+        const doesSitterExist = await usersController.doesSitterExist(req.user.email); //TODO check this against users
+        if(doesSitterExist){
+            const schedule = await parentScheduleController.createParentSchedule(req.user.id, req.body.startTime, req.body.endTime); //TODO: add event_description
+            if(schedule.error === 'No data to create'){
+                res.status(400).json({message: "No data to create"});
             }
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({
-                message: err.toString()
-            });
+            const result = await parentScheduleController.getParentSchedules(req.user.id, null, schedule);
+            res.status(200).json(result);
+        } else {
+            res.status(404).json({message: "Sitter not found"});
         }
-    });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            message: err.toString()
+        });
+    }
+});
 
 // DELETE /self/:eventID deletes an entry in the schedule
 router.delete('/self/:eventID',
