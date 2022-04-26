@@ -145,9 +145,6 @@ const getUpdateFilters = async (firstName, lastName, email, password, salt, imgu
     return filters;
 }
 
-
-
-
 module.exports = {
     doesSitterExist,
     getSitters,

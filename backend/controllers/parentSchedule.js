@@ -5,7 +5,7 @@ const sitterController = require('../controllers/sitter');
 const getParentSchedules = async (id, date, eventId) => {
     try{
         const filters = await makeFilters(id, eventId);
-        const query = await parentScheduleModels.getParentSchedules(filters, date);
+        const query = await parentScheduleModels.getParentSchedules(filters,date);
         const result = await addParentName(query);
         return result;
     } catch (error) {
@@ -16,7 +16,7 @@ const getParentSchedules = async (id, date, eventId) => {
 const makeFilters = async (id, eventID) => {
     const filters = {};
     if(id != null){
-        filters.sitter_id = id;
+        filters.parent_id = id;
     }
     if(eventID != null){
         filters.id = eventID;
@@ -43,18 +43,15 @@ const addParentName = async (query) => {
 //TODO: add the event_description to list of fields
 const updateParentSchedule = async (eventID, event_description, startTime, endTime) => {
     try{
-        const event = await parentScheduleModels.getParentSchedules({id: eventID}, null);
+        const filter = await makeFilters(null, eventID);
+        const event = await parentScheduleModels.getParentSchedules(filter, null);
         if(event.length === 0){
-            return {
-                error: 'Event not found'
-            };
+            return "Event not found";
         }
         if(eventID == null && event_description == null && startTime == null && endTime == null){
-            return {
-                error: 'No data to update'
-            };
+            return "No data to update";
         }
-        const filters = await getUpdateFilters(event_descriptions,startTime,endTime);
+        const filters = await getUpdateFilters(event_description,startTime,endTime);
         const result = await parentScheduleModels.updateParentSchedule(eventID,filters);
         return result;
     } catch (error) {
@@ -111,8 +108,8 @@ const deleteParentSchedule = async (eventID) => {
     }
 };
 
-const isSelf = async (sitterID, eventID) => {
-    const event = getParentSchedules(sitterID, null, eventID);
+const isSelf = async (parentID, eventID) => {
+    const event = getParentSchedules(parentID, null, eventID);
     if(event.length === 0){
         return false;
     }

@@ -4,7 +4,7 @@ const parentSchedule = 'parent_schedule';
 
 //NOTE: I may be wrong but, you shouldn't have to change anything in this file.
 
-const getParentSchedules = async (filters , date) => {
+const getParentSchedules = async (filters, date) => {
     const result = await knex(parentSchedule)
         .where(filters)
         .andWhere(function() {
@@ -14,9 +14,9 @@ const getParentSchedules = async (filters , date) => {
             }
         })
         .select('*');
+    
     return result;
 }
-
 
 const updateParentSchedule = async (eventID,filters) => {
     const result = await knex(parentSchedule)

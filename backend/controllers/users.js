@@ -6,7 +6,6 @@ const doesUserExist = async(email) => {
     return sitters.length === 1;
 }
 
-
 const getUsers = async(firstName, lastName, email, id , location, startWorkTime, endWorkTime, minKidAge, maxKidAge, numKids) => {
     try {
         //This query could be broken down into exact matches

@@ -2,11 +2,12 @@ const { application } = require('express');
 const express = require('express');
 const parentScheduleController = require('../controllers/parentSchedule');
 const usersController = require('../controllers/users');
+const sitterController = require('../controllers/sitter');
 
 const router = express.Router();
 
 //GET / returns all of the sitter's schedules (can filter by date and sitter ID or event ID)
-router.get('/',  async  (req, res, next) => {
+router.get('/',async (req, res, next) => {
     try {
         const schedules = await parentScheduleController.getParentSchedules(req.query.id, req.query.date, req.query.eventId);
         res.status(200).json(schedules);
@@ -22,9 +23,9 @@ router.get('/',  async  (req, res, next) => {
 router.get('/self',
     async (req, res, next) => {
         try {
-            const doesSitterExist = await usersController.doesSitterExist(req.user.email); //TODO check this against users
+            const doesSitterExist = await usersController.doesUserExist(req.user.email); //TODO check this against users
             if(doesSitterExist){
-                const schedules = await parentScheduleController.getParentSchedules(req.user.id, req.query.date , null);
+                const schedules = await parentScheduleController.getParentSchedules(req.user.id, req.query.date, null);
                 res.status(200).json(schedules);
             } else {
                 res.status(404).json({message: "Sitter not found"});
@@ -41,13 +42,19 @@ router.get('/self',
 router.put('/self/:eventID',
     async (req, res, next) => {
         try {
-            const canEdit = await parentScheduleController.isSelf(req.user.id, req.params.eventID);
-            if(canEdit){
-                const update = await parentScheduleController.updateParentSchedule(req.params.eventID, req.params.event_description, req.body.startTime, req.body.endTime);
-                const result = await parentScheduleController.getParentSchedules(req.user.id, null, req.params.eventID);
-                res.status(200).json(result);
+            const eventVal = req.params.eventID.split('=')[1];
+            const canEdit = await parentScheduleController.isSelf(req.user.id,eventVal);
+            if (canEdit) {
+                const update = await parentScheduleController.updateParentSchedule(eventVal, req.body.event_description, req.body.startTime, req.body.endTime);
+                
+                if (update === "Event not found" || update === "No data to update") {
+                    res.status(404).json({message: update});
+                } else {
+                    const result = await parentScheduleController.getParentSchedules(req.user.id, null, eventVal);
+                    res.status(200).json(result);
+                }
             } else {
-                res.status(404).json({message: "Cannot edit schedule"});
+                res.status(404).json({message: canEdit});
             }
         } catch (err) {
             console.error(err);
