@@ -60,9 +60,9 @@ export class UserRepository {
         }
     )}
 
-    putInfo(firstname, lastname, email, imgurl, password, bio) {
+    putInfo(firstname, lastname, imgurl, password, bio, minage, maxage, starttime, endtime, numkids, location, email) {
         return new Promise((resolve, reject) => {
-            axios.put(URL + "/users/self", {firstName: firstname, lastName: lastname, email: email, imgurl: imgurl, password: password, bio: bio},
+            axios.put(URL + "/users/self", {firstName: firstname, lastName: lastname, email: email, imgurl: imgurl, password: password, bio: bio, minKidAge: minage, maxKidAge: maxage, startWorkTime: starttime, endWorkTime: endtime, numKids: numkids, location: location },
              { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
             .then(response => {
                 console.log('this is the response: ');
