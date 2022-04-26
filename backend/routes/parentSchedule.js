@@ -23,12 +23,17 @@ router.get('/',async (req, res, next) => {
 router.get('/self',
     async (req, res, next) => {
         try {
-            const doesSitterExist = await usersController.doesUserExist(req.user.email); //TODO check this against users
-            if(doesSitterExist){
+            const doesUserExist = await usersController.doesUserExist(req.user.email);
+            if(doesUserExist) {
                 const schedules = await parentScheduleController.getParentSchedules(req.user.id, req.query.date, null);
-                res.status(200).json(schedules);
+
+                if (schedules.length === 0) {
+                    res.status(404).json({message: "Sitter not found"})
+                } else {
+                    res.status(200).json(schedules);
+                }
             } else {
-                res.status(404).json({message: "Sitter not found"});
+                res.status(404).json({message: "User not found"});
             }
         } catch (err) {
             console.error(err);
@@ -38,7 +43,6 @@ router.get('/self',
         }
     });
 
-//TODO: ADD THE event_description field and allow it to be changed by the parent
 router.put('/self/:eventID',
     async (req, res, next) => {
         try {
@@ -68,8 +72,8 @@ router.put('/self/:eventID',
 //TODO: expand this to allow for the addition of the event_description field
 router.post('/self', async (req, res, next) => {
     try {
-        const doesSitterExist = await usersController.doesSitterExist(req.user.email); //TODO check this against users
-        if(doesSitterExist){
+        const doesUserExist = await usersController.doesUserExist(req.user.email); //TODO check this against users
+        if(doesUserExist){
             const schedule = await parentScheduleController.createParentSchedule(req.user.id, req.body.startTime, req.body.endTime); //TODO: add event_description
             if(schedule.error === 'No data to create'){
                 res.status(400).json({message: "No data to create"});
