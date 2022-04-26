@@ -24,6 +24,7 @@ import Page from '../components/Page';
 export const Login = () => {
 
   const [value, setValue] = React.useState('Parent');
+  // const [loaded, setLoaded] = React.useState(false);
 
   const userChange = (event) => {
     setValue(event.target.value);
@@ -46,6 +47,7 @@ export const Login = () => {
   //       console.log(error)
   //     });
   // }
+
 
   const userRepository = new UserRepository();
   const navigate = useNavigate();
