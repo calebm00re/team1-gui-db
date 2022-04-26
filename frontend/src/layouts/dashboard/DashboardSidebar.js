@@ -41,7 +41,7 @@ DashboardSidebar.propTypes = {
   onCloseSidebar: PropTypes.func,
 };
 
-export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
+export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar, user }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [imgurl, setImgurl] = useState(sessionStorage.getItem('imgurl'));
@@ -79,7 +79,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             <Avatar src={'https://www.hellomagazine.com/imagenes/celebrities/20211209128690/emma-raducano-face-of-evian/0-627-597/emma-raducano-evian-t.jpg'} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {firstName + ' ' + lastName}
+                {user}
               </Typography>
               {/* <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                 {account.role}

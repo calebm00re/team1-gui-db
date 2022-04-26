@@ -46,7 +46,7 @@ export class UserRepository {
         return new Promise((resolve, reject) => {
             axios.get(URL + "/users/self", { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
             .then(response => {
-                console.log('this is the response: ');
+                // console.log('this is response: ');
                 resolve(response);
             })
             .catch(error => {
