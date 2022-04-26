@@ -54,6 +54,7 @@ export default function DashboardLayout() {
       sessionStorage.setItem('maxage', response.data.maxKidAge);
       sessionStorage.setItem('startTime', response.data.startWorkTime);
       sessionStorage.setItem('endTime', response.data.endWorkTime);
+      sessionStorage.setItem('numKids', response.data.numKids);
     }).catch(error => {
       console.log('this is the error for get_info: ')
       console.log(error)
