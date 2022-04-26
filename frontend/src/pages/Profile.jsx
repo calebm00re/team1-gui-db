@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import { AlertDelete } from '../components/AlertDelete';
-import ProfileImg from '../Assets/images/emma.jpeg';
+import ProfileImg from '../Assets/images/imgurl.jpg';
 
 export const Profile = () => {
     const theme = useTheme();
@@ -76,7 +76,7 @@ export const Profile = () => {
                             justifyContent: 'space-around',
                         }}
                     >
-                        <Avatar alt={nameF} src={ProfileImg} />
+                        <Avatar alt={nameF} src={imgurl == 'null' ? ProfileImg : imgurl} />
                         <Typography component="h1" variant="h5">
                             Update Account
                         </Typography>
