@@ -34,11 +34,11 @@ const authenticateWithClaims = (claims) => (req, res, next) => {
         if (err) {
             return res.sendStatus(403);
         }
-        for (let claim of claims) {
-            if (user.claims.includes(claim)) {
-                req.user = user;
-                return next();
-            }
+        console.log("Does include? " + user.claims.includes(claims));
+        //NOTE: Changed the code of this portion to make it work with the claims
+        if (user.claims.includes(claims)) {
+            req.user = user;
+            return next();
         }
         return res.sendStatus(403);
     });

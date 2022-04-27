@@ -27,7 +27,7 @@ router.get('/', async(req, res, next) => {
 });
 
 //GET /users/self -- returns the current user information (basically just a call to the GET /users route with the current user's ID)
-router.get('/self' , async(req, res, next) => {
+router.get('/self' , authenticateWithClaims("user") ,async(req, res, next) => {
     try{
         const userDoesExist = await userController.doesUserEmailExist(req.user.email); //TODO: get a better auth
         if(userDoesExist){
