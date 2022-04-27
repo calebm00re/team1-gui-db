@@ -41,15 +41,14 @@ router.get('/self',
 router.put('/self/:eventID',
     async (req, res, next) => {
         try {
-            const eventID = req.params.eventID.split('=')[1]; //recall, /self/14 is a valid call but, /self/=14 is not a valid call
-            const canEdit = await parentScheduleController.isSelf(req.user.id, eventID);
+            const canEdit = await parentScheduleController.isSelf(req.user.id, req.params.eventID);
             if (canEdit) {
-                const update = await parentScheduleController.updateParentSchedule(eventID, req.body.eventDescription, req.body.startTime, req.body.endTime);
+                const update = await parentScheduleController.updateParentSchedule(req.params.eventID, req.body.eventDescription, req.body.startTime, req.body.endTime);
                 
                 if (update === "Event not found" || update === "No data to update") {
                     res.status(404).json({message: update});
                 } else {
-                    const result = await parentScheduleController.getParentSchedules(req.user.id, null, eventID);
+                    const result = await parentScheduleController.getParentSchedules(req.user.id, null, req.params.eventID);
                     res.status(200).json(result);
                 }
             } else {
@@ -88,10 +87,9 @@ router.post('/self', async (req, res, next) => {
 // DELETE /self/:eventID deletes an entry in the schedule
 router.delete('/self/:eventID', async (req, res, next) => {
     try {
-        const eventID = req.params.eventID;
-        const canDelete = await parentScheduleController.isSelf(req.user.id, eventID);
+        const canDelete = await parentScheduleController.isSelf(req.user.id, req.params.eventID);
         if(canDelete){
-            const schedule = await parentScheduleController.deleteParentSchedule(eventID);
+            const schedule = await parentScheduleController.deleteParentSchedule(req.params.eventID);
 
             if (schedule.error === "Event not found") {
                 res.status(404).json({message: schedule.error.toString()});
