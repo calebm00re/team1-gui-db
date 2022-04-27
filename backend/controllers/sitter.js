@@ -2,7 +2,8 @@ const sitterModel = require('../models/sitter');
 const crypto = require("crypto");
 const userModels = require("../models/users");
 
-const doesSitterExist = async (email) => {
+//TODO: change this to doesSitterEmailExist
+const doesSitterEmailExist = async (email) => {
  const users = await sitterModel.find({email : email });
  return users.length === 1;
 }
@@ -80,7 +81,7 @@ const updateSitter = async (id, firstName, lastName, email, password, location, 
         }
         //checks to see if another account has the email which the account is being changed to
         if (email != null && email != '') {
-            const emailExists = await doesSitterExist(email);
+            const emailExists = await doesSitterEmailExist(email);
             if (emailExists) {
                 return {
                     error: "Changes conflict with existing user"
@@ -146,7 +147,7 @@ const getUpdateFilters = async (firstName, lastName, email, password, salt, imgu
 }
 
 module.exports = {
-    doesSitterExist,
+    doesSitterEmailExist,
     getSitters,
     updateSitter
 }

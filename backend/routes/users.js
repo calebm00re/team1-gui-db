@@ -2,6 +2,7 @@ const { application } = require('express');
 const express = require('express');
 const userController = require('../controllers/users.js');
 const userModel = require('../models/users.js');
+const {authenticateWithClaims} = require("../middleware/auth");
 
 /**
  * https://expressjs.com/en/guide/routing.html#express-router
@@ -26,9 +27,9 @@ router.get('/', async(req, res, next) => {
 });
 
 //GET /users/self -- returns the current user information (basically just a call to the GET /users route with the current user's ID)
-router.get('/self', async(req, res, next) => {
+router.get('/self' , async(req, res, next) => {
     try{
-        const userDoesExist = await userController.doesUserExist(req.user.email);
+        const userDoesExist = await userController.doesUserEmailExist(req.user.email); //TODO: get a better auth
         if(userDoesExist){
             const result = await userModel.find({id: req.user.id});
             console.log("Check 4");
@@ -66,7 +67,7 @@ router.put('/self', async (req, res, next) => {
 //DELETE /users/self -- deletes the user's information
 router.delete('/self', async (req, res, next) => {
     try{
-        const userDoesExist = await userController.doesUserExist(req.user.email);
+        const userDoesExist = await userController.doesUserEmailExist(req.user.email); //TODO: get a better auth
         if(userDoesExist) {
             const result = await userController.deleteUser(req.user.id);
             res.status(204).json({ message: 'User deleted' });

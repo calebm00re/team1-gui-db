@@ -2,6 +2,7 @@ const { application } = require('express');
 const express = require('express');
 const sitterScheduleController = require('../controllers/sitterSchedule');
 const sitterController = require('../controllers/sitter');
+const {authenticateWithClaims} = require("../middleware/auth");
 
 const router = express.Router();
 
@@ -22,7 +23,7 @@ router.get('/',  async  (req, res, next) => {
 router.get('/self',
     async (req, res, next) => {
         try {
-            const doesSitterExist = await sitterController.doesSitterExist(req.user.email);
+            const doesSitterExist = await sitterController.doesSitterEmailExist(req.user.email); //check if sitter exists
             if(doesSitterExist){
                 const schedules = await sitterScheduleController.getSitterSchedules(req.user.id, req.query.date , null);
                 res.status(200).json(schedules);
@@ -61,7 +62,7 @@ router.put('/self/:eventID',
 router.post('/self',
     async (req, res, next) => {
         try {
-            const doesSitterExist = await sitterController.doesSitterExist(req.user.email);
+            const doesSitterExist = await sitterController.doesSitterEmailExist(req.user.email); //TODO: add authentication
             if(doesSitterExist){
                 const schedule = await sitterScheduleController.createSitterSchedule(req.user.id, req.body.startTime, req.body.endTime);
                 if(schedule.error === 'No data to create'){

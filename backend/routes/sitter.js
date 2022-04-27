@@ -23,7 +23,7 @@ router.get('/', async(req, res, next) => {
 //GET /sitter/self (returns the content of the sitter's profile)
 router.get('/self', async(req, res, next) => {
     try{
-        const sitterDoesExist = await sitterController.doesSitterExist(req.user.email);
+        const sitterDoesExist = await sitterController.doesSitterEmailExist(req.user.email); //TODO: make auth
         if(sitterDoesExist){
             console.log("Sitter exists");
             const result = await sitterModel.find({id : req.user.id});
@@ -62,7 +62,7 @@ router.put('/self', async (req, res, next) => {
 // DELETE /sitter/self (deletes the content of the sitter's profile)
 router.delete('/self', async (req, res, next) => {
     try{
-        const sitterDoesExist = await sitterController.doesSitterExist(req.user.email);
+        const sitterDoesExist = await sitterController.doesSitterEmailExist(req.user.email); //TODO make auth
         if(sitterDoesExist) {
             const result = await sitterModel.deleteUser(req.user.id);
             res.status(204).json({ message: 'User deleted' });
