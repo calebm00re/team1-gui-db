@@ -88,7 +88,7 @@ router.post('/self', async (req, res, next) => {
 // DELETE /self/:eventID deletes an entry in the schedule
 router.delete('/self/:eventID', async (req, res, next) => {
     try {
-        const eventID = req.params.eventID.split("=")[1];
+        const eventID = req.params.eventID;
         const canDelete = await parentScheduleController.isSelf(req.user.id, eventID);
         if(canDelete){
             const schedule = await parentScheduleController.deleteParentSchedule(eventID);
