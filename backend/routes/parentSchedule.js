@@ -41,10 +41,10 @@ router.get('/self',
 router.put('/self/:eventID',
     async (req, res, next) => {
         try {
-            const eventID= req.params.eventID; //recall, /self/14 is a valid call but, /self/=14 is not a valid call
-            const canEdit = await parentScheduleController.isSelf(req.user.id,eventID);
+            const eventID = req.params.eventID.split('=')[1]; //recall, /self/14 is a valid call but, /self/=14 is not a valid call
+            const canEdit = await parentScheduleController.isSelf(req.user.id, eventID);
             if (canEdit) {
-                //changes the inputs to be consistent with rest of the program
+                //changes the inputs to be consistent with rest of the program)
                 const update = await parentScheduleController.updateParentSchedule(eventID, req.body.eventDescription, req.body.startTime, req.body.endTime);
                 
                 if (update === "Event not found" || update === "No data to update") {
