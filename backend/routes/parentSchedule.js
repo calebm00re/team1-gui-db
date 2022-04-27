@@ -3,11 +3,13 @@ const express = require('express');
 const parentScheduleController = require('../controllers/parentSchedule');
 const usersController = require('../controllers/users');
 const sitterController = require('../controllers/sitter');
+const {authenticateWithClaims} = require("../middleware/auth");
 
 const router = express.Router();
 
 //GET / returns all of the sitter's schedules (can filter by date and sitter ID or event ID)
-router.get('/',async (req, res, next) => {
+router.get('/',
+    async (req, res, next) => {
     try {
         const schedules = await parentScheduleController.getParentSchedules(req.query.id, req.query.date, req.query.eventId);
         res.status(200).json(schedules);
@@ -20,16 +22,11 @@ router.get('/',async (req, res, next) => {
 });
 
 //GET /Self returns all of the sitter's schedules (can filter by date)
-router.get('/self',
+router.get('/self', authenticateWithClaims("user"),
     async (req, res, next) => {
         try {
-            const doesUserExist = await usersController.doesUserEmailExist(req.user.email); //TODO: change to better auth
-            if(doesUserExist) {
-                const schedules = await parentScheduleController.getParentSchedules(req.user.id, req.query.date, null);
-                res.status(200).json(schedules); //users can have no schedules
-            } else {
-                res.status(404).json({message: "User not found"});
-            }
+            const schedules = await parentScheduleController.getParentSchedules(req.user.id, req.query.date, null);
+            res.status(200).json(schedules); //users can have no schedules
         } catch (err) {
             console.error(err);
             res.status(500).json({
@@ -38,7 +35,7 @@ router.get('/self',
         }
     });
 
-router.put('/self/:eventID',
+router.put('/self/:eventID', authenticateWithClaims("user"),
     async (req, res, next) => {
         try {
             const eventID= req.params.eventID; //recall, /self/14 is a valid call but, /self/=14 is not a valid call
@@ -65,19 +62,15 @@ router.put('/self/:eventID',
     });
 
 // POST /self creates a new schedule for the sitter
-router.post('/self', async (req, res, next) => {
+router.post('/self', authenticateWithClaims("user"),
+    async (req, res, next) => {
     try {
-        const doesUserExist = await usersController.doesUserEmailExist(req.user.email); //TODO: change to better auth
-        if(doesUserExist){
-            const schedule = await parentScheduleController.createParentSchedule(req.user.id,req.body.eventDescription,req.body.startTime, req.body.endTime);
-            if(schedule.error === "Missing data"){
-                res.status(400).json({message: "Missing data"});
-            }
-            const result = await parentScheduleController.getParentSchedules(req.user.id, null, schedule);
-            res.status(200).json(result);
-        } else {
-            res.status(404).json({message: "Sitter not found"});
+        const schedule = await parentScheduleController.createParentSchedule(req.user.id,req.body.eventDescription,req.body.startTime, req.body.endTime);
+        if(schedule.error === "Missing data"){
+            res.status(400).json({message: "Missing data"});
         }
+        const result = await parentScheduleController.getParentSchedules(req.user.id, null, schedule);
+        res.status(200).json(result);
     } catch (err) {
         console.error(err);
         res.status(500).json({
@@ -87,7 +80,7 @@ router.post('/self', async (req, res, next) => {
 });
 
 // DELETE /self/:eventID deletes an entry in the schedule
-router.delete('/self/:eventID',
+router.delete('/self/:eventID', authenticateWithClaims("user"),
     async (req, res, next) => {
         try {
             const canDelete = await parentScheduleController.isSelf(req.user.id, req.params.eventID);
