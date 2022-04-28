@@ -6,7 +6,7 @@ const messageModels = require("../models/message");
 
 //TODO: for consistency, make this call in the similar format as the other getFromTables controller functions (ie getUsers)
 const getMessages = async(parent_id,sitter_id, is_urgent, time) =>{
-    try{
+    try {
         const result = await messageModels.getMessagesFromUser(parent_id,sitter_id, is_urgent, time);
         return result;
     } catch (error) {
@@ -17,6 +17,10 @@ const getMessages = async(parent_id,sitter_id, is_urgent, time) =>{
 //TODO: add in the checks descirbed in the route file and make the post controller in a similar format to the other post controllers
 const postMessage = async (parent_id, sitter_id,message, is_urgent, parent_sent, timestamp) => {
     try{
+        if (parent_id == null || sitter_id == null || message == null ||is_urgent == null || parent_sent == null || timestamp == null) {
+            return {error: "Missing data"};
+        }
+
         const result = await messageModels.postMessage(parent_id, sitter_id,message, is_urgent, parent_sent, timestamp);
         //mainly, the above means turning the call into having the one parameter updateFilters
         //TODO: also, you need to take note that while some of the items are required above, others are not.
