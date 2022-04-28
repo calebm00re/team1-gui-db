@@ -1,6 +1,21 @@
 const sitterScheduleModels = require('../models/sitterSchedule');
 const sitterController = require('../controllers/sitter');
 
+const createSitterSchedule = async (id, startTime, endTime) => {
+    try {
+        if(id == null || startTime == null || endTime == null){
+            return {
+                error: 'No data to create'
+            };
+        }
+        result = await sitterScheduleModels.createSitterSchedule(id, startTime, endTime);
+        result.error = '';
+        return result;
+    }catch (error) {
+        console.log(error);
+    }
+};
+
 const getSitterSchedules = async (id, date, eventId) => {
   try{
     const filters = await makeFilters(id, eventId);
@@ -79,20 +94,6 @@ const getUpdateFilters = async (startTime, endTime) => {
     return filters;
 };
 
-const createSitterSchedule = async (id, startTime, endTime) => {
-    try {
-        if(id == null || startTime == null || endTime == null){
-            return {
-                error: 'No data to create'
-            };
-        }
-        result = await sitterScheduleModels.createSitterSchedule(id, startTime, endTime);
-        result.error = '';
-        return result;
-    }catch (error) {
-        console.log(error);
-    }
-};
 
 const deleteSitterSchedule = async (eventID) => {
     try {

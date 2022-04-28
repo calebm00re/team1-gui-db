@@ -5,6 +5,24 @@ const {authenticateWithClaims} = require("../middleware/auth");
 
 const router = express.Router();
 
+// POST /self creates a new schedule for the sitter
+router.post('/self', authenticateWithClaims("user"),
+    async (req, res, next) => {
+        try {
+            const schedule = await parentScheduleController.createParentSchedule(req.user.id,req.body.eventDescription,req.body.startTime, req.body.endTime);
+            if(schedule.error === "Missing data"){
+                res.status(400).json({message: "Missing data"});
+            }
+            const result = await parentScheduleController.getParentSchedules(req.user.id, null, schedule);
+            res.status(200).json(result);
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({
+                message: err.toString()
+            });
+        }
+    });
+
 //GET / returns all of the sitter's schedules (can filter by date and sitter ID or event ID)
 router.get('/',
     async (req, res, next) => {
@@ -58,23 +76,6 @@ router.put('/self/:eventID', authenticateWithClaims("user"),
         }
     });
 
-// POST /self creates a new schedule for the sitter
-router.post('/self', authenticateWithClaims("user"),
-    async (req, res, next) => {
-    try {
-        const schedule = await parentScheduleController.createParentSchedule(req.user.id,req.body.eventDescription,req.body.startTime, req.body.endTime);
-        if(schedule.error === "Missing data"){
-            res.status(400).json({message: "Missing data"});
-        }
-        const result = await parentScheduleController.getParentSchedules(req.user.id, null, schedule);
-        res.status(200).json(result);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({
-            message: err.toString()
-        });
-    }
-});
 
 // DELETE /self/:eventID deletes an entry in the schedule
 router.delete('/self/:eventID', authenticateWithClaims("user"),
