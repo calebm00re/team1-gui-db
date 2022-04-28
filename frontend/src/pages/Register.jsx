@@ -14,8 +14,8 @@ import { useNavigate } from "react-router-dom";
 import theme from '../Assets/theme';
 import { UserRepository } from '../api/userRepository.js'
 import { FormControlLabel } from '@mui/material';
-import { FormGroup } from '@mui/material';
-import { Checkbox } from '@mui/material';
+// import { FormGroup } from '@mui/material';
+// import { Checkbox } from '@mui/material';
 import { FormControl } from '@mui/material';
 import { FormLabel } from '@mui/material';
 import { RadioGroup } from '@mui/material';

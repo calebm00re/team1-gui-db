@@ -1,10 +1,28 @@
 const { application } = require('express');
 const express = require('express');
 const sitterScheduleController = require('../controllers/sitterSchedule');
-const sitterController = require('../controllers/sitter');
 const {authenticateWithClaims} = require("../middleware/auth");
 
 const router = express.Router();
+
+
+// POST /self creates a new schedule for the sitter
+router.post('/self', authenticateWithClaims("sitter"),
+    async (req, res, next) => {
+        try {
+            const schedule = await sitterScheduleController.createSitterSchedule(req.user.id, req.body.startTime, req.body.endTime);
+            if(schedule.error === 'No data to create'){
+                res.status(400).json({message: "No data to create"});
+            }
+            const result = await sitterScheduleController.getSitterSchedules(req.user.id, null, schedule);
+            res.status(200).json(result);
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({
+                message: err.toString()
+            });
+        }
+    });
 
 //GET / returns all of the sitter's schedules (can filter by date and sitter ID or event ID)
 router.get('/',  async  (req, res, next) => {
@@ -40,8 +58,14 @@ router.put('/self/:eventID',authenticateWithClaims("sitter"),
             const canEdit = await sitterScheduleController.isSelf(req.user.id, req.params.eventID);
             if(canEdit){
                 const update = await sitterScheduleController.updateSitterSchedule(req.params.eventID, req.body.startTime, req.body.endTime);
-                const result = await sitterScheduleController.getSitterSchedules(req.user.id, null, req.params.eventID);
-                res.status(200).json(result);
+                if(update.error === "Event not found" || update.error === "No date to update"){
+                    res.status(404).json({
+                        message: update.error
+                    });
+                } else {
+                    const result = await sitterScheduleController.getSitterSchedules(req.user.id, null, req.params.eventID);
+                    res.status(200).json(result);
+                }
             } else {
                 res.status(404).json({message: "Cannot edit schedule"});
             }
@@ -53,32 +77,18 @@ router.put('/self/:eventID',authenticateWithClaims("sitter"),
         }
     });
 
-// POST /self creates a new schedule for the sitter
-router.post('/self', authenticateWithClaims("sitter"),
-    async (req, res, next) => {
-        try {
-            const schedule = await sitterScheduleController.createSitterSchedule(req.user.id, req.body.startTime, req.body.endTime);
-            if(schedule.error === 'No data to create'){
-                res.status(400).json({message: "No data to create"});
-            }
-            const result = await sitterScheduleController.getSitterSchedules(req.user.id, null, schedule);
-            res.status(200).json(result);
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({
-                message: err.toString()
-            });
-        }
-    });
 
 // DELETE /self/:eventID deletes an entry in the schedule
 router.delete('/self/:eventID', authenticateWithClaims("sitter"),
     async (req, res, next) => {
         try {
             const canDelete = await sitterScheduleController.isSelf(req.user.id, req.params.eventID);
+            console.log("Check 1");
             if(canDelete){
+                console.log("Check 2");
                 const schedule = await sitterScheduleController.deleteSitterSchedule(req.params.eventID);
-                res.status(204); //a successful deletion returns no content
+                console.log("Check 9");
+                res.status(204).json({message : "Successful delete"}); //a successful deletion returns no content
             } else {
                 res.status(404).json({message: "Do not have permission to delete"});
             }
