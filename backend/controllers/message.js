@@ -5,9 +5,9 @@ const blockModels = require("../models/block");
 const messageModels = require("../models/message");
 
 //TODO: for consistency, make this call in the similar format as the other getFromTables controller functions (ie getUsers)
-const getMessages = async(parent_id,sitter_id) =>{
+const getMessages = async(parent_id,sitter_id, is_urgent, time) =>{
     try{
-        const result = await messageModels.getMessagesFromUser(parent_id,sitter_id);
+        const result = await messageModels.getMessagesFromUser(parent_id,sitter_id, is_urgent, time);
         return result;
     } catch (error) {
         console.log(error);
