@@ -1,6 +1,5 @@
 const parentScheduleModels = require('../models/parentSchedule');
 const usersController = require('../controllers/users');
-const sitterController = require('../controllers/sitter');
 
 const getParentSchedules = async (id, date, eventId) => {
     try{
@@ -24,23 +23,31 @@ const makeFilters = async (id, eventID) => {
     return filters;
 }
 
+//request made at the request of Caleb Moore
 const addParentInfo = async (query) => {
     result = query;
     //the first step is iterating through each result of the query
     for(i = 0; i < result.length; i++){
-        //TODO change this to make calls to the users methods instead
         //the second step is getting the sitter id from the result
         const parentID = result[i].parent_id;
         //the third step is getting the sitter name from the sitter controller
         const parents = await usersController.getUsers(null, null, null, parentID, null, null, null, null, null, null);
         //the fourth step is adding the sitter name to the result
-        result[i].firstName = parents[0].firstname;
-        result[i].lastName = [0].lastname;
+        result[i].firstName = parents[0].firstName;
+        result[i].lastName = parents[0].lastName;
+        result[i].email = parents[0].email;
+        result[i].location = parents[0].location;
+        result[i].bio = parents[0].bio;
+        result[i].imgurl = parents[0].imgurl;
+        result[i].minKidAge = parents[0].minKidAge;
+        result[i].maxKidAge = parents[0].maxKidAge;
+        result[i].startWorkTime = parents[0].startWorkTime;
+        result[i].endWorkTime = parents[0].endWorkTime;
+        result[i].numKids = parents[0].numKids;
     }
     return result;
 }
 
-//TODO: add the event_description to list of fields
 const updateParentSchedule = async (eventID, event_description, startTime, endTime) => {
     try{
         const filter = await makeFilters(null, eventID);
