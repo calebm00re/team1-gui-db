@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
 //
 import DashboardNavbar from './DashboardNavbar';
 import DashboardSidebar from './DashboardSidebar';
+import { UserRepository } from '../../api/userRepository';
 
 // ----------------------------------------------------------------------
 
@@ -34,11 +35,38 @@ const MainStyle = styled('div')(({ theme }) => ({
 
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  const [imgurl, setImgurl] = useState(null);
 
+  console.log('in DashboardLayout');
+  const userRepository = new UserRepository();
+
+  useEffect(() => {
+    userRepository.getInfo().then(response => {
+      setUser(response.data.firstName + ' ' + response.data.lastName);
+      console.log('this is the response for get_info: ')
+      console.log(response)
+      sessionStorage.setItem('firstName', response.data.firstName);
+      sessionStorage.setItem('lastName', response.data.lastName);
+      sessionStorage.setItem('email', response.data.email);
+      sessionStorage.setItem('bio', response.data.bio);
+      sessionStorage.setItem('imgurl', response.data.imgurl);
+      setImgurl(response.data.imgurl);
+      sessionStorage.setItem('minage', response.data.minKidAge);
+      sessionStorage.setItem('maxage', response.data.maxKidAge);
+      sessionStorage.setItem('startTime', response.data.startWorkTime);
+      sessionStorage.setItem('endTime', response.data.endWorkTime);
+      sessionStorage.setItem('numKids', response.data.numKids);
+      sessionStorage.setItem('location', response.data.location);
+    }).catch(error => {
+      console.log('this is the error for get_info: ')
+      console.log(error)
+    });
+  }, []);
   return (
     <RootStyle>
       <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
-      <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
+      <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} user={user} Imgurl={imgurl}/>
       <MainStyle>
         <Outlet />
       </MainStyle>

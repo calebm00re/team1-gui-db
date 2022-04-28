@@ -46,7 +46,7 @@ export class UserRepository {
         return new Promise((resolve, reject) => {
             axios.get(URL + "/users/self", { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
             .then(response => {
-                console.log('this is the response: ');
+                // console.log('this is response: ');
                 resolve(response);
             })
             .catch(error => {
@@ -60,9 +60,9 @@ export class UserRepository {
         }
     )}
 
-    putInfo(firstname, lastname, email, imgurl, password, bio) {
+    putInfo(firstname, lastname, imgurl, password, bio, minage, maxage, starttime, endtime, numkids, location, email) {
         return new Promise((resolve, reject) => {
-            axios.put(URL + "/users/self", {firstName: firstname, lastName: lastname, email: email, imgurl: imgurl, password: password, bio: bio},
+            axios.put(URL + "/users/self", {firstName: firstname, lastName: lastname, email: email, imgurl: imgurl, password: password, bio: bio, minKidAge: minage, maxKidAge: maxage, startWorkTime: starttime, endWorkTime: endtime, numKids: numkids, location: location },
              { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
             .then(response => {
                 console.log('this is the response: ');
@@ -108,6 +108,22 @@ export class UserRepository {
             })
             .catch(error => {
                 console.log('this is the error for get/sitters');
+                console.log(error);
+                reject(error);
+            })
+        })
+    }
+
+    getSittersByDate(day) {
+        return new Promise((resolve, reject) => {
+            axios.get(URL + "/sitter_schedule/", { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
+            .then(response => {
+                console.log('this is the response for get/sitters by date');
+                console.log(response);
+                resolve(response);
+            })
+            .catch(error => {
+                console.log('this is the error for get/sitters by date');
                 console.log(error);
                 reject(error);
             })

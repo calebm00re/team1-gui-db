@@ -1,11 +1,10 @@
 const userModels = require('../models/users.js');
 const crypto = require('crypto');
 
-const doesUserExist = async(email) => {
+const doesUserEmailExist = async(email) => {
     const sitters = await userModels.find({email: email});
     return sitters.length === 1;
 }
-
 
 const getUsers = async(firstName, lastName, email, id , location, startWorkTime, endWorkTime, minKidAge, maxKidAge, numKids) => {
     try {
@@ -84,7 +83,7 @@ const updateUser = async(id, firstName, lastName, email, password, bio , imgurl,
         }
         //checks to see if another account has the email which the account is being changed to
         if(email != null && email != ''){
-            const emailExists = await doesUserExist(email);
+            const emailExists = await doesUserEmailExist(email);
             if(emailExists){
                 return {
                     error: "Changes conflict with existing user"
@@ -168,7 +167,7 @@ const deleteUser = async(id) => {
 
 
 module.exports = {
-    doesUserExist,
+    doesUserEmailExist,
     getUsers,
     deleteUser,
     updateUser
