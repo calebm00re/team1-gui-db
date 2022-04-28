@@ -114,4 +114,20 @@ export class UserRepository {
         })
     }
 
+    getSittersByDate(day) {
+        return new Promise((resolve, reject) => {
+            axios.get(URL + "/sitter_schedule/", { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
+            .then(response => {
+                console.log('this is the response for get/sitters by date');
+                console.log(response);
+                resolve(response);
+            })
+            .catch(error => {
+                console.log('this is the error for get/sitters by date');
+                console.log(error);
+                reject(error);
+            })
+        })
+    }
+
 }

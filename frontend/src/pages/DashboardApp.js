@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { faker } from '@faker-js/faker';
 // @mui
 import { useTheme } from '@mui/material/styles';
@@ -32,6 +32,20 @@ export default function DashboardApp() {
   const [value, setValue] = React.useState(new Date());
   const theme = useTheme();
 
+  const userRepository = new UserRepository();
+
+  useEffect(() => {
+    console.log('in dashboard');
+    userRepository.getSittersByDate(value).then(response => {
+      console.log('this is the response for getSittersByDate in dashboard app: ')
+      console.log(response)
+    })
+    .catch(error => {
+      console.log('error in dashboard app: ')
+      console.log(error)
+    })
+  }, [value]);
+
   return (
     <Page title="Dashboard">
       <ThemeProvider theme={theme}>
@@ -43,7 +57,7 @@ export default function DashboardApp() {
           <Grid container spacing={3}>
             <Grid item xs={12} md={6} lg={8}>
               <Card>
-                <CardHeader title="Today" />
+                <CardHeader title={(new Date().toDateString() == value.toDateString()) ? 'Schedule for Today' : `Schedule for ${value.toDateString()}`} />
                 <Typography variant="body1" sx={{ m: 5 }}>
                   {/* conditional do you have plans today, if so show them otherwise say no plans */}
                   Looks like there is nothing scheduled for today, head down to the browse to look for a sitter or head over to the sitters tab to have a search
@@ -69,7 +83,7 @@ export default function DashboardApp() {
             </Grid>
             <Grid item xs={12} md={6} lg={8}>
               <Card>
-                <CardHeader title="Browse" />
+                <CardHeader title={(new Date().toDateString() == value.toDateString()) ? 'Browse for Today' : `Browse for ${value.toDateString()}`} />
                 <Typography variant="body1" sx={{ m: 5 }}>
                   show a list of available sitters
                 </Typography>
