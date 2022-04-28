@@ -9,12 +9,21 @@ const router = express.Router();
 router.post('/', authenticateWithClaims("user"),
     async (req, res, next) => {
     try {
-                //TODO: check if the user has all the necessary info to make a job
-                //TODO: check that the sitter is able to make the job (based on their schedule)
-                //TODO: check that the sitter hasn't blocked the user
-                //TODO: delete the time which matches the time of the job (from both the user and sitter's schedule)
-                //TODO: create the job
-                //TODO: display the job
+        //TODO: create the job
+        const job = await jobController.createJob(req.user.id, req.body.sitterID, req.body.startTime, req.body.endTime);
+        if(job.error === "missing info") {
+            res.status(400).json({message: job.error.toString()});
+        } else if(job.error === "sitter not available") {
+            res.status(400).json({message: job.error.toString()});
+        } else if(job.error === "sitter not found") {
+            res.status(400).json({message: job.error.toString()});
+        } else if(job.error === "sitter blocked"){
+            res.status(400).json({message: job.error.toString()});
+        } else {
+            //displays the job
+            const result = await jobController.getJobs(req.user.id, req.body.sitterID, req.query.startTime);
+            res.status(200).json(result);
+        }
     } catch (err) {
         console.error(err);
         res.status(500).json({
@@ -27,8 +36,16 @@ router.post('/', authenticateWithClaims("user"),
 router.get('/self',
     async (req, res, next) => {
     try{
-        //TODO: identify the type of user based on the claims
-        //TODO: use that info the optional date parameter to get the jobs for that user
+        if(req.user.claims[0] === "user"){
+            const jobs = await jobController.getJobs(req.user.id, null, req.query.date);
+            res.status(200).json(jobs);
+        } else if(req.user.claims[0] === "sitter"){
+            const jobs = await jobController.getJobs(null, req.user.id, req.query.date);
+        } else {
+            res.status(401).json({
+                message: "You are not authorized to view this page"
+            });
+        }
     } catch (err) {
         console.error(err);
         res.status(500).json({
@@ -36,5 +53,7 @@ router.get('/self',
         });
     }
 });
+
+//TODO: The other CRUD routes for jobs
 
 module.exports = router;
