@@ -81,9 +81,12 @@ router.delete('/self/:eventID', authenticateWithClaims("sitter"),
     async (req, res, next) => {
         try {
             const canDelete = await sitterScheduleController.isSelf(req.user.id, req.params.eventID);
+            console.log("Check 1");
             if(canDelete){
+                console.log("Check 2");
                 const schedule = await sitterScheduleController.deleteSitterSchedule(req.params.eventID);
-                res.status(204); //a successful deletion returns no content
+                console.log("Check 9");
+                res.status(204).json({message : "Successful delete"}); //a successful deletion returns no content
             } else {
                 res.status(404).json({message: "Do not have permission to delete"});
             }

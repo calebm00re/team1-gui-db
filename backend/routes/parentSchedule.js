@@ -89,7 +89,7 @@ router.delete('/self/:eventID', authenticateWithClaims("user"),
             }
             console.log("I made it here");
 
-            res.status(204); //a 204 is a successful deletion (and returns no content)
+            res.status(204).json({message : "delete successful"}); //a 204 is a successful deletion (and returns no content)
         } else {
             res.status(404).json({message: "Do not have permission to delete"});
         }
