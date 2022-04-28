@@ -28,12 +28,11 @@ router.get('/',
 });
 
 //GET /users/self -- returns the current user information (basically just a call to the GET /users route with the current user's ID)
-router.get('/self' , authenticateWithClaims("user") ,
+router.get('/self', authenticateWithClaims("user"),
     async(req, res, next) => {
     try{
         const result = await userModel.find({id: req.user.id});
-        console.log("Check 4");
-        res.status(200).json(result[0]);
+        res.status(200).json(result);
     }catch(err){
         console.error('Failed to get user info:', err);
         res.status(500).json({ message: err.toString() });

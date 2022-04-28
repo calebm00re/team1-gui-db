@@ -12,6 +12,11 @@ import StaticDatePicker from '@mui/lab/StaticDatePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import TextField from '@mui/material/TextField';
 import { UserRepository } from '../api/userRepository.js'
+import { CardContent } from '@mui/material';
+import { CardActions } from '@mui/material';
+import { Button } from '@mui/material';
+import { SitterCards } from '../components/SitterCards';
+
 // import Iconify from '../components/Iconify';
 // sections
 // import {
@@ -35,35 +40,36 @@ export default function DashboardApp() {
 
   const userRepository = new UserRepository();
 
-  const getSitter = (i, sitterList) => {
-    var sitterTemp = sitters;
-    let currentSitter = sitterList[i];
-    sitterTemp[i] = currentSitter;
-    setSitters(sitterTemp);
-  }
+  // const getSitter = (i, sitterList) => {
+  //   var sitterTemp = sitters;
+  //   let currentSitter = sitterList[i];
+  //   sitterTemp[i] = currentSitter;
+  //   setSitters(sitterTemp);
+  // }
 
-  const loadSitters = () => {
-    const day = value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate();
-    console.log('day: ' + day);
-    userRepository.getSittersByDate(day).then(response => {
-      console.log('this is the response for getSittersByDate in dashboard app: ')
-      console.log(response)
-      let allSitters = response.data;
-      for(var i in allSitters){
-        getSitter(i, allSitters);
-      }
-    })
-    .catch(error => {
-      console.log('error in dashboard app: ')
-      console.log(error)
-    })
-  }
+  // const loadSitters = () => {
+  //   // const day = value.getFullYear() + '-0' + (value.getMonth() + 1) + '-' + value.getDate();
+  //   const day = '2022-05-25';
+  //   console.log('day: ' + day);
+  //   userRepository.getSittersByDate(day).then(response => {
+  //     console.log('this is the response for getSittersByDate in dashboard app: ')
+  //     console.log(response)
+  //     let allSitters = response.data;
+  //     for (var i in allSitters) {
+  //       getSitter(i, allSitters);
+  //     }
+  //   })
+  //     .catch(error => {
+  //       console.log('error in dashboard app: ')
+  //       console.log(error)
+  //     })
+  // }
 
 
-  useEffect(() => {
-    console.log('in dashboard');
-    loadSitters();
-  }, [value]);
+  // useEffect(() => {
+  //   console.log('in dashboard');
+  //   loadSitters();
+  // }, [value]);
 
   // setValue(new Date());
   return (
@@ -102,29 +108,10 @@ export default function DashboardApp() {
               </Card>
             </Grid>
             <Grid item xs={12} md={12} lg={12}>
-              <Card>
+              <Card >
                 <CardHeader title={(new Date().toDateString() == value.toDateString()) ? 'Browse for Today' : `Browse for ${value.toDateString()}`} />
-                {/* <Typography variant="body1" sx={{ m: 5 }}>
-                  show a list of available sitters
-                </Typography> */}
-                {sitters.length === 0 ?
-                  <Typography variant="body1" sx={{ m: 5 }}>
-                     Looks like nothing is available
-                  </Typography>
-                  :
-                  <Typography variant="body1" sx={{ m: 5 }}>
-                    {sitters.map((sitter, index) => {
-                      return (
-                        <div key={index}>
-                          <Typography variant="body1" sx={{ m: 5 }}>
-                            {sitter.firstName} {sitter.lastName}
-                          </Typography>
-                        </div>
-                      )
-                    })}
-                </Typography>}
+                  <SitterCards date={value} />
               </Card>
-
             </Grid>
           </Grid>
         </Container>
