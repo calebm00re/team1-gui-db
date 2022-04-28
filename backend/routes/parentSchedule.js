@@ -25,7 +25,7 @@ router.get('/',
 router.get('/self', authenticateWithClaims("user"),
     async (req, res, next) => {
         try {
-            const doesUserExist = await usersController.doesUserExist(req.user.email);
+            const doesUserExist = await usersController.doesUserEmailExist(req.user.email);
             if(doesUserExist) {
                 const schedules = await parentScheduleController.getParentSchedules(req.user.id, req.query.date, null);
                 res.status(200).json(schedules); //users can have no schedules
@@ -69,7 +69,7 @@ router.put('/self/:eventID',
 // POST /self creates a new schedule for the sitter
 router.post('/self', async (req, res, next) => {
     try {
-        const doesUserExist = await usersController.doesUserExist(req.user.email);
+        const doesUserExist = await usersController.doesUserEmailExist(req.user.email);
         if(doesUserExist){
             const schedule = await parentScheduleController.createParentSchedule(req.user.id,req.body.eventDescription,req.body.startTime, req.body.endTime);
             if(schedule.error === "Missing data"){

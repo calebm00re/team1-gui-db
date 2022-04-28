@@ -80,7 +80,6 @@ const createParentSchedule = async (id, event_description, startTime, endTime) =
             return {"error":"Missing data"}; //this is aded for consistency with other routes
         }
         result = await parentScheduleModels.createParentSchedule(id, startTime, endTime);
-        console.log("First result: " + result);
         if (event_description != null) { //having a === null will not return true if the value is undefined
             const filters = await getUpdateFilters(event_description,null,null);
             await parentScheduleModels.updateParentSchedule(result.toString(), filters);
