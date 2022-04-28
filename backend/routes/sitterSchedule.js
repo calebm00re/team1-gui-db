@@ -1,7 +1,6 @@
 const { application } = require('express');
 const express = require('express');
 const sitterScheduleController = require('../controllers/sitterSchedule');
-const sitterController = require('../controllers/sitter');
 const {authenticateWithClaims} = require("../middleware/auth");
 
 const router = express.Router();
@@ -40,8 +39,14 @@ router.put('/self/:eventID',authenticateWithClaims("sitter"),
             const canEdit = await sitterScheduleController.isSelf(req.user.id, req.params.eventID);
             if(canEdit){
                 const update = await sitterScheduleController.updateSitterSchedule(req.params.eventID, req.body.startTime, req.body.endTime);
-                const result = await sitterScheduleController.getSitterSchedules(req.user.id, null, req.params.eventID);
-                res.status(200).json(result);
+                if(update.error === "Event not found" || update.error === "No date to update"){
+                    res.status(404).json({
+                        message: update.error
+                    });
+                } else {
+                    const result = await sitterScheduleController.getSitterSchedules(req.user.id, null, req.params.eventID);
+                    res.status(200).json(result);
+                }
             } else {
                 res.status(404).json({message: "Cannot edit schedule"});
             }

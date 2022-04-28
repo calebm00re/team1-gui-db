@@ -6,7 +6,7 @@ const getParentSchedules = async (id, date, eventId) => {
     try{
         const filters = await makeFilters(id, eventId);
         const query = await parentScheduleModels.getParentSchedules(filters,date);
-        const result = await addParentName(query);
+        const result = await addParentInfo(query);
         return result;
     } catch (error) {
         console.log(error);
@@ -24,18 +24,18 @@ const makeFilters = async (id, eventID) => {
     return filters;
 }
 
-const addParentName = async (query) => {
+const addParentInfo = async (query) => {
     result = query;
     //the first step is iterating through each result of the query
     for(i = 0; i < result.length; i++){
         //TODO change this to make calls to the users methods instead
         //the second step is getting the sitter id from the result
-        const sitterID = result[i].sitter_id;
+        const parentID = result[i].parent_id;
         //the third step is getting the sitter name from the sitter controller
-        const sitters = await sitterController.getSitters(null, null, null, sitterID, null, null, null);
+        const parents = await usersController.getUsers(null, null, null, parentID, null, null, null, null, null, null);
         //the fourth step is adding the sitter name to the result
-        result[i].firstName = sitters[0].firstname;
-        result[i].lastName = sitters[0].lastname;
+        result[i].firstName = parents[0].firstname;
+        result[i].lastName = [0].lastname;
     }
     return result;
 }
@@ -46,13 +46,18 @@ const updateParentSchedule = async (eventID, event_description, startTime, endTi
         const filter = await makeFilters(null, eventID);
         const event = await parentScheduleModels.getParentSchedules(filter, null);
         if(event.length === 0){
-            return "Event not found";
+            return {
+                error: "Event not found"
+            };
         }
         if(eventID == null && event_description == null && startTime == null && endTime == null){
-            return "No data to update";
+            return {
+                error: "No data to update"
+            };
         }
         const filters = await getUpdateFilters(event_description,startTime,endTime);
-        const result = await parentScheduleModels.updateParentSchedule(eventID,filters);
+        result = await parentScheduleModels.updateParentSchedule(eventID,filters);
+        result.error = "";
         return result;
     } catch (error) {
         console.log(error);
@@ -77,7 +82,9 @@ const createParentSchedule = async (id, event_description, startTime, endTime) =
     try {
         //NOTE: as the event_description is optional, we need to check if it is null
         if(id == null || startTime == null || endTime == null){
-            return {"error":"Missing data"}; //this is aded for consistency with other routes
+            return {
+                error:"Missing data"
+            }; //this is aded for consistency with other routes
         }
         result = await parentScheduleModels.createParentSchedule(id, startTime, endTime);
         if (event_description != null) { //having a === null will not return true if the value is undefined
