@@ -37,7 +37,7 @@ const createNewUser = async (firstName, lastName, email, password) => {
 
     //checks to see if the user already exists
 
-    const doesExist = await userController.doesUserExist(email);
+    const doesExist = await userController.doesUserEmailExist(email);
     if (doesExist) {
         return {
             error: 'User already exists'
@@ -74,7 +74,7 @@ const createNewSitter = async(firstName, lastName, email, password) => {
 
     //checks to see if the user already exists
 
-    const doesExist = await sitterController.doesSitterExist(email);
+    const doesExist = await sitterController.doesSitterEmailExist(email);
     if (doesExist) {
         return {
             error: 'User already exists'

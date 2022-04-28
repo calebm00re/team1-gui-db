@@ -1,12 +1,14 @@
 const { application } = require('express');
 const express = require('express');
 const blockController = require('../controllers/block');
+const {authenticateWithClaims} = require("../middleware/auth");
 
 const router = express.Router();
 
 // route for blocking sitter from parent
 //The route header /block/:id is again my fault
-router.post('/', async (req,res,next) => {
+router.post('/', authenticateWithClaims("sitter"),
+    async (req,res,next) => {
     try {
         const sitterID = req.user.id; //This should be a user token
         console.log("The sitter ID is: " + sitterID);

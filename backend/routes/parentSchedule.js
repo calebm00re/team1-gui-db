@@ -3,11 +3,13 @@ const express = require('express');
 const parentScheduleController = require('../controllers/parentSchedule');
 const usersController = require('../controllers/users');
 const sitterController = require('../controllers/sitter');
+const {authenticateWithClaims} = require("../middleware/auth");
 
 const router = express.Router();
 
-//GET / returns all of the parent's schedules (can filter by date and parent ID or event ID)
-router.get('/',async (req, res, next) => {
+//GET / returns all of the sitter's schedules (can filter by date and sitter ID or event ID)
+router.get('/',
+    async (req, res, next) => {
     try {
         const schedules = await parentScheduleController.getParentSchedules(req.query.id, req.query.date, req.query.eventId);
         res.status(200).json(schedules);
@@ -19,8 +21,8 @@ router.get('/',async (req, res, next) => {
     }
 });
 
-//GET /Self returns all of the parent's schedules (can filter by date)
-router.get('/self',
+//GET /Self returns all of the sitter's schedules (can filter by date)
+router.get('/self', authenticateWithClaims("user"),
     async (req, res, next) => {
         try {
             const doesUserExist = await usersController.doesUserExist(req.user.email);
@@ -41,14 +43,16 @@ router.get('/self',
 router.put('/self/:eventID',
     async (req, res, next) => {
         try {
-            const canEdit = await parentScheduleController.isSelf(req.user.id, req.params.eventID);
+            const eventID= req.params.eventID; //recall, /self/14 is a valid call but, /self/=14 is not a valid call
+            const canEdit = await parentScheduleController.isSelf(req.user.id,eventID);
             if (canEdit) {
-                const update = await parentScheduleController.updateParentSchedule(req.params.eventID, req.body.eventDescription, req.body.startTime, req.body.endTime);
+                //changes the inputs to be consistent with rest of the program
+                const update = await parentScheduleController.updateParentSchedule(eventID, req.body.eventDescription, req.body.startTime, req.body.endTime);
                 
                 if (update === "Event not found" || update === "No data to update") {
                     res.status(404).json({message: update});
                 } else {
-                    const result = await parentScheduleController.getParentSchedules(req.user.id, null, req.params.eventID);
+                    const result = await parentScheduleController.getParentSchedules(req.user.id, null, eventID);
                     res.status(200).json(result);
                 }
             } else {
@@ -85,26 +89,28 @@ router.post('/self', async (req, res, next) => {
 });
 
 // DELETE /self/:eventID deletes an entry in the schedule
-router.delete('/self/:eventID', async (req, res, next) => {
-    try {
-        const canDelete = await parentScheduleController.isSelf(req.user.id, req.params.eventID);
-        if(canDelete){
-            const schedule = await parentScheduleController.deleteParentSchedule(req.params.eventID);
+router.delete('/self/:eventID', authenticateWithClaims("user"),
+    async (req, res, next) => {
+        try {
+            const canDelete = await parentScheduleController.isSelf(req.user.id, req.params.eventID);
+            if(canDelete){
+                const schedule = await parentScheduleController.deleteParentSchedule(req.params.eventID);
 
-            if (schedule.error === "Event not found") {
-                res.status(404).json({message: schedule.error.toString()});
+                if (schedule.error === "Event not found") {
+                    res.status(404).json({message: schedule.error.toString()});
+                }
+                console.log("I made it here");
+
+                res.status(204); //a 204 is a successful deletion (and returns no content)
+            } else {
+                res.status(404).json({message: "Do not have permission to delete"});
             }
-            
-            res.status(204).json({message: "Event deleted!"}); //a 204 is a successful deletion (and returns no content)
-        } else {
-            res.status(404).json({message: "Do not have permission to delete"});
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({
+                message: err.toString()
+            });
         }
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({
-            message: err.toString()
-        });
-    }
-});
+    });
 
 module.exports = router;
