@@ -12,7 +12,7 @@ import useResponsive from '../../hooks/useResponsive';
 import Logo from '../../components/Logo';
 import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
-//
+import ProfileImg from '../../Assets/images/imgurl.jpg';
 import navConfig from './NavConfig';
 
 // ----------------------------------------------------------------------
@@ -41,10 +41,10 @@ DashboardSidebar.propTypes = {
   onCloseSidebar: PropTypes.func,
 };
 
-export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar, user }) {
+export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar, user, Imgurl}) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [imgurl, setImgurl] = useState(sessionStorage.getItem('imgurl'));
+  // const [imgurl, setImgurl] = useState(Imgurl);
   const { pathname } = useLocation();
 
   const isDesktop = useResponsive('up', 'lg');
@@ -59,7 +59,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar, user }
   useEffect(() => {
     setFirstName(sessionStorage.getItem('firstName'));
     setLastName(sessionStorage.getItem('lastName'));
-    setImgurl(sessionStorage.getItem('imgurl'));
+    // setImgurl(sessionStorage.getItem('imgurl'));
   }, []);
 
   const renderContent = (
@@ -76,7 +76,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar, user }
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none" component={RouterLink} to="#">
           <AccountStyle>
-            <Avatar src={'https://www.hellomagazine.com/imagenes/celebrities/20211209128690/emma-raducano-face-of-evian/0-627-597/emma-raducano-evian-t.jpg'} alt="photoURL" />
+            <Avatar src={Imgurl} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
                 {user}

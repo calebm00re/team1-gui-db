@@ -79,18 +79,19 @@ export const Profile = () => {
         });
     };
 
-    const handleDelete = async () => {
-        userRepository.deleteUser().then(res => {
-            console.log('this is the response for delete_user: ')
-            console.log(res)
-            alert('Your account has been deleted!');
-            navigate('/landing');
-        }).catch(error => {
-            console.log('this is the error for delete_user: ')
-            console.log(error)
-            alert('There was an error deleting your account, please try again.');
-        });
-    };
+
+    // const handleDelete = async () => {
+    //     userRepository.deleteUser().then(res => {
+    //         console.log('this is the response for delete_user: ')
+    //         console.log(res)
+    //         alert('Your account has been deleted!');
+    //         navigate('/landing');
+    //     }).catch(error => {
+    //         console.log('this is the error for delete_user: ')
+    //         console.log(error)
+    //         alert('There was an error deleting your account, please try again.');
+    //     });
+    // };
 
     return (
         <Page title="Profile">

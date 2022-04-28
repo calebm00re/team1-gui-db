@@ -36,6 +36,7 @@ const MainStyle = styled('div')(({ theme }) => ({
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [imgurl, setImgurl] = useState(null);
 
   console.log('in DashboardLayout');
   const userRepository = new UserRepository();
@@ -50,6 +51,7 @@ export default function DashboardLayout() {
       sessionStorage.setItem('email', response.data.email);
       sessionStorage.setItem('bio', response.data.bio);
       sessionStorage.setItem('imgurl', response.data.imgurl);
+      setImgurl(response.data.imgurl);
       sessionStorage.setItem('minage', response.data.minKidAge);
       sessionStorage.setItem('maxage', response.data.maxKidAge);
       sessionStorage.setItem('startTime', response.data.startWorkTime);
@@ -64,7 +66,7 @@ export default function DashboardLayout() {
   return (
     <RootStyle>
       <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
-      <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} user={user} />
+      <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} user={user} Imgurl={imgurl}/>
       <MainStyle>
         <Outlet />
       </MainStyle>
