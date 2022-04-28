@@ -44,8 +44,8 @@ export default function DashboardLayout() {
   useEffect(() => {
     userRepository.getInfo().then(response => {
       setUser(response.data.firstName + ' ' + response.data.lastName);
-      console.log('this is the response for get_info: ')
-      console.log(response)
+      // console.log('this is the response for get_info: ')
+      // console.log(response)
       sessionStorage.setItem('firstName', response.data.firstName);
       sessionStorage.setItem('lastName', response.data.lastName);
       sessionStorage.setItem('email', response.data.email);
@@ -62,7 +62,7 @@ export default function DashboardLayout() {
       console.log('this is the error for get_info: ')
       console.log(error)
     });
-  }, []);
+  },);
   return (
     <RootStyle>
       <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
