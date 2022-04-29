@@ -1,6 +1,7 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
-import DashboardLayout from './layouts/dashboard';
+import { DashboardLayout } from './layouts/dashboard';
+import { SitterLayout } from './layouts/dashboard';
 // import LogoOnlyLayout from './layouts/LogoOnlyLayout';
 //
 // import Blog from './pages/Blog';
@@ -11,6 +12,8 @@ import { Register } from './pages/Register';
 import { Profile } from './pages/Profile';
 import DashboardApp from './pages/DashboardApp';
 import { Landing } from './pages/Landing';
+import { SitterProfile } from './pages/SitterProfile';
+import { SitterApp } from './pages/SitterApp';
 
 // ----------------------------------------------------------------------
 
@@ -24,6 +27,14 @@ export default function Router() {
         { path: 'sitters', element: <User /> },
         { path: 'profile', element: <Profile /> },
         // { path: 'blog', element: <Blog /> },
+      ],
+    },
+    {
+      path: '/sitters',
+      element: <SitterLayout />,
+      children: [
+        { path: 'app', element: <SitterApp /> },
+        { path: 'profile', element: <SitterProfile /> },
       ],
     },
     {
