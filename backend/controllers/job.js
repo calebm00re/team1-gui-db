@@ -14,11 +14,10 @@ const createJob = async (parentID, sitterID, startTime, endTime) => {
 };
 
 const getJobs = async (parentID, sitterID, date) => {
-    //TODO: make a query which returns all of the jobs that are associated with the userID and sitterID
     const filters = await makeFilters(parentID, sitterID);
     const query = await jobModels.getJobs(filters, date);
-//    const result = await addUserAndSitterInfo(query); //call needs to be done at GET call due to updates
-    return query;
+    const result = await addUserAndSitterInfo(query); //call needs to be done at GET call due to updates
+    return result;
 };
 
 const makeFilters = async (parentID, sitterID) => {
@@ -33,16 +32,14 @@ const makeFilters = async (parentID, sitterID) => {
 }
 
 const addUserAndSitterInfo = async (query) => {
-    console.log("Query is:");
-    console.log(query);
     let result = query;
     //iterates through each result in the query
     for(let i = 0; i < result.length; i++){
         //first we are going to ge the user object from the userID
-        const user = await userController.getUsers(null, null, null, result[i].userID, null, null, null, null, null, null);
+        const user = await userController.getUsers(null, null, null, result[i].parent_id, null, null, null, null, null, null);
         result[i].user = user[0];
         //then we are going to get the sitter object from the sitterID
-        const sitter = await sitterController.getSitters(null, null, null, result[i].sitterID, null, null, null);
+        const sitter = await sitterController.getSitters(null, null, null, result[i].sitter_id, null, null, null);
         result[i].sitter = sitter[0];
     }
     return result;

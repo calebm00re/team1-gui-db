@@ -9,7 +9,6 @@ const router = express.Router();
 router.post('/self', authenticateWithClaims("user"),
     async (req, res, next) => {
     try {
-        //TODO: create the job
         const job = await jobController.createJob(req.user.id, req.body.sitterID, req.body.startTime, req.body.endTime);
         if(job.error === "missing info") {
             res.status(400).json({message: job.error.toString()});
@@ -32,7 +31,7 @@ router.post('/self', authenticateWithClaims("user"),
     }
 });
 
-//TODO: GET job /self - get all jobs for the current user (can be a user of either type) (can filter by date)
+//GET job /self - get all jobs for the current user (can be a user of either type) (can filter by date)
 router.get('/self',
     async (req, res, next) => {
     try{
