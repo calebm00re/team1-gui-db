@@ -21,7 +21,7 @@ router.post('/self', authenticateWithClaims("user"),
             res.status(400).json({message: job.error.toString()});
         } else {
             //displays the job
-            const result = await jobController.getJobs(req.user.id, req.body.sitterID, req.query.startTime);
+            const result = await jobController.getJobs(req.user.id, req.body.sitterID, req.body.startTime);
             res.status(200).json(result[0]);
         }
     } catch (err) {
@@ -37,10 +37,11 @@ router.get('/self',
     async (req, res, next) => {
     try{
         if(req.user.claims[0] === "user"){
-            const jobs = await jobController.getJobs(req.user.id, null, req.query.date);
+            const jobs = await jobController.getJobs(req.user.id, req.query.sitterID, req.query.date);
             res.status(200).json(jobs);
         } else if(req.user.claims[0] === "sitter"){
-            const jobs = await jobController.getJobs(null, req.user.id, req.query.date);
+            const jobs = await jobController.getJobs(req.query.parentID, req.user.id, req.query.date);
+            res.status(200).json(jobs);
         } else {
             res.status(401).json({
                 message: "You are not authorized to view this page"

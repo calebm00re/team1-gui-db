@@ -17,8 +17,8 @@ const getJobs = async (parentID, sitterID, date) => {
     //TODO: make a query which returns all of the jobs that are associated with the userID and sitterID
     const filters = await makeFilters(parentID, sitterID);
     const query = await jobModels.getJobs(filters, date);
-    const result = await addUserAndSitterInfo(query);
-    return result;
+//    const result = await addUserAndSitterInfo(query); //call needs to be done at GET call due to updates
+    return query;
 };
 
 const makeFilters = async (parentID, sitterID) => {
@@ -33,6 +33,8 @@ const makeFilters = async (parentID, sitterID) => {
 }
 
 const addUserAndSitterInfo = async (query) => {
+    console.log("Query is:");
+    console.log(query);
     let result = query;
     //iterates through each result in the query
     for(let i = 0; i < result.length; i++){
