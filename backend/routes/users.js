@@ -32,7 +32,7 @@ router.get('/self', authenticateWithClaims("user"),
     async(req, res, next) => {
     try{
         const result = await userModel.find({id: req.user.id});
-        res.status(200).json(result);
+        res.status(200).json(result[0]);
     }catch(err){
         console.error('Failed to get user info:', err);
         res.status(500).json({ message: err.toString() });
