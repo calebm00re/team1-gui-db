@@ -227,4 +227,23 @@ export class UserRepository {
         }
     )}
 
+    //create shift for sitter
+    createShift(starttime, endtime) {
+        return new Promise((resolve, reject) => {
+            axios.post(URL + "/sitter_schedule/self", {startTime: starttime, endTime: endtime},
+             { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
+            .then(response => {
+                console.log('this is the response for createShift: ');
+                resolve(response);
+            })
+            .catch(error => {
+                console.log('this is the error: ');
+                console.log(error);
+                reject(error);
+            })
+            .finally(() => {
+                console.log('im in createShift');
+            });
+        }
+    )}
 }
