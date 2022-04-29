@@ -5,8 +5,8 @@ const {authenticateWithClaims} = require("../middleware/auth");
 
 const router = express.Router();
 
-//TODO: POST job/ - create a new job (user needs to pass in sitterID, startTime, endTime)
-router.post('/', authenticateWithClaims("user"),
+//TODO: POST job /self - create a new job (user needs to pass in sitterID, startTime, endTime)
+router.post('/self', authenticateWithClaims("user"),
     async (req, res, next) => {
     try {
         //TODO: create the job
@@ -22,7 +22,7 @@ router.post('/', authenticateWithClaims("user"),
         } else {
             //displays the job
             const result = await jobController.getJobs(req.user.id, req.body.sitterID, req.query.startTime);
-            res.status(200).json(result);
+            res.status(200).json(result[0]);
         }
     } catch (err) {
         console.error(err);
@@ -32,7 +32,7 @@ router.post('/', authenticateWithClaims("user"),
     }
 });
 
-//TODO: GET job/self - get all jobs for the current user (can be a user of either type) (can filter by date)
+//TODO: GET job /self - get all jobs for the current user (can be a user of either type) (can filter by date)
 router.get('/self',
     async (req, res, next) => {
     try{
@@ -54,6 +54,5 @@ router.get('/self',
     }
 });
 
-//TODO: The other CRUD routes for jobs
 
 module.exports = router;

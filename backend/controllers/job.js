@@ -1,32 +1,33 @@
 const jobModels = require('../models/job');
-const userController = require('./user');
+const userController = require('./users');
 const sitterController = require('./sitter');
 
-const createJob = async (userID, sitterID, startTime, endTime) => {
+const createJob = async (parentID, sitterID, startTime, endTime) => {
     //TODO: check if the user has all the necessary info to make a job
     //TODO: check that the sitter is able to make the job (based on their schedule)
     //TODO: check that the sitter hasn't blocked the user
     //TODO: delete the time which matches the time of the job (from both the user and sitter's schedule)
     //TODO: create the job
-    const job = await jobModels.createJob(userID, sitterID, startTime, endTime);
-
+    let job = await jobModels.createJob(parentID, sitterID, startTime, endTime);
+    job.error = "";
+    return job;
 };
 
-const getJobs = async (userID, sitterID, date) => {
+const getJobs = async (parentID, sitterID, date) => {
     //TODO: make a query which returns all of the jobs that are associated with the userID and sitterID
-    const filters = await makeFilters(userID, sitterID);
+    const filters = await makeFilters(parentID, sitterID);
     const query = await jobModels.getJobs(filters, date);
     const result = await addUserAndSitterInfo(query);
     return result;
 };
 
-const makeFilters = async (userID, sitterID) => {
+const makeFilters = async (parentID, sitterID) => {
     filters = {};
-    if(userID != null) {
-        filters.userID = userID;
+    if(parentID != null) {
+        filters.parent_id = parentID;
     }
     if(sitterID != null) {
-        filters.sitterID = sitterID;
+        filters.sitter_id = sitterID;
     }
     return filters;
 }
