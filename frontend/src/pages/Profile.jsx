@@ -261,9 +261,10 @@ export const Profile = () => {
                                 <Grid item xs={12}>
                                     <TextField
                                         fullWidth
-                                        defaultValue={imgurl}
+                                        defaultValue={imgurl === 'null' ? '' : imgurl}
                                         name="imgurl"
                                         label="Profile Image Link"
+                                        placeholder='Enter Image Link'
                                         type="imgurl"
                                         id="imgurl"
                                         autoComplete="new-imgurl"
