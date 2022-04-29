@@ -37,17 +37,24 @@ export const Login = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
+    //decide to log in as sitter or parent
+    if (value === 'Parent') {
     userRepository.login(data.get('email'), data.get('password')).then(res => {
       if (res.status <= 201) {
-
         navigate('/dashboard/app');
-        // setTimeout(() => {
-        //   navigate('/dashboard/app');
-        // }, 1000);
       }
     }).catch(err => {
       alert("invalid credentials");
     });
+  } else {
+    userRepository.sitterLogin(data.get('email'), data.get('password')).then(res => {
+      if (res.status <= 201) {
+        navigate('/sitters/app');
+      }
+    }).catch(err => {
+      alert("invalid credentials");
+    });
+  };
   };
 
   return (
