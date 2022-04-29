@@ -47,7 +47,7 @@ export const SitterCards = ({ date }) => {
     // return (<Typography>No sitters available</Typography>); 
     // :
     return (
-        <Container sx={{ mt: 3, display: 'flex', flexWrap: 'wrap', alignContent: 'flex-start' }}>
+        <Container sx={{ mt: 3, display: 'flex', flexWrap: 'wrap', flexDirection: 'row' }}>
             {sitters.map((sitter, index) =>
                 <div key={index}>
                     <Card sx={{ minWidth: 275, m: 2 }}>
@@ -57,15 +57,13 @@ export const SitterCards = ({ date }) => {
                             </Typography>
                             <Typography variant="h5" component="div">
                                 {/* be{bull}nev{bull}o{bull}lent */}
-                                {sitter.firstName} {sitter.lastName}
+                                {sitter.firstname} {sitter.lastname}
                             </Typography>
-                            {/* <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                adjective
-                              </Typography> */}
+                            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                                {sitter.location}
+                            </Typography>
                             <Typography variant="body2">
-                                bio goes here
-                                <br />
-                                {'"a benevolent smile"'}
+                                  ${sitter.price} / hour
                             </Typography>
                         </CardContent>
                         <CardActions>

@@ -37,41 +37,7 @@ export default function DashboardApp() {
   const [value, setValue] = React.useState(new Date());
   const [sitters, setSitters] = React.useState([]);
   const theme = useTheme();
-
-  const userRepository = new UserRepository();
-
-  // const getSitter = (i, sitterList) => {
-  //   var sitterTemp = sitters;
-  //   let currentSitter = sitterList[i];
-  //   sitterTemp[i] = currentSitter;
-  //   setSitters(sitterTemp);
-  // }
-
-  // const loadSitters = () => {
-  //   // const day = value.getFullYear() + '-0' + (value.getMonth() + 1) + '-' + value.getDate();
-  //   const day = '2022-05-25';
-  //   console.log('day: ' + day);
-  //   userRepository.getSittersByDate(day).then(response => {
-  //     console.log('this is the response for getSittersByDate in dashboard app: ')
-  //     console.log(response)
-  //     let allSitters = response.data;
-  //     for (var i in allSitters) {
-  //       getSitter(i, allSitters);
-  //     }
-  //   })
-  //     .catch(error => {
-  //       console.log('error in dashboard app: ')
-  //       console.log(error)
-  //     })
-  // }
-
-
-  // useEffect(() => {
-  //   console.log('in dashboard');
-  //   loadSitters();
-  // }, [value]);
-
-  // setValue(new Date());
+  
   return (
     <Page title="Dashboard">
       <ThemeProvider theme={theme}>

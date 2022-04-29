@@ -28,6 +28,7 @@ export class UserRepository {
         return new Promise((resolve, reject) => {
             axios.post(URL + "/users/register", {firstName: firstname, lastName: lastname, email: email, password: pass})
             .then(response => {
+                sessionStorage.setItem('token', response.data.accessToken);
                 console.log('this is the response: ');
                 resolve(response);
             })

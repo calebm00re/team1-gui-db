@@ -6,6 +6,8 @@ import { styled } from '@mui/material/styles';
 import DashboardNavbar from './DashboardNavbar';
 import DashboardSidebar from './DashboardSidebar';
 import { UserRepository } from '../../api/userRepository';
+import ProfileImg from '../../Assets/images/imgurl.jpg';
+// import { Profile } from '../../pages/Profile';
 
 // ----------------------------------------------------------------------
 
@@ -66,7 +68,7 @@ export default function DashboardLayout() {
   return (
     <RootStyle>
       <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
-      <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} user={user} Imgurl={imgurl}/>
+      <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} user={user} Imgurl={imgurl === 'null' ? ProfileImg : imgurl}/>
       <MainStyle>
         <Outlet />
       </MainStyle>
