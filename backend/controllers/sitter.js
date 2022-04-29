@@ -4,8 +4,13 @@ const userModels = require("../models/users");
 
 //TODO: change this to doesSitterEmailExist
 const doesSitterEmailExist = async (email) => {
- const users = await sitterModel.find({email : email });
- return users.length === 1;
+ const sitters = await sitterModel.find({email : email });
+ return sitters.length === 1;
+}
+
+const doesSitterExist = async (id) => {
+  const sitters = await sitterModel.find({id : id });
+  return sitters.length === 1;
 }
 
 const getSitters = async (firstName, lastName, email, id, location, price, age) =>  {
@@ -148,6 +153,7 @@ const getUpdateFilters = async (firstName, lastName, email, password, salt, imgu
 
 module.exports = {
     doesSitterEmailExist,
+    doesSitterExist,
     getSitters,
     updateSitter
 }

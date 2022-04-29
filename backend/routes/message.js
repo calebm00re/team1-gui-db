@@ -9,15 +9,21 @@ const router = express.Router();
 //The /self is to indicate only messages which pertain to the user are retained (standard for schema in rest of tables)
 router.get('/self', async(req, res, next) => {
     try {
+        //From <Here> to (see below), this should be spun off into a request to the controller about what type of user it is and if they are valid
+        //The result of this should be a tuple with the values of userID and sitterID respectivly (or an error)
         let ifExist;
         let isParent = 1;
 
         // check role of user and if user email exists
-        if (req.user.claims[0] == "user") {
-            ifExist = await userController.doesUserEmailExist(req.user.email);
-        } else {
-            ifExist = await sitterController.doesSitterEmailExist(req.user.email);
+        if (req.user.claims[0] === "user") {
+            ifExist = await userController.doesUserExist(req.user.id); //NOTE: I made a new function that is different than checking the email
+        } else  if (req.user.claims[0] === "sitter") {
+            ifExist = await sitterController.doesSitterExist(req.user.id); //NOTE: I made a new function that is different than checking the email
             isParent = 0;
+        } else {
+            res.status(401).json({
+                message: "Unauthorized"
+            });
         }
 
         if (ifExist) {
@@ -29,7 +35,7 @@ router.get('/self', async(req, res, next) => {
                 parent_id = req.body.otherID;
                 sitter_id = req.user.id;
             }
-            
+            //<Here>
             const result = await messageController.getMessages(parent_id,sitter_id,req.body.is_urgent,req.body.time);
 
             if (result.error == "Missing data") {
@@ -37,6 +43,12 @@ router.get('/self', async(req, res, next) => {
             }
 
             res.status(200).json(result);
+        }
+        //If the user doesn't exist, then we should return an error
+        else {
+            res.status(404).json({
+                message: "User does not exist"
+            });
         }
     } 
     catch (err){
@@ -47,20 +59,20 @@ router.get('/self', async(req, res, next) => {
 
 router.post('/', async(req, res, next) => {
     try{
+        //Same as for the GET route, I think the identfiyng who is who should be done in the controller
         let ifExist;
         let isParent = 1;
 
         // check role of user and if user email exists
         if (req.user.claims[0] == "user") {
-            ifExist = await userController.doesUserEmailExist(req.user.email);
+            ifExist = await userController.doesUserExist(req.user.id); //NOTE: I made a new function that is different than checking the email
         } else {
-            ifExist = await sitterController.doesSitterEmailExist(req.user.email);
+            ifExist = await sitterController.doesSitterExist(req.user.id); //NOTE: I made a new function that is different than checking the email
             isParent = 0;
         }
 
         // check if user/sitter exists in database
         if (ifExist) {
-            //TODO: again, smarter way to do this using the roles in the token of the user
             let parent_id = req.user.id;
             let sitter_id = req.body.otherID;
             
@@ -71,6 +83,7 @@ router.post('/', async(req, res, next) => {
                 sitter_id = req.user.id;
             }
 
+            //adjust this call by droping the timestamp. Do we really want frontend (or trust some random user) to send this?
             const result = await messageController.postMessage(parent_id, sitter_id, req.body.message,req.body.is_urgent,isParent, req.body.timestamp);
             
             // check possible errors

@@ -20,8 +20,10 @@ const getMessages = async(parentId,sitterId,isUrgent,timeStamp) =>{
 }
 
 //TODO: add in the checks descirbed in the route file and make the post controller in a similar format to the other post controllers
+//Do not pass in the time stamp. This function will generate one (based on current time) and fill it
 const postMessage = async (parentId,sitterId,message,isUrgent,parentSent,timeStamp) => {
     try{
+        //The stories assert that the isUrgent is optional and set by default to not urgent
         if (parentId == null || sitterId == null || message == null ||isUrgent == null || parentSent == null || timeStamp == null) {
             return {error: "Missing data"};
         
@@ -36,6 +38,10 @@ const postMessage = async (parentId,sitterId,message,isUrgent,parentSent,timeSta
     }
 }
 
+//TODO: add the getIDs function which figures out the role of the token holder, if they and otherID exist, and returns a tuple with the (userID, sitterID)
+
+//There should probably be more than one of these.
+//See the way that I do it in the other controllers
 const makeFilter = async(parentId,sitterId,message,isUrgent,parentSent,timeStamp) => {
     const filters = {};
 
