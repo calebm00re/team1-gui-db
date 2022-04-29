@@ -20,6 +20,7 @@ import { Box } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { SitterJobs } from '../components/SitterJobs';
 import { SitterSchedule } from '../components/SitterSchedule';
+import { AlertCreateShift } from '../components/AlertCreateShift';
 
 // import Iconify from '../components/Iconify';
 // sections
@@ -39,6 +40,7 @@ import { SitterSchedule } from '../components/SitterSchedule';
 
 export const SitterApp = () => {
   const [value, setValue] = React.useState(new Date());
+  const [open, setOpen] = React.useState(false);
   const [jobs, setJobs] = React.useState([]);
   const theme = useTheme();
 
@@ -50,9 +52,15 @@ export const SitterApp = () => {
             Hi, welcome back
           </Typography>
           <Grid container justifyContent={'flex-end'}>
-            <Button variant="contained" sx={{ mb: 2, justifyContent: 'flex-end' }} endIcon={<AddIcon />}>
+            <Button
+              variant="contained"
+              sx={{ mb: 2, justifyContent: 'flex-end' }}
+              endIcon={<AddIcon />}
+              onClick={() => setOpen(true)}
+            >
               Add Shift
             </Button>
+            <AlertCreateShift open={open} setOpen={setOpen} />
           </Grid>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6} lg={4}>
