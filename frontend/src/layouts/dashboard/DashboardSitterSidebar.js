@@ -13,7 +13,7 @@ import Logo from '../../components/Logo';
 import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
 import ProfileImg from '../../Assets/images/imgurl.jpg';
-import navConfig from './NavConfig';
+import { sitterConfig } from './NavConfig';
 
 // ----------------------------------------------------------------------
 
@@ -70,7 +70,7 @@ export default function DashboardSitterSidebar({ isOpenSidebar, onCloseSidebar, 
       }}
     >
       <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
-        Let's get your 👶 sat
+        Let's sit some 👶s!
       </Box>
 
       <Box sx={{ mb: 5, mx: 2.5 }}>
@@ -89,7 +89,7 @@ export default function DashboardSitterSidebar({ isOpenSidebar, onCloseSidebar, 
         {/* </Link> */}
       </Box>
 
-      <NavSection navConfig={navConfig} />
+      <NavSection navConfig={sitterConfig} />
 
       <Box sx={{ flexGrow: 1 }} />
 

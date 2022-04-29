@@ -88,6 +88,16 @@ export const SitterLayout = () => {
 
   useEffect(() => {
     userRepository.getSitterInfo().then(response => {
+      setUser(response.data.firstname + ' ' + response.data.lastname);
+      sessionStorage.setItem('firstName', response.data.firstname);
+      sessionStorage.setItem('lastName', response.data.lastname);
+      sessionStorage.setItem('email', response.data.email);
+      sessionStorage.setItem('xp', response.data.experience);
+      sessionStorage.setItem('imgurl', response.data.imgurl);
+      setImgurl(response.data.imgurl);
+      sessionStorage.setItem('location', response.data.location);
+      sessionStorage.setItem('price', response.data.price);
+      sessionStorage.setItem('age', response.data.age);
     }).catch(error => {
     });
     // userRepository.getInfo().then(response => {

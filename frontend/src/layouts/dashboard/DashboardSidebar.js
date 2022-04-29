@@ -13,7 +13,7 @@ import Logo from '../../components/Logo';
 import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
 import ProfileImg from '../../Assets/images/imgurl.jpg';
-import navConfig from './NavConfig';
+import { navConfig } from './NavConfig';
 
 // ----------------------------------------------------------------------
 
