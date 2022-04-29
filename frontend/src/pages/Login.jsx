@@ -30,25 +30,6 @@ export const Login = () => {
     setValue(event.target.value);
   };
 
-  // const delay = ms => new Promise(res => setTimeout(res, ms));
-
-  // const get_info = async () => {
-  //   userRepository.getInfo()
-  //     .then(response => {
-  //       console.log('this is the response for get_info: ')
-  //       console.log(response)
-  //       sessionStorage.setItem('firstName', response.data.firstName);
-  //       sessionStorage.setItem('lastName', response.data.lastName);
-  //       sessionStorage.setItem('email', response.data.email);
-  //       await delay(5000);
-  //     })
-  //     .catch(error => {
-  //       console.log('this is the error for get_info: ')
-  //       console.log(error)
-  //     });
-  // }
-
-
   const userRepository = new UserRepository();
   const navigate = useNavigate();
 
@@ -58,22 +39,6 @@ export const Login = () => {
 
     userRepository.login(data.get('email'), data.get('password')).then(res => {
       if (res.status <= 201) {
-        // userRepository.getInfo().then(response => {
-        //   console.log('this is the response for get_info: ')
-        //   console.log(response)
-        //   sessionStorage.setItem('firstName', response.data.firstName);
-        //   sessionStorage.setItem('lastName', response.data.lastName);
-        //   sessionStorage.setItem('email', response.data.email);
-        //   sessionStorage.setItem('bio', response.data.bio);
-        //   sessionStorage.setItem('imgurl', response.data.imgurl);
-        //   sessionStorage.setItem('minage', response.data.minKidAge);
-        //   sessionStorage.setItem('maxage', response.data.maxKidAge);
-        //   sessionStorage.setItem('startTime', response.data.startWorkTime);
-        //   sessionStorage.setItem('endTime', response.data.endWorkTime);
-        // }).catch(error => {
-        //   console.log('this is the error for get_info: ')
-        //   console.log(error)
-        // });
 
         navigate('/dashboard/app');
         // setTimeout(() => {

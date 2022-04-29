@@ -28,6 +28,7 @@ export class UserRepository {
         return new Promise((resolve, reject) => {
             axios.post(URL + "/users/register", {firstName: firstname, lastName: lastname, email: email, password: pass})
             .then(response => {
+                sessionStorage.setItem('token', response.data.accessToken);
                 console.log('this is the response: ');
                 resolve(response);
             })
@@ -108,6 +109,22 @@ export class UserRepository {
             })
             .catch(error => {
                 console.log('this is the error for get/sitters');
+                console.log(error);
+                reject(error);
+            })
+        })
+    }
+
+    getSittersByDate(day) {
+        return new Promise((resolve, reject) => {
+            axios.get(URL + "/sitter_schedule/", { params: {date: day}, headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
+            .then(response => {
+                console.log('this is the response for get/sitters by date');
+                console.log(response);
+                resolve(response);
+            })
+            .catch(error => {
+                console.log('this is the error for get/sitters by date');
                 console.log(error);
                 reject(error);
             })

@@ -44,9 +44,8 @@ const createNewUser = async (firstName, lastName, email, password) => {
         }
     }
 
-    const imgurl = 'https://www.personality-insights.com/wp-content/uploads/2017/12/default-profile-pic-e1513291410505.jpg';
 
-    const result = await userModels.createNewUser(firstName, lastName, email, hashedPassword,salt, imgurl);
+    const result = await userModels.createNewUser(firstName, lastName, email, hashedPassword,salt, null);
     return result;
 }
 
@@ -81,9 +80,9 @@ const createNewSitter = async(firstName, lastName, email, password) => {
         }
     }
 
-    const imgurl = 'https://www.personality-insights.com/wp-content/uploads/2017/12/default-profile-pic-e1513291410505.jpg';
+    //adjusted to be null at request of Caleb
 
-    const result = await sitterModels.createNewUser(firstName, lastName, email, hashedPassword,salt, imgurl);
+    const result = await sitterModels.createNewUser(firstName, lastName, email, hashedPassword,salt, null);
     return result;
 }
 

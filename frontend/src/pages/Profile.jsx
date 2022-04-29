@@ -16,7 +16,6 @@ import { useNavigate } from "react-router-dom";
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import { AlertDelete } from '../components/AlertDelete';
-
 import ProfileImg from '../Assets/images/imgurl.jpg';
 import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
@@ -79,18 +78,19 @@ export const Profile = () => {
         });
     };
 
-    const handleDelete = async () => {
-        userRepository.deleteUser().then(res => {
-            console.log('this is the response for delete_user: ')
-            console.log(res)
-            alert('Your account has been deleted!');
-            navigate('/landing');
-        }).catch(error => {
-            console.log('this is the error for delete_user: ')
-            console.log(error)
-            alert('There was an error deleting your account, please try again.');
-        });
-    };
+
+    // const handleDelete = async () => {
+    //     userRepository.deleteUser().then(res => {
+    //         console.log('this is the response for delete_user: ')
+    //         console.log(res)
+    //         alert('Your account has been deleted!');
+    //         navigate('/landing');
+    //     }).catch(error => {
+    //         console.log('this is the error for delete_user: ')
+    //         console.log(error)
+    //         alert('There was an error deleting your account, please try again.');
+    //     });
+    // };
 
     return (
         <Page title="Profile">
@@ -261,9 +261,10 @@ export const Profile = () => {
                                 <Grid item xs={12}>
                                     <TextField
                                         fullWidth
-                                        defaultValue={imgurl}
+                                        defaultValue={imgurl === 'null' ? '' : imgurl}
                                         name="imgurl"
                                         label="Profile Image Link"
+                                        placeholder='Enter Image Link'
                                         type="imgurl"
                                         id="imgurl"
                                         autoComplete="new-imgurl"
