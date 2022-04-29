@@ -11,14 +11,12 @@ router.get('/self', async(req, res, next) => {
     try {
         //From <Here> to (see below), this should be spun off into a request to the controller about what type of user it is and if they are valid
         //The result of this should be a tuple with the values of userID and sitterID respectivly (or an error)
-        let ifExist;
+        let ifExist; //NOTE: This is a problem for the future, but, the issue of existance as a problem can be resolved by implementing refresh tokens and nullifing tokens at logout
         let isParent = 1;
 
         // check role of user and if user email exists
         if (req.user.claims[0] === "user") {
-            ifExist = await userController.doesUserExist(req.user.id); //NOTE: I made a new function that is different than checking the email
         } else  if (req.user.claims[0] === "sitter") {
-            ifExist = await sitterController.doesSitterExist(req.user.id); //NOTE: I made a new function that is different than checking the email
             isParent = 0;
         } else {
             res.status(401).json({
@@ -60,15 +58,18 @@ router.get('/self', async(req, res, next) => {
 router.post('/', async(req, res, next) => {
     try{
         //Same as for the GET route, I think the identfiyng who is who should be done in the controller
-        let ifExist;
+        let ifExist; //NOTE: This is a problem for the future, but, the issue of existance as a problem can be resolved by implementing refresh tokens and nullifing tokens at logout
         let isParent = 1;
 
         // check role of user and if user email exists
         if (req.user.claims[0] == "user") {
-            ifExist = await userController.doesUserExist(req.user.id); //NOTE: I made a new function that is different than checking the email
-        } else {
-            ifExist = await sitterController.doesSitterExist(req.user.id); //NOTE: I made a new function that is different than checking the email
+            isParent = 1;
+        } else  if (req.user.claims[0] == "sitter") {
             isParent = 0;
+        } else {
+            res.status(401).json({
+                message: "Unauthorized"
+            });
         }
 
         // check if user/sitter exists in database

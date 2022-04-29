@@ -6,10 +6,6 @@ const doesUserEmailExist = async(email) => {
     return sitters.length === 1;
 }
 
-const doesUserExist = async(id) => {
-    const users = await userModels.find({id: id});
-    return users.length === 1;
-}
 
 const getUsers = async(firstName, lastName, email, id , location, startWorkTime, endWorkTime, minKidAge, maxKidAge, numKids) => {
     try {
@@ -173,7 +169,6 @@ const deleteUser = async(id) => {
 
 module.exports = {
     doesUserEmailExist,
-    doesUserExist,
     getUsers,
     deleteUser,
     updateUser

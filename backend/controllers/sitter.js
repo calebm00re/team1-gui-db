@@ -8,10 +8,6 @@ const doesSitterEmailExist = async (email) => {
  return sitters.length === 1;
 }
 
-const doesSitterExist = async (id) => {
-  const sitters = await sitterModel.find({id : id });
-  return sitters.length === 1;
-}
 
 const getSitters = async (firstName, lastName, email, id, location, price, age) =>  {
     try {
@@ -153,7 +149,6 @@ const getUpdateFilters = async (firstName, lastName, email, password, salt, imgu
 
 module.exports = {
     doesSitterEmailExist,
-    doesSitterExist,
     getSitters,
     updateSitter
 }
