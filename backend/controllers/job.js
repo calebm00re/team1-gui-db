@@ -8,6 +8,7 @@ const createJob = async (userID, sitterID, startTime, endTime) => {
     //TODO: check that the sitter hasn't blocked the user
     //TODO: delete the time which matches the time of the job (from both the user and sitter's schedule)
     //TODO: create the job
+    const job = await jobModels.createJob(userID, sitterID, startTime, endTime);
 
 };
 
