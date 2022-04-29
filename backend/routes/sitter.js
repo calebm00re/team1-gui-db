@@ -39,7 +39,7 @@ router.get('/self', authenticateWithClaims("sitter"),
 router.put('/self', authenticateWithClaims("sitter"),
     async (req, res, next) => {
     try {
-        const result = await sitterController.updateSitter(req.user.id, req.body.firstName, req.body.lastName, req.body.email, req.body.password, req.body.location, req.body.price, req.body.age, req.body.experience, req.body.image);
+        const result = await sitterController.updateSitter(req.user.id, req.body.firstName, req.body.lastName, req.body.email, req.body.password, req.body.location, req.body.price, req.body.age, req.body.experience, req.body.imgurl);
         if (result.error === "User account Does not exist") { //user account may be deleted between when token was issued and when it is used
             res.status(400).json({message: result.error});
         } else if (result.error === "No changes entered") {
