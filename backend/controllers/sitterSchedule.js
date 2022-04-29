@@ -42,7 +42,7 @@ const makeFilters = async (id, eventID) => {
 const addSitterInfo = async (query) => {
     result = query;
     //the first step is iterating through each result of the query
-    for(i = 0; i < result.length; i++){
+    for(let i = 0; i < result.length; i++){
         //the second step is getting the sitter id from the result
         const sitterID = result[i].sitter_id;
         //the third step is getting the sitter name from the sitter controller
