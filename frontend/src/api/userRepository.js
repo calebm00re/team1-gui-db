@@ -96,6 +96,27 @@ export class UserRepository {
         }
     )}
 
+    putSitterInfo(firstname, lastname, location, age, price, xp, pass, imgurl){
+        return new Promise((resolve, reject) => {
+            axios.put(URL + "/sitter/self", {firstName: firstname, lastName: lastname, location: location, age: age, price: price, experience: xp, password: pass, imgurl: imgurl},
+             { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
+            .then(response => {
+                console.log('this is the response for putSitterInfo: ');
+                console.log(response);
+                resolve(response);
+            })
+            .catch(error => {
+                console.log('this is the error for putSitterInfo: ');
+                console.log(error);
+                reject(error);
+            })
+            .finally(() => {
+                console.log('im in this');
+            });
+        }
+    )
+    }
+
     deleteUser() {
         return new Promise((resolve, reject) => {
             axios.delete(URL + "/users/self", { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
@@ -106,6 +127,25 @@ export class UserRepository {
             })
             .catch(error => {
                 console.log('this is the error for delete user in user repo: ');
+                console.log(error);
+                reject(error);
+            })
+            .finally(() => {
+                console.log('im in this');
+            });
+        }
+    )}
+
+    deleteSitter() {
+        return new Promise((resolve, reject) => {
+            axios.delete(URL + "/sitter/self", { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
+            .then(response => {
+                console.log('this is the response for deleteSitter: ');
+                console.log(response);
+                resolve(response);
+            })
+            .catch(error => {
+                console.log('this is the error for deleteSitter: ');
                 console.log(error);
                 reject(error);
             })

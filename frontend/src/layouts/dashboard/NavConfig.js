@@ -5,7 +5,7 @@ import Iconify from '../../components/Iconify';
 
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 
-const navConfig = [
+export const navConfig = [
   {
     title: 'Dashboard',
     path: '/dashboard/app',
@@ -43,4 +43,22 @@ const navConfig = [
   // },
 ];
 
-export default navConfig;
+export const sitterConfig = [
+  {
+    title: 'Dashboard',
+    path: '/sitters/app',
+    icon: getIcon('eva:cube-outline'),
+  },
+  {
+    title: 'Profile',
+    path: '/sitters/profile',
+    icon: getIcon('eva:person-outline'),
+  },
+  {
+    title: 'Logout',
+    path: '/landing',
+    icon: getIcon('eva:log-out-outline'),
+  },
+];
+
+// export default navConfig;
