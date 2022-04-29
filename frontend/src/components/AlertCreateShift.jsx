@@ -18,7 +18,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 export const AlertCreateShift = ({ open, setOpen }) => {
-    const [location, setLocation] = React.useState('');
     const [startTime, setStartTime] = React.useState('');
     const [endTime, setEndTime] = React.useState('');
     const [value, setValue] = React.useState(null);
@@ -28,6 +27,13 @@ export const AlertCreateShift = ({ open, setOpen }) => {
     const navigate = useNavigate();
 
     const handleSubmit = () => {
+        const day = (value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate());
+        const stime = day + ' ' + startTime + ':00';
+        const etime = day + ' ' + endTime + ':00';
+        userRepository.createShift(stime, etime).then(() => {
+        }).catch(() => {
+            console.log('caught a create shift error in popup')
+        });
         setOpen(false);
     };
 
@@ -47,33 +53,10 @@ export const AlertCreateShift = ({ open, setOpen }) => {
                     {"New Shift"}
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
+                    <DialogContentText id="alert-dialog-description" sx={{ mb: 2 }}>
                         Create your new Shift!
                     </DialogContentText>
                     <Grid container spacing={3}>
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                id="location"
-                                label={'Location'}
-                                defaultValue={location == 'null' ? '' : location}
-                                name="location"
-                                placeholder='Enter Location'
-                                autoComplete="location"
-                            />
-                        </Grid>
-                        {/* <Grid item xs={12} sm={6}>
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DatePicker
-                                    label="Date"
-                                    value={value}
-                                    onChange={(newValue) => {
-                                        setValue(newValue);
-                                    }}
-                                    renderInput={(params) => <TextField {...params} />}
-                                />
-                            </LocalizationProvider>
-                        </Grid> */}
                         <Grid item xs={12} sm={6}>
                             <FormControl fullWidth>
                                 <InputLabel id="starttime">Start Work Time</InputLabel>
@@ -121,8 +104,8 @@ export const AlertCreateShift = ({ open, setOpen }) => {
                     </Grid>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleSubmit}>Create</Button>
-                    <Button onClick={handleClose} color="primary" autofocus>
+                    <Button onClick={handleSubmit} autoFocus>Create</Button>
+                    <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
                 </DialogActions>

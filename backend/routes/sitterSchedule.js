@@ -99,5 +99,5 @@ router.delete('/self/:eventID', authenticateWithClaims("sitter"),
             });
         }
     });
-
+    
 module.exports = router;
