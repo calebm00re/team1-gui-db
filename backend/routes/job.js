@@ -14,9 +14,7 @@ router.post('/self', authenticateWithClaims("user"),
             res.status(400).json({message: job.error.toString()});
         } else if(job.error === "sitter not available") {
             res.status(400).json({message: job.error.toString()});
-        } else if(job.error === "sitter not found") {
-            res.status(400).json({message: job.error.toString()});
-        } else if(job.error === "sitter blocked"){
+        }  else if(job.error === "sitter blocked"){
             res.status(400).json({message: job.error.toString()});
         } else {
             //displays the job
