@@ -4,7 +4,7 @@ const getJobs = async (userID, sitterID, date) => {
     //TODO: make a query which returns all of the jobs that are associated with the userID and sitterID
     const filters = await makeFilters(userID, sitterID);
     const query = await jobModels.getJobs(filters, date);
-    const result = await addUSerAndSitterNames(query);
+    const result = await addUSerAndSitterInfo(query);
 };
 
 const makeFilters = async (userID, sitterID) => {
@@ -18,7 +18,7 @@ const makeFilters = async (userID, sitterID) => {
     return filters;
 }
 
-const addUSerAndSitterNames = async (query) => {
+const addUSerAndSitterInfo = async (query) => {
     result = query;
 
 };
