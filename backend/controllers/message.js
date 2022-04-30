@@ -31,22 +31,6 @@ const checkRoleValid = async (role,id1,id2) => {
     }
 }
 
-// get all messages from user and sitter
-const getMessages = async(parentId,sitterId,isUrgent) =>{
-    try {
-        // check if any param vars are null
-        if (parentId == null || sitterId == null || isUrgent == null) {
-            return {error: "Missing data"};
-        }
-
-        const filter = await makeFilter(parentId,sitterId,null,isUrgent,null);
-        const result = await messageModels.getMessagesFromUser(filter);
-        return result;
-    } catch (error) {
-        console.log(error);
-    }
-}
-
 // post new message between sitter and user
 const postMessage = async (parentId,sitterId,message,parentSent, isUrgent) => {
     try{
@@ -88,6 +72,23 @@ const makeFilter = async(parentId,sitterId,message,isUrgent,parentSent) => {
         filters.parent_sent = parentSent;
     }
     return filters;
+}
+
+
+// get all messages from user and sitter
+const getMessages = async(parentId,sitterId,isUrgent) =>{
+    try {
+        // check if any param vars are null
+        if (parentId == null || sitterId == null || isUrgent == null) {
+            return {error: "Missing data"};
+        }
+
+        const filter = await makeFilter(parentId,sitterId,null,isUrgent,null);
+        const result = await messageModels.getMessagesFromUser(filter);
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 module.exports = {
