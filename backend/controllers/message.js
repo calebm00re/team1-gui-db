@@ -31,6 +31,7 @@ const checkRoleValid = async (role,id1,id2) => {
     }
 }
 
+// get all messages from user and sitter
 const getMessages = async(parentId,sitterId,isUrgent) =>{
     try {
         // check if any param vars are null
@@ -46,18 +47,15 @@ const getMessages = async(parentId,sitterId,isUrgent) =>{
     }
 }
 
-//TODO: add in the checks descirbed in the route file and make the post controller in a similar format to the other post controllers
-const postMessage = async (parentId,sitterId,message,isUrgent,parentSent) => {
+// post new message between sitter and user
+const postMessage = async (parentId,sitterId,message,parentSent) => {
     try{
-        //The stories assert that the isUrgent is optional and set by default to not urgent
-        if (parentId == null || sitterId == null || message == null ||isUrgent == null || parentSent == null) {
+        if (parentId == null || sitterId == null || message == null || parentSent == null) {
             return {error: "Missing data"};
         }
 
-        const result = await messageModels.postMessage(parentId,sitterId,message,isUrgent,parentSent);
+        const result = await messageModels.postMessage(parentId,sitterId,message,parentSent);
         result.error = null;
-        //mainly, the above means turning the call into having the one parameter updateFilters
-        //TODO: also, you need to take note that while some of the items are required above, others are not.
         return result;
     }
     catch(error){
