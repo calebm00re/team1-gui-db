@@ -13,6 +13,7 @@ const blockRoutes = require('./routes/block') //this includes block into the fil
 const sitterRoutes = require('./routes/sitter') //this includes sitter into the files
 const sitterScheduleRoutes = require('./routes/sitterSchedule') //this includes sitter_schedule into the files
 const parentScheduleRoutes = require('./routes/parentSchedule') //this includes parent_schedule into the files
+const jobRoutes = require('./routes/job') //this includes job into the files
 
 
 //sets up middleware
@@ -47,6 +48,7 @@ app.use('/block', authenticateJWT , blockRoutes); //this makes blockRoutes a rou
 app.use('/sitter', authenticateJWT, sitterRoutes); //this makes sitterRoutes a route file
 app.use('/sitter_schedule', authenticateJWT, sitterScheduleRoutes); //this makes sitterScheduleRoutes a route file
 app.use('/parent_schedule', authenticateJWT, parentScheduleRoutes); //this makes parentScheduleRoutes a route file
+app.use('/job', authenticateJWT, jobRoutes); //this makes jobRoutes a route file
 
 
 

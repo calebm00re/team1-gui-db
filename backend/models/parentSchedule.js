@@ -42,9 +42,24 @@ const deleteParentSchedule = async (eventID) => {
     return result;
 };
 
+
+const removeFromParentSchedule = async (parentID, scheduleStartTime, scheduleEndTime) => {
+    //a schedule should be removed if and only if
+    const result = await knex(parentSchedule)
+        .where(function() {
+            this.where('parent_id', parentID)
+                //(a) event_start is before schedule_end
+                .andWhere('start_time', '<', scheduleEndTime)
+                //(b) event_end is after schedule_start
+                .andWhere('end_time', '>', scheduleStartTime);
+        })
+        .del();
+};
+
 module.exports = {
     getParentSchedules,
     updateParentSchedule,
     createParentSchedule,
-    deleteParentSchedule
+    deleteParentSchedule,
+    removeFromParentSchedule
 };
