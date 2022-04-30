@@ -7,16 +7,17 @@ const getMessagesFromUser = async(filter) => {
         .select('*');
 }
 
-const postMessage = async(parent_id,sitter_id,message,is_urgent,parent_sent,timeStamp)=>{
+const postMessage = async(parent_id,sitter_id,message,parent_sent) => {
     const result = await knex(MESSAGE_TABLE)
-        .insert(
+        .insert({
             parent_id,
             sitter_id,
             message,
-            is_urgent,
+            is_urgent: 0,
             parent_sent,
-            timeStamp
-        );
+            timeStamp: new Date().toISOString()
+        });
+
     return result;
 }
 
