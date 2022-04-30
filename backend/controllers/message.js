@@ -48,13 +48,17 @@ const getMessages = async(parentId,sitterId,isUrgent) =>{
 }
 
 // post new message between sitter and user
-const postMessage = async (parentId,sitterId,message,parentSent) => {
+const postMessage = async (parentId,sitterId,message,parentSent, isUrgent) => {
     try{
         if (parentId == null || sitterId == null || message == null || parentSent == null) {
             return {error: "Missing data"};
         }
 
-        const result = await messageModels.postMessage(parentId,sitterId,message,parentSent);
+        if(isUrgent == null){
+            isUrgent = 0;
+        }
+
+        const result = await messageModels.postMessage(parentId,sitterId,message,parentSent, isUrgent);
         result.error = null;
         return result;
     }

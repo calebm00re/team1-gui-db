@@ -10,13 +10,13 @@ const router = express.Router();
 //The /self is to indicate only messages which pertain to the user are retained (standard for schema in rest of tables)
 router.get('/self', async(req, res, next) => {
     try {
-        const ifExist = await messageController.checkRoleValid(req.user.claims[0],req.user.id,req.body.otherID);
+        const roleCheckResult = await messageController.checkRoleValid(req.user.claims[0],req.user.id,req.body.otherID);
 
         // check if role is valid and if user/sitter exists in database
-        if (ifExist.error == "Missing data" || ifExist.error == "Unauthorized") {
-            res.status(400).json({message: ifExist.error});
+        if (roleCheckResult.error == "Missing data" || roleCheckResult.error == "Unauthorized") {
+            res.status(400).json({message: roleCheckResult.error});
         } else {
-            const result = await messageController.getMessages(ifExist.parentId,ifExist.sitterId,req.body.is_urgent);
+            const result = await messageController.getMessages(roleCheckResult.parentId,roleCheckResult.sitterId,req.body.is_urgent);
 
             // check for possible errors
             if (result.error != null) {
@@ -32,16 +32,16 @@ router.get('/self', async(req, res, next) => {
     }
 })
 
-// POST / creates a new message between sitter and parent
-router.post('/', async(req, res, next) => {
+// POST /self creates a new message between sitter and parent
+router.post('/self', async(req, res, next) => {
     try {
-        const ifExist = await messageController.checkRoleValid(req.user.claims[0],req.user.id,req.body.otherID);
+        const roleCheckResult = await messageController.checkRoleValid(req.user.claims[0],req.user.id,req.body.otherID);
 
         // check if role is valid and if user/sitter exists in database
-        if (ifExist.error != null) {
-            res.status(400).json({message: ifExist.error});
+        if (roleCheckResult.error != null) {
+            res.status(400).json({message: roleCheckResult.error});
         } else {
-            const result = await messageController.postMessage(ifExist.parentId,ifExist.sitterId,req.body.message,ifExist.isParent);
+            const result = await messageController.postMessage(roleCheckResult.parentId,roleCheckResult.sitterId,req.body.message,roleCheckResult.isParent, req.body.isUrgent);
             
             // check possible errors
             if (result.error != null) {
