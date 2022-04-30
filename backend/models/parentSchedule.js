@@ -47,7 +47,7 @@ const removeFromParentSchedule = async (parentID, scheduleStartTime, scheduleEnd
     //a schedule should be removed if and only if
     const result = await knex(parentSchedule)
         .where(function() {
-            this.where('sitter_id', parentID)
+            this.where('parent_id', parentID)
                 //(a) event_start is before schedule_end
                 .andWhere('start_time', '<', scheduleEndTime)
                 //(b) event_end is after schedule_start

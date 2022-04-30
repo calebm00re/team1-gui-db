@@ -21,7 +21,7 @@ const createJob = async (parentID, sitterID, startTime, endTime) => {
             error: "sitter blocked"
         }
     }
-    //TODO: delete the time which matches the time of the job (from both the user and sitter's schedule)
+    //delete the time which matches the time of the job (from both the user and sitter's schedule)
     await sitterScheduleModels.removeFromSitterSchedule(sitterID, startTime, endTime);
     await parentScheduleModels.removeFromParentSchedule(parentID, startTime, endTime);
     //create the job
