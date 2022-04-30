@@ -15,29 +15,21 @@ import { UserRepository } from '../api/userRepository.js'
 import { CardContent } from '@mui/material';
 import { CardActions } from '@mui/material';
 import { Button } from '@mui/material';
-import { SitterCards } from '../components/SitterCards';
-
-// import Iconify from '../components/Iconify';
-// sections
-// import {
-//   AppTasks,
-//   AppNewsUpdate,
-//   AppOrderTimeline,
-//   AppCurrentVisits,
-//   AppWebsiteVisits,
-//   AppTrafficBySite,
-//   AppWidgetSummary,
-//   AppCurrentSubject,
-//   AppConversionRates,
-// } from '../sections/@dashboard/app';
-
-// ----------------------------------------------------------------------
+import { Box } from '@mui/material';
+// import { SitterCards } from '../components/SitterCards';
 
 export default function DashboardApp() {
   const [value, setValue] = React.useState(new Date());
   const [sitters, setSitters] = React.useState([]);
+  const userRepository = new UserRepository();
   const theme = useTheme();
-  
+
+  useEffect(() => {
+    const day = value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate();
+    console.log("Day: " + day);
+    userRepository.getSittersByDate(day).then(setSitters).catch(err => console.error(err));
+  }, [value]);
+
   return (
     <Page title="Dashboard">
       <ThemeProvider theme={theme}>
@@ -76,7 +68,36 @@ export default function DashboardApp() {
             <Grid item xs={12} md={12} lg={12}>
               <Card >
                 <CardHeader title={(new Date().toDateString() == value.toDateString()) ? 'Browse for Today' : `Browse for ${value.toDateString()}`} />
-                  <SitterCards date={value} />
+                <div className='m-3'>
+                  {sitters.length == 0 ?
+                    <div> No sitters found for this date </div>
+                    :
+                  <Grid container rowSpacing={1} columnSpacing={2}>
+                    {sitters.map((sitter, index) => (
+                      <Grid item xs={12} md={6} lg={4} key={index}>
+                        <Card sx={{ height: 275, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                          <CardContent>
+                            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                              {sitter.start_time.substring(11, 16)} - {sitter.end_time.substring(11, 16)}
+                              {/* <Button className="m-1" variant="contained" size="small">Book</Button> */}
+                            </Typography>
+                            <Typography variant="h5" component="div">
+                              {sitter.firstname} {sitter.lastname}
+                            </Typography>
+                            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                              ${sitter.price} / hr
+                            </Typography>
+                            <Typography variant="body2">
+                              {sitter.location}
+                              <br/>
+                              {sitter.experience}
+                            </Typography>
+                          </CardContent>
+                            <Button sx={{ alignSelf: 'flex-end' }}className="m-2" variant="contained" size="small">Book</Button>
+                        </Card>
+                      </Grid>))}
+                  </Grid>}
+                </div>
               </Card>
             </Grid>
           </Grid>

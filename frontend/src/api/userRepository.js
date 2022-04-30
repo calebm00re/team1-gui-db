@@ -176,8 +176,8 @@ export class UserRepository {
             axios.get(URL + "/sitter_schedule/", { params: {date: day}, headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
             .then(response => {
                 console.log('this is the response for get/sitters by date');
-                console.log(response);
-                resolve(response);
+                console.log(response.data);
+                resolve(response.data);
             })
             .catch(error => {
                 console.log('this is the error for get/sitters by date');
@@ -246,4 +246,22 @@ export class UserRepository {
             });
         }
     )}
+
+    getJobs(day) {
+        return new Promise((resolve, reject) => {
+            axios.get(URL + "/job/self", { params: {date: day}, headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
+            .then(response => {
+                console.log('this is the response for getJobs: ');
+                console.log(response);
+                resolve(response);
+            }).catch(error => {
+                console.log('this is the error for getJobs: ');
+                console.log(error);
+                reject(error);
+            })
+            .finally(() => {
+                console.log('im in the finally for getjobs');
+            })
+        })
+    }
 }

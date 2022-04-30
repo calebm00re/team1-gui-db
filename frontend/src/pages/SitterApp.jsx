@@ -43,6 +43,19 @@ export const SitterApp = () => {
   const [open, setOpen] = React.useState(false);
   const [jobs, setJobs] = React.useState([]);
   const theme = useTheme();
+  const usserRepository = new UserRepository();
+
+  useEffect(() => {
+    const day = value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate();
+    usserRepository.getJobs(day).then(response => {
+      console.log('this is the response for getJobs in sitter app: ')
+      console.log(response)
+      setJobs(response.data);
+    }).catch(error => {
+      console.log('error in sitter app: ')
+      console.log(error)
+    })
+  }, [])
 
   return (
     <Page title="Dashboard">
@@ -83,8 +96,18 @@ export const SitterApp = () => {
               <Card>
                 <CardHeader title={(new Date().toDateString() == value.toDateString()) ? 'Jobs for Today' : `Jobs for ${value.toDateString()}`} />
                 <Typography variant="body1" sx={{ m: 5 }}>
-                  {/* conditional do you have plans today, if so show them otherwise say no plans */}
-                  Looks like there is nothing scheduled for today, head down to the browse to look for a sitter or head over to the sitters tab to have a search
+                  {jobs.length !== 0 ? jobs.map((job, index) => {
+                    return (
+                      <Card>
+                        <CardContent>
+                          <Typography variant="body1" sx={{ m: 5 }}>
+                            {job.user.firstName} {job.user.lastName}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    )}) 
+                  :
+                  'no jobs scheduled today'}
                 </Typography>
               </Card>
             </Grid>
