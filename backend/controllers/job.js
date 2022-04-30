@@ -1,7 +1,11 @@
 const jobModels = require('../models/job');
 const userController = require('./users');
 const sitterController = require('./sitter');
+const sitterScheduleModels = require('../models/sitterSchedule');
+const parentScheduleModels = require('../models/parentSchedule');
 const blockController = require('./block');
+
+
 
 const createJob = async (parentID, sitterID, startTime, endTime) => {
     //check if the user has all the necessary info to make a job
@@ -10,14 +14,7 @@ const createJob = async (parentID, sitterID, startTime, endTime) => {
             error: "missing info"
         }
     }
-    //TODO: check that the sitter is able to make the job (based on their schedule)
-    const isSitterAvailable = true;// await isSitterAvailable(sitterID, startTime, endTime);
-    if(!isSitterAvailable) {
-        return {
-            error: "sitter not available"
-        }
-    }
-    //TODO: check that the sitter hasn't blocked the user
+    //check that the sitter hasn't blocked the user
     const isParentBlocked = await blockController.hasBlocked(parentID, sitterID);
     if(isParentBlocked) {
         return {
@@ -25,25 +22,14 @@ const createJob = async (parentID, sitterID, startTime, endTime) => {
         }
     }
     //TODO: delete the time which matches the time of the job (from both the user and sitter's schedule)
-    await removeFromSitterSchedule(sitterID, startTime, endTime);
-    await removeFromParentSchedule(parentID, startTime, endTime);
+    await sitterScheduleModels.removeFromSitterSchedule(sitterID, startTime, endTime);
+    await parentScheduleModels.removeFromParentSchedule(parentID, startTime, endTime);
     //create the job
     let job = await jobModels.createJob(parentID, sitterID, startTime, endTime);
     job.error = "";
     return job;
 };
 
-const isSitterAvailable = async (sitterID, startTime, endTime) => {
-    return true;
-}
-
-const removeFromSitterSchedule = async (sitterID, startTime, endTime) => {
-    return true;
-}
-
-const removeFromParentSchedule = async (parentID, startTime, endTime) => {
-    return true;
-}
 
 const getJobs = async (parentID, sitterID, date) => {
     const filters = await makeFilters(parentID, sitterID);

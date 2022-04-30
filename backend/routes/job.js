@@ -12,9 +12,7 @@ router.post('/self', authenticateWithClaims("user"),
         const job = await jobController.createJob(req.user.id, req.body.sitterID, req.body.startTime, req.body.endTime);
         if(job.error === "missing info") {
             res.status(400).json({message: job.error.toString()});
-        } else if(job.error === "sitter not available") {
-            res.status(400).json({message: job.error.toString()});
-        }  else if(job.error === "sitter blocked"){
+        }   else if(job.error === "sitter blocked"){
             res.status(400).json({message: job.error.toString()});
         } else {
             //displays the job
