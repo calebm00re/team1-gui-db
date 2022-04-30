@@ -61,6 +61,22 @@ export class UserRepository {
         }
     )}
 
+    getSitterInfo() {
+        return new Promise((resolve, reject) => {
+            axios.get(URL + "/sitter/self", { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
+            .then(response => {
+                console.log('this is response for getSitterInfo: ');
+                console.log(response);
+                resolve(response);
+            })
+            .catch(error => {
+                console.log('this is the error for getSitterInfo: ');
+                console.log(error);
+                reject(error);
+            })
+        })
+    }
+
     putInfo(firstname, lastname, imgurl, password, bio, minage, maxage, starttime, endtime, numkids, location, email) {
         return new Promise((resolve, reject) => {
             axios.put(URL + "/users/self", {firstName: firstname, lastName: lastname, email: email, imgurl: imgurl, password: password, bio: bio, minKidAge: minage, maxKidAge: maxage, startWorkTime: starttime, endWorkTime: endtime, numKids: numkids, location: location },
@@ -80,6 +96,27 @@ export class UserRepository {
         }
     )}
 
+    putSitterInfo(firstname, lastname, location, age, price, xp, pass, imgurl){
+        return new Promise((resolve, reject) => {
+            axios.put(URL + "/sitter/self", {firstName: firstname, lastName: lastname, location: location, age: age, price: price, experience: xp, password: pass, imgurl: imgurl},
+             { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
+            .then(response => {
+                console.log('this is the response for putSitterInfo: ');
+                console.log(response);
+                resolve(response);
+            })
+            .catch(error => {
+                console.log('this is the error for putSitterInfo: ');
+                console.log(error);
+                reject(error);
+            })
+            .finally(() => {
+                console.log('im in this');
+            });
+        }
+    )
+    }
+
     deleteUser() {
         return new Promise((resolve, reject) => {
             axios.delete(URL + "/users/self", { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
@@ -90,6 +127,25 @@ export class UserRepository {
             })
             .catch(error => {
                 console.log('this is the error for delete user in user repo: ');
+                console.log(error);
+                reject(error);
+            })
+            .finally(() => {
+                console.log('im in this');
+            });
+        }
+    )}
+
+    deleteSitter() {
+        return new Promise((resolve, reject) => {
+            axios.delete(URL + "/sitter/self", { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
+            .then(response => {
+                console.log('this is the response for deleteSitter: ');
+                console.log(response);
+                resolve(response);
+            })
+            .catch(error => {
+                console.log('this is the error for deleteSitter: ');
                 console.log(error);
                 reject(error);
             })
@@ -131,4 +187,63 @@ export class UserRepository {
         })
     }
 
+    sitterLogin(email, pass) {
+        return new Promise((resolve, reject) => {
+            axios.post(URL + "/sitter/login", {email: email, password: pass})
+            .then(response => {
+                console.log('this is the response: ');
+                console.log(response);
+                // console.log('this is token', response.data.accessToken);
+                sessionStorage.setItem('token', response.data.accessToken);
+                resolve(response);
+            })
+            .catch(error => {
+                console.log('this is the error: ');
+                console.log(error);
+                reject(error);
+            })
+            .finally(() => {
+                console.log('im in this');
+            });
+        })
+    }
+
+    sitterRegister(firstname, lastname, email, pass) {
+        return new Promise((resolve, reject) => {
+            axios.post(URL + "/sitter/register", {firstName: firstname, lastName: lastname, email: email, password: pass})
+            .then(response => {
+                sessionStorage.setItem('token', response.data.accessToken);
+                console.log('this is the response: ');
+                resolve(response);
+            })
+            .catch(error => {
+                console.log('this is the error: ');
+                console.log(error);
+                reject(error);
+            })
+            .finally(() => {
+                console.log('im in this');
+            });
+        }
+    )}
+
+    //create shift for sitter
+    createShift(starttime, endtime) {
+        return new Promise((resolve, reject) => {
+            axios.post(URL + "/sitter_schedule/self", {startTime: starttime, endTime: endtime},
+             { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
+            .then(response => {
+                console.log('this is the response for createShift: ');
+                resolve(response);
+            })
+            .catch(error => {
+                console.log('this is the error: ');
+                console.log(error);
+                reject(error);
+            })
+            .finally(() => {
+                console.log('im in createShift');
+            });
+        }
+    )}
 }

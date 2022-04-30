@@ -35,6 +35,8 @@ export const Register = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    //check to sign up as sitter or parent
+    if (value === 'Parent') {
     userRepository.register(data.get('firstName'), data.get('lastName'), data.get('email'), data.get('password')).then(res => {
       if (res.status <= 201) {
         navigate('/dashboard/app');
@@ -42,6 +44,15 @@ export const Register = () => {
     }).catch(err => {
       alert("email already in use");
     });
+  } else {
+    userRepository.sitterRegister(data.get('firstName'), data.get('lastName'), data.get('email'), data.get('password')).then(res => {
+      if (res.status <= 201) {
+        navigate('/sitters/app');
+      }
+    }).catch(err => {
+      alert("email already in use");
+    });
+  };
   };
 
   return (

@@ -13,7 +13,7 @@ import Logo from '../../components/Logo';
 import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
 import ProfileImg from '../../Assets/images/imgurl.jpg';
-import { navConfig } from './NavConfig';
+import { sitterConfig } from './NavConfig';
 
 // ----------------------------------------------------------------------
 
@@ -36,12 +36,12 @@ const AccountStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-DashboardSidebar.propTypes = {
+DashboardSitterSidebar.propTypes = {
   isOpenSidebar: PropTypes.bool,
   onCloseSidebar: PropTypes.func,
 };
 
-export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar, user, Imgurl}) {
+export default function DashboardSitterSidebar({ isOpenSidebar, onCloseSidebar, user, Imgurl}) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   // const [imgurl, setImgurl] = useState(Imgurl);
@@ -57,8 +57,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar, user, 
   }, [pathname]);
 
   useEffect(() => {
-    setFirstName(sessionStorage.getItem('firstName'));
-    setLastName(sessionStorage.getItem('lastName'));
+    // setFirstName(sessionStorage.getItem('firstName'));
+    // setLastName(sessionStorage.getItem('lastName'));
     // setImgurl(sessionStorage.getItem('imgurl'));
   }, []);
 
@@ -70,7 +70,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar, user, 
       }}
     >
       <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
-        Let's get your 👶 sat
+        Let's sit some 👶s!
       </Box>
 
       <Box sx={{ mb: 5, mx: 2.5 }}>
@@ -89,7 +89,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar, user, 
         {/* </Link> */}
       </Box>
 
-      <NavSection navConfig={navConfig} />
+      <NavSection navConfig={sitterConfig} />
 
       <Box sx={{ flexGrow: 1 }} />
 
