@@ -178,7 +178,7 @@ export default function Sitters() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, firstname, lastname, location, age, price, imgurl } = row;
+                    const { id, firstname, lastname, location, age, price, imgurl, email } = row;
                     // const isItemSelected = selected.indexOf(firstname) !== -1;
 
                     return (
@@ -211,7 +211,7 @@ export default function Sitters() {
                         </TableCell> */}
 
                         <TableCell align="right">
-                          <UserMoreMenu />
+                          <UserMoreMenu email={email}/>
                         </TableCell>
                       </TableRow>
                     );
