@@ -15,47 +15,28 @@ import { UserRepository } from '../api/userRepository.js'
 import { CardContent } from '@mui/material';
 import { CardActions } from '@mui/material';
 import { Button } from '@mui/material';
-import { SitterCards } from '../components/SitterCards';
+// import { SitterCards } from '../components/SitterCards';
 import { Box } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { SitterJobs } from '../components/SitterJobs';
 import { SitterSchedule } from '../components/SitterSchedule';
 import { AlertCreateShift } from '../components/AlertCreateShift';
 
-// import Iconify from '../components/Iconify';
-// sections
-// import {
-//   AppTasks,
-//   AppNewsUpdate,
-//   AppOrderTimeline,
-//   AppCurrentVisits,
-//   AppWebsiteVisits,
-//   AppTrafficBySite,
-//   AppWidgetSummary,
-//   AppCurrentSubject,
-//   AppConversionRates,
-// } from '../sections/@dashboard/app';
-
-// ----------------------------------------------------------------------
-
 export const SitterApp = () => {
   const [value, setValue] = React.useState(new Date());
   const [open, setOpen] = React.useState(false);
   const [jobs, setJobs] = React.useState([]);
+  const [sitters, setSitters] = React.useState([]);
+  const [change, setChange] = React.useState(false);
   const theme = useTheme();
-  const usserRepository = new UserRepository();
+  const userRepository = new UserRepository();
 
   useEffect(() => {
     const day = value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate();
-    usserRepository.getJobs(day).then(response => {
-      console.log('this is the response for getJobs in sitter app: ')
-      console.log(response)
-      setJobs(response.data);
-    }).catch(error => {
-      console.log('error in sitter app: ')
-      console.log(error)
-    })
-  }, [])
+    console.log("Day: " + day);
+    userRepository.getSitterByDate(day).then(setSitters).catch(err => console.error(err));
+    userRepository.getJobs(day).then(setJobs).catch(err => console.error(err));
+  }, [open, value])
 
   return (
     <Page title="Dashboard">
@@ -94,27 +75,72 @@ export const SitterApp = () => {
             </Grid>
             <Grid item xs={12} md={6} lg={8}>
               <Card>
-                <CardHeader title={(new Date().toDateString() == value.toDateString()) ? 'Jobs for Today' : `Jobs for ${value.toDateString()}`} />
+                <CardHeader title={(new Date().toDateString() == value.toDateString()) ? 'Schedule for Today' : `Schedule for ${value.toDateString()}`} />
                 <Typography variant="body1" sx={{ m: 5 }}>
-                  {jobs.length !== 0 ? jobs.map((job, index) => {
-                    return (
-                      <Card>
-                        <CardContent>
-                          <Typography variant="body1" sx={{ m: 5 }}>
-                            {job.user.firstName} {job.user.lastName}
-                          </Typography>
-                        </CardContent>
-                      </Card>
-                    )}) 
-                  :
-                  'no jobs scheduled today'}
+                  {jobs.length == 0 ?
+                    <div> Nothing on the schedule here! </div>
+                    :
+                    <Grid container rowSpacing={1} columnSpacing={2}>
+                      {jobs.map((sitter, index) => (
+                        <Grid item xs={12} md={6} lg={4} key={index}>
+                          <Card sx={{ height: 275, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                            <CardContent>
+                              <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                                {sitter.start_time.substring(11, 16)} - {sitter.end_time.substring(11, 16)}
+                                {/* <Button className="m-1" variant="contained" size="small">Book</Button> */}
+                              </Typography>
+                              <Typography variant="h5" component="div">
+                                {sitter.sitter.firstname} {sitter.sitter.lastname}
+                              </Typography>
+                              <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                                ${sitter.sitter.price} / hr
+                              </Typography>
+                              <Typography variant="body2">
+                                {sitter.sitter.location}
+                                <br />
+                                {sitter.sitter.experience}
+                              </Typography>
+                            </CardContent>
+                          </Card>
+                        </Grid>))}
+                    </Grid>}
                 </Typography>
               </Card>
+
             </Grid>
             <Grid item xs={12} md={12} lg={12}>
               <Card >
                 <CardHeader title={(new Date().toDateString() == value.toDateString()) ? 'Availability for Today' : `Availability for ${value.toDateString()}`} />
-                <SitterCards date={value} />
+                <div className='m-3'>
+                  {sitters.length == 0 ?
+                    <div> You Have no Availability for this Day, Consider Adding a Shift </div>
+                    :
+                    <Grid container rowSpacing={1} columnSpacing={2}>
+                      {sitters.map((sitter, index) => (
+                        <Grid item xs={12} md={6} lg={4} key={index}>
+                          <Card sx={{ height: 275, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                            <CardContent>
+                              <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                                {sitter.start_time.substring(11, 16)} - {sitter.end_time.substring(11, 16)}
+                                {/* <Button className="m-1" variant="contained" size="small">Book</Button> */}
+                              </Typography>
+                              <Typography variant="h5" component="div">
+                                {sitter.firstname} {sitter.lastname}
+                              </Typography>
+                              <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                                ${sitter.price} / hr
+                              </Typography>
+                              <Typography variant="body2">
+                                {sitter.location}
+                                <br />
+                                {sitter.experience}
+                              </Typography>
+                            </CardContent>
+                            {/* <Button sx={{ alignSelf: 'flex-end' }} className="m-2" variant="contained" size="small" onClick={() => handleBook(sitter)}>Book</Button> */}
+                          </Card>
+                        </Grid>))}
+                    </Grid>}
+                </div>
               </Card>
             </Grid>
           </Grid>
