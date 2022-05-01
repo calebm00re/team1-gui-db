@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from "react-router-dom";
-import theme from '../Assets/theme';
+import { useTheme } from '@mui/material/styles';
 import { UserRepository } from '../api/userRepository.js'
 import { FormControlLabel } from '@mui/material';
 // import { FormGroup } from '@mui/material';
@@ -23,7 +23,7 @@ import Radio from '@mui/material/Radio';
 import Page from '../components/Page';
 
 export const Register = () => {
-
+  const theme = useTheme();
   const [value, setValue] = React.useState('Parent');
 
   const userRepository = new UserRepository();

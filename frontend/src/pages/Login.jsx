@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from "react-router-dom";
-import theme from '../Assets/theme';
+import { useTheme } from '@mui/material/styles';
 import { UserRepository } from '../api/userRepository.js'
 import { FormControl } from '@mui/material';
 import { FormLabel } from '@mui/material';
@@ -22,7 +22,7 @@ import Page from '../components/Page';
 
 
 export const Login = () => {
-
+  const theme = useTheme();
   const [value, setValue] = React.useState('Parent');
   // const [loaded, setLoaded] = React.useState(false);
 
