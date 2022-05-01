@@ -69,10 +69,16 @@ function applySortFilter(array, comparator, query, queryTerm) {
     if (queryTerm === 'firstname') {
       console.log('array: ');
       console.log(array);
-      return filter(array, (_user) => _user.age.toString().indexOf(query.toLowerCase()) !== -1);
+      return filter(array, (_user) => _user.firstname.toLowerCase().indexOf(query.toLowerCase()) !== -1);
     }
     else if (queryTerm === 'location') {
       return filter(array, (_user) => _user.location.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    }
+    else if (queryTerm === 'age') {
+      return filter(array, (_user) => _user.age.toString().indexOf(query.toLowerCase()) !== -1);
+    }
+    else if (queryTerm === 'price') {
+      return filter(array, (_user) => _user.price.toString().indexOf(query.toLowerCase()) !== -1);
     }
   }
   return stabilizedThis.map((el) => el[0]);
