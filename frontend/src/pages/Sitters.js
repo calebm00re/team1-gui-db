@@ -58,7 +58,7 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-function applySortFilter(array, comparator, query) {
+function applySortFilter(array, comparator, query, queryTerm) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -66,7 +66,14 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.firstname.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    if (queryTerm === 'firstname') {
+      console.log('array: ');
+      console.log(array);
+      return filter(array, (_user) => _user.age.toString().indexOf(query.toLowerCase()) !== -1);
+    }
+    else if (queryTerm === 'location') {
+      return filter(array, (_user) => _user.location.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    }
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -81,6 +88,7 @@ export default function Sitters() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sitters, setSitters] = useState([]);
   const [loaded, setLoaded] = useState(false);
+  const [queryType, setQueryType] = useState('firstname');
 
   const getSitter = (i, sitterList) => {
     var sittersTemp = sitters;
@@ -119,7 +127,9 @@ export default function Sitters() {
         console.log("taking too long to load info")
       }
     }, 1000);
-  },)
+    console.log('this is the sitters: ')
+    console.log(sitters);
+  })
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -141,7 +151,7 @@ export default function Sitters() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - sitters.length) : 0;
 
-  const filteredUsers = applySortFilter(sitters, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(sitters, getComparator(order, orderBy), filterName, queryType);
 
   const isUserNotFound = filteredUsers.length === 0;
 
@@ -157,95 +167,95 @@ export default function Sitters() {
           </Button> */}
         </Stack>
         {!loaded ?
-        <div>
-          <img src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif" width="50px" height="50px" alt="loading" />
-        </div>
-        :
-        <Card>
-          <UserListToolbar filterName={filterName} onFilterName={handleFilterByName} />
+          <div>
+            <img src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif" width="50px" height="50px" alt="loading" />
+          </div>
+          :
+          <Card>
+            <UserListToolbar filterName={filterName} onFilterName={handleFilterByName} queryType={queryType} setQueryType={setQueryType} />
 
-          <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={sitters.length}
-                  // numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                // onSelectAllClick={handleSelectAllClick}
-                />
-                <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, firstname, lastname, location, age, price, imgurl, email } = row;
-                    // const isItemSelected = selected.indexOf(firstname) !== -1;
+            <Scrollbar>
+              <TableContainer sx={{ minWidth: 800 }}>
+                <Table>
+                  <UserListHead
+                    order={order}
+                    orderBy={orderBy}
+                    headLabel={TABLE_HEAD}
+                    rowCount={sitters.length}
+                    // numSelected={selected.length}
+                    onRequestSort={handleRequestSort}
+                  // onSelectAllClick={handleSelectAllClick}
+                  />
+                  <TableBody>
+                    {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                      const { id, firstname, lastname, location, age, price, imgurl, email } = row;
+                      // const isItemSelected = selected.indexOf(firstname) !== -1;
 
-                    return (
-                      <TableRow
-                        hover
-                        key={id}
-                        tabIndex={-1}
-                        role="checkbox"
-                      // selected={isItemSelected}
-                      // aria-checked={isItemSelected}
-                      >
-                        <TableCell padding="checkbox">
-                          {/* <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, firstname + lastname)} /> */}
-                        </TableCell>
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={firstname} src={imgurl === 'null' ? ProfileImg : imgurl} />
-                            <Typography variant="subtitle2" noWrap>
-                              {firstname + ' ' + lastname}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
-                        <TableCell align="left">{location}</TableCell>
-                        <TableCell align="left">{age}</TableCell>
-                        <TableCell align="left">{price}</TableCell>
-                        {/* <TableCell align="left">
+                      return (
+                        <TableRow
+                          hover
+                          key={id}
+                          tabIndex={-1}
+                          role="checkbox"
+                        // selected={isItemSelected}
+                        // aria-checked={isItemSelected}
+                        >
+                          <TableCell padding="checkbox">
+                            {/* <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, firstname + lastname)} /> */}
+                          </TableCell>
+                          <TableCell component="th" scope="row" padding="none">
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                              <Avatar alt={firstname} src={imgurl === 'null' ? ProfileImg : imgurl} />
+                              <Typography variant="subtitle2" noWrap>
+                                {firstname + ' ' + lastname}
+                              </Typography>
+                            </Stack>
+                          </TableCell>
+                          <TableCell align="left">{location}</TableCell>
+                          <TableCell align="left">{age}</TableCell>
+                          <TableCell align="left">{price}</TableCell>
+                          {/* <TableCell align="left">
                           <Label variant="ghost" color={(status === 'banned' && 'error') || 'success'}>
                             {sentenceCase(status)}
                           </Label>
                         </TableCell> */}
 
-                        <TableCell align="right">
-                          <UserMoreMenu email={email}/>
+                          <TableCell align="right">
+                            <UserMoreMenu email={email} />
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                    {emptyRows > 0 && (
+                      <TableRow style={{ height: 53 * emptyRows }}>
+                        <TableCell colSpan={6} />
+                      </TableRow>
+                    )}
+                  </TableBody>
+
+                  {isUserNotFound && (
+                    <TableBody>
+                      <TableRow>
+                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                          <SearchNotFound searchQuery={filterName} />
                         </TableCell>
                       </TableRow>
-                    );
-                  })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
+                    </TableBody>
                   )}
-                </TableBody>
+                </Table>
+              </TableContainer>
+            </Scrollbar>
 
-                {isUserNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <SearchNotFound searchQuery={filterName} />
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )}
-              </Table>
-            </TableContainer>
-          </Scrollbar>
-
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={sitters.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Card>}
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={sitters.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Card>}
       </Container>
     </Page>
   );
