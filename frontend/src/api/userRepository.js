@@ -176,8 +176,8 @@ export class UserRepository {
             axios.get(URL + "/sitter_schedule/", { params: {date: day}, headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
             .then(response => {
                 console.log('this is the response for get/sitters by date');
-                console.log(response);
-                resolve(response);
+                console.log(response.data);
+                resolve(response.data);
             })
             .catch(error => {
                 console.log('this is the error for get/sitters by date');
@@ -243,6 +243,43 @@ export class UserRepository {
             })
             .finally(() => {
                 console.log('im in createShift');
+            });
+        }
+    )}
+
+    getJobs(day) {
+        return new Promise((resolve, reject) => {
+            axios.get(URL + "/job/self", { params: {date: day}, headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
+            .then(response => {
+                console.log('this is the response for getJobs: ');
+                console.log(response.data);
+                resolve(response.data);
+            }).catch(error => {
+                console.log('this is the error for getJobs: ');
+                console.log(error);
+                reject(error);
+            })
+            .finally(() => {
+                console.log('im in the finally for getjobs');
+            })
+        })
+    }
+
+    newJob(id, stime, etime) {
+        return new Promise((resolve, reject) => {
+            axios.post(URL + "/job/self", {sitterID: id, startTime: stime, endTime: etime} , { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }})
+            .then(response => {
+                console.log('this is the response for newJob: ');
+                console.log(response);
+                resolve(response);
+            })
+            .catch(error => {
+                console.log('this is the error: ');
+                console.log(error);
+                reject(error);
+            })
+            .finally(() => {
+                console.log('im in newJob');
             });
         }
     )}
