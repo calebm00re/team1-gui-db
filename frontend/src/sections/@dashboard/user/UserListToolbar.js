@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment, Menu, MenuItem, ListItemText } from '@mui/material';
+import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment, Menu, MenuItem, ListItemText, ListItemIcon } from '@mui/material';
 // component
 import Iconify from '../../../components/Iconify';
 
@@ -35,9 +35,13 @@ UserListToolbar.propTypes = {
   onFilterName: PropTypes.func,
 };
 
-export default function UserListToolbar({ numSelected, filterName, onFilterName }) {
-  const [filterType, setFilterType] = React.useState('First Name');
-  const filterTypes = ['First Name', 'Location', 'Age', 'Price'];
+export default function UserListToolbar({ numSelected, filterName, onFilterName, queryType, setQueryType }) {
+  // const [filterType, setFilterType] = React.useState('First Name');
+  const filterTypes = ['firstname', 'location', 'age', 'price'];
+  const filterNames = ['First Name', 'Location', 'Age', 'Price'];
+  const [isOpen, setIsOpen] = React.useState(false);
+  const ref = React.useRef(null);
+
   return (
     <RootStyle
       sx={{
@@ -63,6 +67,24 @@ export default function UserListToolbar({ numSelected, filterName, onFilterName 
           }
         />
       )}
+      <IconButton ref={ref} onClick={() => setIsOpen(true)}>
+        <Iconify icon="ic:round-filter-list" />
+      </IconButton>
+      <Menu
+        open={isOpen}
+        anchorEl={ref.current}
+        onClose={() => setIsOpen(false)}
+        PaperProps={{
+          sx: { width: 300, maxWidth: '100%' },
+        }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        {filterTypes.map((type, index) => (
+          <MenuItem key={index} selected={type === queryType} onClick={() => setQueryType(type)}>
+            <ListItemText primary={filterNames[index]} />
+          </MenuItem>))}
+      </Menu>
     </RootStyle>
   );
 }
