@@ -24,7 +24,7 @@ export const SitterApp = () => {
 
   useEffect(() => {
     const day = value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate();
-    console.log("Day: " + day);
+    // console.log("Day: " + day);
     userRepository.getSitterByDate(day).then(setSitters).catch(err => console.error(err));
     userRepository.getJobs(day).then(setJobs).catch(err => console.error(err));
   }, [open, value])

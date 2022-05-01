@@ -44,8 +44,8 @@ export const Profile = () => {
         const data = new FormData(event.currentTarget);
         userRepository.putInfo(data.get('firstName'), data.get('lastName'), data.get('imgurl'), data.get('password'), data.get('bio'),
                                minage, maxage, startTime, endTime, numKids, data.get('location') ).then(res => {
-            console.log('this is the response for update_info: ')
-            console.log(res);
+            // console.log('this is the response for update_info: ')
+            // console.log(res);
             alert('Profile updated successfully!');
         }).catch(error => {
             console.log('this is the error for update_info: ')
@@ -69,20 +69,6 @@ export const Profile = () => {
             sessionStorage.setItem('imgurl', data.get('imgurl'));
         });
     };
-
-
-    // const handleDelete = async () => {
-    //     userRepository.deleteUser().then(res => {
-    //         console.log('this is the response for delete_user: ')
-    //         console.log(res)
-    //         alert('Your account has been deleted!');
-    //         navigate('/landing');
-    //     }).catch(error => {
-    //         console.log('this is the error for delete_user: ')
-    //         console.log(error)
-    //         alert('There was an error deleting your account, please try again.');
-    //     });
-    // };
 
     return (
         <Page title="Profile">

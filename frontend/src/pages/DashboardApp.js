@@ -21,7 +21,7 @@ export default function DashboardApp() {
 
   useEffect(() => {
     const day = value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate();
-    console.log("Day: " + day);
+    // console.log("Day: " + day);
     userRepository.getSittersByDate(day).then(setSitters).catch(err => console.error(err));
     userRepository.getJobs(day).then(setJobs).catch(err => console.error(err));
   }, [value]);
@@ -30,9 +30,9 @@ export default function DashboardApp() {
     userRepository.newJob(sitter.sitter_id, sitter.start_time, sitter.end_time).then(() => {
       setValue(value);
     }).catch(err => console.error(err));
-    console.log('sitter id: ' + sitter.sitter_id);
-    console.log('job starting time: ' + sitter.start_time);
-    console.log('job ending time: ' + sitter.end_time);
+    // console.log('sitter id: ' + sitter.sitter_id);
+    // console.log('job starting time: ' + sitter.start_time);
+    // console.log('job ending time: ' + sitter.end_time);
   }
 
   return (

@@ -7,8 +7,8 @@ import Iconify from '../../../components/Iconify';
 export default function UserMoreMenu(email) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
-  console.log('email');
-  console.log(email);
+  // console.log('email');
+  // console.log(email);
   return (
     <>
       <IconButton ref={ref} onClick={() => setIsOpen(true)}>

@@ -33,11 +33,9 @@ import ProfileImg from '../Assets/images/imgurl.jpg';
 
 const TABLE_HEAD = [
   { id: 'firstname', label: 'Name', alignRight: false },
-  // { id: 'nameL', label: 'Last Name', alignRight: false },
   { id: 'location', label: 'Location', alignRight: false },
   { id: 'age', label: 'Age', alignRight: false },
   { id: 'price', label: 'Price', alignRight: false },
-  // { id: '' },
 ];
 
 // ----------------------------------------------------------------------
@@ -67,8 +65,8 @@ function applySortFilter(array, comparator, query, queryTerm) {
   });
   if (query) {
     if (queryTerm === 'firstname') {
-      console.log('array: ');
-      console.log(array);
+      // console.log('array: ');
+      // console.log(array);
       return filter(array, (_user) => _user.firstname.toLowerCase().indexOf(query.toLowerCase()) !== -1);
     }
     else if (queryTerm === 'location') {
@@ -107,19 +105,19 @@ export default function Sitters() {
 
   const loadSitters = () => {
     userRepository.getSitters().then(res => {
-      console.log('this is the response for get_sitters13: ')
+      // console.log('this is the response for get_sitters13: ')
       let allSitters = res.data;
       for (var i in allSitters) {
         getSitter(i, allSitters);
       }
-      console.log(sitters);
+      // console.log(sitters);
     }).catch(error => {
       console.log('this is the error for get_sitters: ')
       console.log(error)
     })
       .finally(() => {
-        console.log('in the sitter finally');
-        console.log(sitters);
+        // console.log('in the sitter finally');
+        // console.log(sitters);
         setLoaded(true);
       });
   }
@@ -133,8 +131,8 @@ export default function Sitters() {
         console.log("taking too long to load info")
       }
     }, 1000);
-    console.log('this is the sitters: ')
-    console.log(sitters);
+    // console.log('this is the sitters: ')
+    // console.log(sitters);
   })
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
