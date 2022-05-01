@@ -90,15 +90,15 @@ export const SitterApp = () => {
                                 {/* <Button className="m-1" variant="contained" size="small">Book</Button> */}
                               </Typography>
                               <Typography variant="h5" component="div">
-                                {sitter.sitter.firstname} {sitter.sitter.lastname}
+                                {sitter.user.firstName} {sitter.user.lastName}
                               </Typography>
                               <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                ${sitter.sitter.price} / hr
+                                {sitter.user.numKids} {sitter.user.numKids == '1' ? 'Kid' : 'Kids'} {sitter.user.numKids == '1' ? 'Age' : `Ages ${sitter.user.minKidAge} to ${sitter.user.maxKidAge}`}
                               </Typography>
                               <Typography variant="body2">
                                 {sitter.sitter.location}
                                 <br />
-                                {sitter.sitter.experience}
+                                {sitter.user.bio}
                               </Typography>
                             </CardContent>
                           </Card>
@@ -117,23 +117,21 @@ export const SitterApp = () => {
                     :
                     <Grid container rowSpacing={1} columnSpacing={2}>
                       {sitters.map((sitter, index) => (
-                        <Grid item xs={12} md={6} lg={4} key={index}>
-                          <Card sx={{ height: 275, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                        <Grid item xs={6} md={3} lg={2} key={index}>
+                          <Card sx={{ height: 150, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                             <CardContent>
-                              <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                              <Typography sx={{ fontSize: 14 }} gutterBottom>
                                 {sitter.start_time.substring(11, 16)} - {sitter.end_time.substring(11, 16)}
                                 {/* <Button className="m-1" variant="contained" size="small">Book</Button> */}
                               </Typography>
-                              <Typography variant="h5" component="div">
+                              {/* <Typography variant="h5" component="div">
                                 {sitter.firstname} {sitter.lastname}
-                              </Typography>
-                              <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                              </Typography> */}
+                              <Typography sx={{ mb: 1.5, mt: 1.5 }}>
                                 ${sitter.price} / hr
                               </Typography>
                               <Typography variant="body2">
                                 {sitter.location}
-                                <br />
-                                {sitter.experience}
                               </Typography>
                             </CardContent>
                             {/* <Button sx={{ alignSelf: 'flex-end' }} className="m-2" variant="contained" size="small" onClick={() => handleBook(sitter)}>Book</Button> */}
