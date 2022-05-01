@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
-import { faker } from '@faker-js/faker';
-// @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
-// components
 import Page from '../components/Page';
 import { ThemeProvider } from '@mui/material';
 import { CardHeader, Card } from '@mui/material';
@@ -13,13 +10,8 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import TextField from '@mui/material/TextField';
 import { UserRepository } from '../api/userRepository.js'
 import { CardContent } from '@mui/material';
-import { CardActions } from '@mui/material';
 import { Button } from '@mui/material';
-// import { SitterCards } from '../components/SitterCards';
-import { Box } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { SitterJobs } from '../components/SitterJobs';
-import { SitterSchedule } from '../components/SitterSchedule';
 import { AlertCreateShift } from '../components/AlertCreateShift';
 
 export const SitterApp = () => {
@@ -27,7 +19,6 @@ export const SitterApp = () => {
   const [open, setOpen] = React.useState(false);
   const [jobs, setJobs] = React.useState([]);
   const [sitters, setSitters] = React.useState([]);
-  const [change, setChange] = React.useState(false);
   const theme = useTheme();
   const userRepository = new UserRepository();
 
@@ -75,9 +66,9 @@ export const SitterApp = () => {
             </Grid>
             <Grid item xs={12} md={6} lg={8}>
               <Card>
-                <CardHeader title={(new Date().toDateString() == value.toDateString()) ? 'Schedule for Today' : `Schedule for ${value.toDateString()}`} />
+                <CardHeader title={(new Date().toDateString() === value.toDateString()) ? 'Schedule for Today' : `Schedule for ${value.toDateString()}`} />
                 <Typography variant="body1" sx={{ m: 5 }}>
-                  {jobs.length == 0 ?
+                  {jobs.length === 0 ?
                     <div> Nothing on the schedule here! </div>
                     :
                     <Grid container rowSpacing={1} columnSpacing={2}>
@@ -93,7 +84,7 @@ export const SitterApp = () => {
                                 {sitter.user.firstName} {sitter.user.lastName}
                               </Typography>
                               <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                {sitter.user.numKids} {sitter.user.numKids == '1' ? 'Kid' : 'Kids'} {sitter.user.numKids == '1' ? 'Age' : `Ages ${sitter.user.minKidAge} to ${sitter.user.maxKidAge}`}
+                                {sitter.user.numKids} {sitter.user.numKids === '1' ? 'Kid' : 'Kids'} {sitter.user.numKids === '1' ? 'Age' : `Ages ${sitter.user.minKidAge} to ${sitter.user.maxKidAge}`}
                               </Typography>
                               <Typography variant="body2">
                                 {sitter.sitter.location}
@@ -110,9 +101,9 @@ export const SitterApp = () => {
             </Grid>
             <Grid item xs={12} md={12} lg={12}>
               <Card >
-                <CardHeader title={(new Date().toDateString() == value.toDateString()) ? 'Availability for Today' : `Availability for ${value.toDateString()}`} />
+                <CardHeader title={(new Date().toDateString() === value.toDateString()) ? 'Availability for Today' : `Availability for ${value.toDateString()}`} />
                 <div className='m-3'>
-                  {sitters.length == 0 ?
+                  {sitters.length === 0 ?
                     <div> You Have no Availability for this Day, Consider Adding a Shift </div>
                     :
                     <Grid container rowSpacing={1} columnSpacing={2}>

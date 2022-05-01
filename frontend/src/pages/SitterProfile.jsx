@@ -11,22 +11,16 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import { UserRepository } from '../api/userRepository.js'
-import PersonIcon from '@mui/icons-material/Person';
-import { useNavigate } from "react-router-dom";
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
 import { AlertSitterDelete } from '../components/AlertSitterDelete';
 import ProfileImg from '../Assets/images/imgurl.jpg';
 import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { FormControl } from '@mui/material';
 import { InputLabel } from '@mui/material';
-import { max } from 'date-fns';
 
 
 export const SitterProfile = () => {
     const theme = useTheme();
-    // const navigate = useNavigate();
     const [nameF, setNameF] = React.useState(sessionStorage.getItem('firstName'));
     const [nameL, setNameL] = React.useState(sessionStorage.getItem('lastName'));
     const [email, setEmail] = React.useState(sessionStorage.getItem('email'));
@@ -66,20 +60,6 @@ export const SitterProfile = () => {
         });
     };
 
-
-    // const handleDelete = async () => {
-    //     userRepository.deleteUser().then(res => {
-    //         console.log('this is the response for delete_user: ')
-    //         console.log(res)
-    //         alert('Your account has been deleted!');
-    //         navigate('/landing');
-    //     }).catch(error => {
-    //         console.log('this is the error for delete_user: ')
-    //         console.log(error)
-    //         alert('There was an error deleting your account, please try again.');
-    //     });
-    // };
-
     return (
         <Page title="Profile">
             <ThemeProvider theme={theme}>
@@ -94,7 +74,7 @@ export const SitterProfile = () => {
                             justifyContent: 'space-around',
                         }}
                     >
-                        <Avatar alt={nameF} src={imgurl == 'null' ? ProfileImg : imgurl} />
+                        <Avatar alt={nameF} src={imgurl === 'null' ? ProfileImg : imgurl} />
                         <Typography component="h1" variant="h5">
                             Update Account
                         </Typography>
@@ -136,7 +116,7 @@ export const SitterProfile = () => {
                                         fullWidth
                                         id="location"
                                         label={'Location'}
-                                        defaultValue={location == 'null' ? '' : location}
+                                        defaultValue={location === 'null' ? '' : location}
                                         name="location"
                                         placeholder='Enter Location'
                                         autoComplete="location"
@@ -174,28 +154,6 @@ export const SitterProfile = () => {
                                         </Select>
                                     </FormControl>
                                 </Grid>
-                                {/* <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        autoComplete="age"
-                                        name="age"
-                                        fullWidth
-                                        id="age"
-                                        placeholder='How old are you?'
-                                        label={'Age'}
-                                        defaultValue={age == 'null' ? '' : age}
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        fullWidth
-                                        id="price"
-                                        label={'Price'}
-                                        defaultValue={price == 'null' ? '' : price}
-                                        name="price"
-                                        placeholder='Tell people what you charge!'
-                                        autoComplete="price"
-                                    />
-                                </Grid> */}
                                 <Grid item xs={12}>
                                     <TextField
                                         fullWidth
@@ -203,7 +161,7 @@ export const SitterProfile = () => {
                                         label={'Experience'}
                                         // defaultValue={bio}
                                         placeholder={'Tell us about yourself, and your experience!'}
-                                        defaultValue={xp == 'null' ? '' : xp}
+                                        defaultValue={xp === 'null' ? '' : xp}
                                         name="xp"
                                         autoComplete="xp"
                                         multiline

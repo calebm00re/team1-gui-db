@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment, Menu, MenuItem, ListItemText, ListItemIcon } from '@mui/material';
+import { Toolbar, IconButton, Typography, OutlinedInput, InputAdornment, Menu, MenuItem, ListItemText } from '@mui/material';
 // component
 import Iconify from '../../../components/Iconify';
 

@@ -11,22 +11,16 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import { UserRepository } from '../api/userRepository.js'
-import PersonIcon from '@mui/icons-material/Person';
-import { useNavigate } from "react-router-dom";
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
 import { AlertDelete } from '../components/AlertDelete';
 import ProfileImg from '../Assets/images/imgurl.jpg';
 import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { FormControl } from '@mui/material';
 import { InputLabel } from '@mui/material';
-import { max } from 'date-fns';
 
 
 export const Profile = () => {
     const theme = useTheme();
-    const navigate = useNavigate();
     const [nameF, setNameF] = React.useState(sessionStorage.getItem('firstName'));
     const [nameL, setNameL] = React.useState(sessionStorage.getItem('lastName'));
     const [email, setEmail] = React.useState(sessionStorage.getItem('email'));
@@ -39,8 +33,6 @@ export const Profile = () => {
     const [numKids, setNumKids] = React.useState(sessionStorage.getItem('numKids') !== 'null' ? sessionStorage.getItem('numKids') : '');
     const [imgurl, setImgurl] = React.useState(sessionStorage.getItem('imgurl'));
     const [open, setOpen] = React.useState(false);
-    const [sitters, setSitters] = React.useState([]);
-    const [age, setAge] = React.useState('');
     const ages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
     const workTimes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
     const numkids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -106,7 +98,7 @@ export const Profile = () => {
                             justifyContent: 'space-around',
                         }}
                     >
-                        <Avatar alt={nameF} src={imgurl == 'null' ? ProfileImg : imgurl} />
+                        <Avatar alt={nameF} src={imgurl === 'null' ? ProfileImg : imgurl} />
                         <Typography component="h1" variant="h5">
                             Update Account
                         </Typography>
@@ -148,7 +140,7 @@ export const Profile = () => {
                                         fullWidth
                                         id="location"
                                         label={'Location'}
-                                        defaultValue={location == 'null' ? '' : location}
+                                        defaultValue={location === 'null' ? '' : location}
                                         name="location"
                                         placeholder='Enter Location'
                                         autoComplete="location"
@@ -161,7 +153,7 @@ export const Profile = () => {
                                         label={'Bio'}
                                         // defaultValue={bio}
                                         placeholder={'Tell us about yourself!'}
-                                        defaultValue={bio == 'null' ? '' : bio}
+                                        defaultValue={bio === 'null' ? '' : bio}
                                         name="bio"
                                         autoComplete="bio"
                                         multiline
