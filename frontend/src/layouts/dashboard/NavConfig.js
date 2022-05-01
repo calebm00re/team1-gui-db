@@ -21,26 +21,11 @@ export const navConfig = [
     path: '/dashboard/profile',
     icon: getIcon('eva:person-outline'),
   },
-  // {
-  //   title: 'blog',
-  //   path: '/dashboard/blog',
-  //   icon: getIcon('eva:file-text-fill'),
-  // },
   {
     title: 'Logout',
     path: '/landing',
     icon: getIcon('eva:log-out-outline'),
   },
-  // {
-  //   title: 'register',
-  //   path: '/register',
-  //   icon: getIcon('eva:person-add-fill'),
-  // },
-  // {
-  //   title: 'Not found',
-  //   path: '/404',
-  //   icon: getIcon('eva:alert-triangle-fill'),
-  // },
 ];
 
 export const sitterConfig = [
@@ -61,4 +46,3 @@ export const sitterConfig = [
   },
 ];
 
-// export default navConfig;

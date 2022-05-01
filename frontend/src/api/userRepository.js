@@ -7,8 +7,8 @@ export class UserRepository {
         return new Promise((resolve, reject) => {
             axios.post(URL + "/users/login", {email: email, password: pass})
             .then(response => {
-                console.log('this is the response: ');
-                console.log(response);
+                // console.log('this is the response: ');
+                // console.log(response);
                 // console.log('this is token', response.data.accessToken);
                 sessionStorage.setItem('token', response.data.accessToken);
                 resolve(response);
@@ -19,7 +19,7 @@ export class UserRepository {
                 reject(error);
             })
             .finally(() => {
-                console.log('im in this');
+                // console.log('im in this');
             });
         })
     }
@@ -29,7 +29,7 @@ export class UserRepository {
             axios.post(URL + "/users/register", {firstName: firstname, lastName: lastname, email: email, password: pass})
             .then(response => {
                 sessionStorage.setItem('token', response.data.accessToken);
-                console.log('this is the response: ');
+                // console.log('this is the response: ');
                 resolve(response);
             })
             .catch(error => {
@@ -38,7 +38,7 @@ export class UserRepository {
                 reject(error);
             })
             .finally(() => {
-                console.log('im in this');
+                // console.log('im in this');
             });
         }
     )}
@@ -56,7 +56,7 @@ export class UserRepository {
                 reject(error);
             })
             .finally(() => {
-                console.log('im in this');
+                // console.log('im in this');
             });
         }
     )}
@@ -65,8 +65,8 @@ export class UserRepository {
         return new Promise((resolve, reject) => {
             axios.get(URL + "/sitter/self", { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
             .then(response => {
-                console.log('this is response for getSitterInfo: ');
-                console.log(response);
+                // console.log('this is response for getSitterInfo: ');
+                // console.log(response);
                 resolve(response);
             })
             .catch(error => {
@@ -82,7 +82,7 @@ export class UserRepository {
             axios.put(URL + "/users/self", {firstName: firstname, lastName: lastname, email: email, imgurl: imgurl, password: password, bio: bio, minKidAge: minage, maxKidAge: maxage, startWorkTime: starttime, endWorkTime: endtime, numKids: numkids, location: location },
              { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
             .then(response => {
-                console.log('this is the response: ');
+                // console.log('this is the response: ');
                 resolve(response);
             })
             .catch(error => {
@@ -91,7 +91,7 @@ export class UserRepository {
                 reject(error);
             })
             .finally(() => {
-                console.log('im in this');
+                // console.log('im in this');
             });
         }
     )}
@@ -101,8 +101,8 @@ export class UserRepository {
             axios.put(URL + "/sitter/self", {firstName: firstname, lastName: lastname, location: location, age: age, price: price, experience: xp, password: pass, imgurl: imgurl},
              { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
             .then(response => {
-                console.log('this is the response for putSitterInfo: ');
-                console.log(response);
+                // console.log('this is the response for putSitterInfo: ');
+                // console.log(response);
                 resolve(response);
             })
             .catch(error => {
@@ -111,7 +111,7 @@ export class UserRepository {
                 reject(error);
             })
             .finally(() => {
-                console.log('im in this');
+                // console.log('im in this');
             });
         }
     )
@@ -121,8 +121,8 @@ export class UserRepository {
         return new Promise((resolve, reject) => {
             axios.delete(URL + "/users/self", { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
             .then(response => {
-                console.log('this is the response for delete user in user repo: ');
-                console.log(response);
+                // console.log('this is the response for delete user in user repo: ');
+                // console.log(response);
                 resolve(response);
             })
             .catch(error => {
@@ -131,7 +131,7 @@ export class UserRepository {
                 reject(error);
             })
             .finally(() => {
-                console.log('im in this');
+                // console.log('im in this');
             });
         }
     )}
@@ -140,8 +140,8 @@ export class UserRepository {
         return new Promise((resolve, reject) => {
             axios.delete(URL + "/sitter/self", { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
             .then(response => {
-                console.log('this is the response for deleteSitter: ');
-                console.log(response);
+                // console.log('this is the response for deleteSitter: ');
+                // console.log(response);
                 resolve(response);
             })
             .catch(error => {
@@ -150,7 +150,7 @@ export class UserRepository {
                 reject(error);
             })
             .finally(() => {
-                console.log('im in this');
+                // console.log('im in this');
             });
         }
     )}
@@ -159,8 +159,8 @@ export class UserRepository {
         return new Promise((resolve, reject) => {
             axios.get(URL + "/sitter", { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
             .then(response => {
-                console.log('this is the response for get/sitters');
-                console.log(response);
+                // console.log('this is the response for get/sitters');
+                // console.log(response);
                 resolve(response);
             })
             .catch(error => {
@@ -175,8 +175,8 @@ export class UserRepository {
         return new Promise((resolve, reject) => {
             axios.get(URL + "/sitter_schedule/", { params: {date: day}, headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
             .then(response => {
-                console.log('this is the response for get/sitters by date');
-                console.log(response.data);
+                // console.log('this is the response for get/sitters by date');
+                // console.log(response.data);
                 resolve(response.data);
             })
             .catch(error => {
@@ -191,8 +191,8 @@ export class UserRepository {
         return new Promise((resolve, reject) => {
             axios.get(URL + "/sitter_schedule/self", { params: {date: day}, headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
             .then(response => {
-                console.log('this is the response for get/sitter by date');
-                console.log(response.data);
+                // console.log('this is the response for get/sitter by date');
+                // console.log(response.data);
                 resolve(response.data);
             }).catch(error => {
                 console.log('this is the error for get/sitter by date');
@@ -206,8 +206,8 @@ export class UserRepository {
         return new Promise((resolve, reject) => {
             axios.post(URL + "/sitter/login", {email: email, password: pass})
             .then(response => {
-                console.log('this is the response: ');
-                console.log(response);
+                // console.log('this is the response: ');
+                // console.log(response);
                 // console.log('this is token', response.data.accessToken);
                 sessionStorage.setItem('token', response.data.accessToken);
                 resolve(response);
@@ -218,7 +218,7 @@ export class UserRepository {
                 reject(error);
             })
             .finally(() => {
-                console.log('im in this');
+                // console.log('im in this');
             });
         })
     }
@@ -228,7 +228,7 @@ export class UserRepository {
             axios.post(URL + "/sitter/register", {firstName: firstname, lastName: lastname, email: email, password: pass})
             .then(response => {
                 sessionStorage.setItem('token', response.data.accessToken);
-                console.log('this is the response: ');
+                // console.log('this is the response: ');
                 resolve(response);
             })
             .catch(error => {
@@ -237,7 +237,7 @@ export class UserRepository {
                 reject(error);
             })
             .finally(() => {
-                console.log('im in this');
+                // console.log('im in this');
             });
         }
     )}
@@ -248,7 +248,7 @@ export class UserRepository {
             axios.post(URL + "/sitter_schedule/self", {startTime: starttime, endTime: endtime},
              { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
             .then(response => {
-                console.log('this is the response for createShift: ');
+                // console.log('this is the response for createShift: ');
                 resolve(response);
             })
             .catch(error => {
@@ -257,7 +257,7 @@ export class UserRepository {
                 reject(error);
             })
             .finally(() => {
-                console.log('im in createShift');
+                // console.log('im in createShift');
             });
         }
     )}
@@ -266,8 +266,8 @@ export class UserRepository {
         return new Promise((resolve, reject) => {
             axios.get(URL + "/job/self", { params: {date: day}, headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
             .then(response => {
-                console.log('this is the response for getJobs: ');
-                console.log(response.data);
+                // console.log('this is the response for getJobs: ');
+                // console.log(response.data);
                 resolve(response.data);
             }).catch(error => {
                 console.log('this is the error for getJobs: ');
@@ -275,7 +275,7 @@ export class UserRepository {
                 reject(error);
             })
             .finally(() => {
-                console.log('im in the finally for getjobs');
+                // console.log('im in the finally for getjobs');
             })
         })
     }
@@ -284,8 +284,8 @@ export class UserRepository {
         return new Promise((resolve, reject) => {
             axios.post(URL + "/job/self", {sitterID: id, startTime: stime, endTime: etime} , { headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }})
             .then(response => {
-                console.log('this is the response for newJob: ');
-                console.log(response);
+                // console.log('this is the response for newJob: ');
+                // console.log(response);
                 resolve(response);
             })
             .catch(error => {
@@ -294,7 +294,7 @@ export class UserRepository {
                 reject(error);
             })
             .finally(() => {
-                console.log('im in newJob');
+                // console.log('im in newJob');
             });
         }
     )}

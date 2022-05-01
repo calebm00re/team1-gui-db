@@ -1,18 +1,11 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
-// material
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
-import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material';
-// mock
-// import account from '../../_mock/account';
-// hooks
+import { Box, Drawer, Typography, Avatar } from '@mui/material';
 import useResponsive from '../../hooks/useResponsive';
-// components
-import Logo from '../../components/Logo';
 import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
-import ProfileImg from '../../Assets/images/imgurl.jpg';
 import { sitterConfig } from './NavConfig';
 
 // ----------------------------------------------------------------------
@@ -42,9 +35,6 @@ DashboardSitterSidebar.propTypes = {
 };
 
 export default function DashboardSitterSidebar({ isOpenSidebar, onCloseSidebar, user, Imgurl}) {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  // const [imgurl, setImgurl] = useState(Imgurl);
   const { pathname } = useLocation();
 
   const isDesktop = useResponsive('up', 'lg');
@@ -53,14 +43,7 @@ export default function DashboardSitterSidebar({ isOpenSidebar, onCloseSidebar, 
     if (isOpenSidebar) {
       onCloseSidebar();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
-
-  useEffect(() => {
-    // setFirstName(sessionStorage.getItem('firstName'));
-    // setLastName(sessionStorage.getItem('lastName'));
-    // setImgurl(sessionStorage.getItem('imgurl'));
-  }, []);
 
   const renderContent = (
     <Scrollbar

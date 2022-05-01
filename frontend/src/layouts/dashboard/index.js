@@ -42,7 +42,7 @@ export const DashboardLayout = () => {
   const [user, setUser] = useState(null);
   const [imgurl, setImgurl] = useState(null);
 
-  console.log('in DashboardLayout');
+  // console.log('in DashboardLayout');
   const userRepository = new UserRepository();
 
   useEffect(() => {
@@ -83,7 +83,7 @@ export const SitterLayout = () => {
   const [user, setUser] = useState(null);
   const [imgurl, setImgurl] = useState(null);
 
-  console.log('in Sitter DashboardLayout');
+  // console.log('in Sitter DashboardLayout');
   const userRepository = new UserRepository();
 
   useEffect(() => {

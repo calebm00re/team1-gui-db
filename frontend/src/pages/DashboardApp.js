@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
-import { faker } from '@faker-js/faker';
-// @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
-// components
 import Page from '../components/Page';
 import { ThemeProvider } from '@mui/material';
 import { CardHeader, Card } from '@mui/material';
@@ -13,10 +10,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import TextField from '@mui/material/TextField';
 import { UserRepository } from '../api/userRepository.js'
 import { CardContent } from '@mui/material';
-import { CardActions } from '@mui/material';
 import { Button } from '@mui/material';
-import { Box } from '@mui/material';
-// import { SitterCards } from '../components/SitterCards';
 
 export default function DashboardApp() {
   const [value, setValue] = React.useState(new Date());
@@ -27,7 +21,7 @@ export default function DashboardApp() {
 
   useEffect(() => {
     const day = value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate();
-    console.log("Day: " + day);
+    // console.log("Day: " + day);
     userRepository.getSittersByDate(day).then(setSitters).catch(err => console.error(err));
     userRepository.getJobs(day).then(setJobs).catch(err => console.error(err));
   }, [value]);
@@ -36,11 +30,10 @@ export default function DashboardApp() {
     userRepository.newJob(sitter.sitter_id, sitter.start_time, sitter.end_time).then(() => {
       setValue(value);
     }).catch(err => console.error(err));
-    console.log('sitter id: ' + sitter.sitter_id);
-    console.log('job starting time: ' + sitter.start_time);
-    console.log('job ending time: ' + sitter.end_time);
+    // console.log('sitter id: ' + sitter.sitter_id);
+    // console.log('job starting time: ' + sitter.start_time);
+    // console.log('job ending time: ' + sitter.end_time);
   }
-
 
   return (
     <Page title="Dashboard">
@@ -69,9 +62,9 @@ export default function DashboardApp() {
             </Grid>
             <Grid item xs={12} md={6} lg={8}>
               <Card>
-                <CardHeader title={(new Date().toDateString() == value.toDateString()) ? 'Schedule for Today' : `Schedule for ${value.toDateString()}`} />
+                <CardHeader title={(new Date().toDateString() === value.toDateString()) ? 'Schedule for Today' : `Schedule for ${value.toDateString()}`} />
                 <Typography variant="body1" sx={{ m: 5 }}>
-                {jobs.length == 0 ?
+                {jobs.length === 0 ?
                     <div> Nothing on the schedule here! </div>
                     :
                     <Grid container rowSpacing={1} columnSpacing={2}>
@@ -104,9 +97,9 @@ export default function DashboardApp() {
             </Grid>
             <Grid item xs={12} md={12} lg={12}>
               <Card >
-                <CardHeader title={(new Date().toDateString() == value.toDateString()) ? 'Browse for Today' : `Browse for ${value.toDateString()}`} />
+                <CardHeader title={(new Date().toDateString() === value.toDateString()) ? 'Browse for Today' : `Browse for ${value.toDateString()}`} />
                 <div className='m-3'>
-                  {sitters.length == 0 ?
+                  {sitters.length === 0 ?
                     <div> No sitters found for this date </div>
                     :
                     <Grid container rowSpacing={1} columnSpacing={2}>
