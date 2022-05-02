@@ -187,20 +187,20 @@ export class UserRepository {
         })
     }
 
-    getSitterByDate(day) {
-        return new Promise((resolve, reject) => {
-            axios.get(URL + "/sitter_schedule/self", { params: {date: day}, headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
-            .then(response => {
-                // console.log('this is the response for get/sitter by date');
-                // console.log(response.data);
-                resolve(response.data);
-            }).catch(error => {
-                console.log('this is the error for get/sitter by date');
-                console.log(error);
-                reject(error);
-            })
-        })
-    }
+    // getSitterByDate(day) {
+    //     return new Promise((resolve, reject) => {
+    //         axios.get(URL + "/sitter_schedule/self", { params: {date: day}, headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
+    //         .then(response => {
+    //             // console.log('this is the response for get/sitter by date');
+    //             // console.log(response.data);
+    //             resolve(response.data);
+    //         }).catch(error => {
+    //             console.log('this is the error for get/sitter by date');
+    //             console.log(error);
+    //             reject(error);
+    //         })
+    //     })
+    // }
 
     sitterLogin(email, pass) {
         return new Promise((resolve, reject) => {
