@@ -44,14 +44,12 @@ const deleteSitterSchedule = async (eventID) => {
 const removeFromSitterSchedule = async (sitterID, scheduleStartTime, scheduleEndTime) => {
     //a schedule should be removed if and only if
     const result = await knex(sitterSchedule)
-        .where(function() {
-            this.where('sitter_id', sitterID)
+             .where('sitter_id', sitterID)
                 //(a) event_start is before schedule_end
-                .andWhere('start_time', '<', scheduleEndTime)
+             .andWhere('start_time', '<=', scheduleEndTime)
                 //(b) event_end is after schedule_start
-                .andWhere('end_time', '>', scheduleStartTime);
-        })
-        .del();
+             .andWhere('end_time', '>=', scheduleStartTime)
+             .del();
 };
 
 module.exports = {
