@@ -9,6 +9,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from '../Assets/theme';
 import landLogo from "../Assets/images/Landing Title.png";
 import babies from "../Assets/images/landing_animation.gif";
+import { Typography } from "@mui/material";
 
 export const Landing = () => {
 
@@ -33,8 +34,11 @@ export const Landing = () => {
             backgroundColor: '#fafafa',
         }}
     >
-        <img src={landLogo} alt="Sitters 4 Hire" />
+        {/* <img src={landLogo} alt="Sitters 4 Hire" /> */}
+        <Typography variant="h1" textAlign="center">Sitters 4 Hire</Typography>
+        <Container component="main" maxWidth="xs">
         <img src={babies} alt="wiggling babies" />
+        </Container>
         
 
     </Box>
@@ -49,12 +53,6 @@ export const Landing = () => {
             alignItems: 'center',
           }}
         >
-            {/* <h1>
-            👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶👶
-            </h1> */}
-        {/* <h1 style = {{fontSize: 200}}>
-        👶
-        </h1> */}
             
         <Button
             type="submit"
@@ -78,26 +76,5 @@ export const Landing = () => {
       </Container>
     </ThemeProvider>
     </Page>
-    );
-    
-    return (
-        <>
-            <div>
-                {/* <div class="landing-center">
-                    <h1>Babysitting Done Right</h1>
-                </div> */}
-                <div>
-                    👶
-                </div>
-                {/* <div class="landing-center">
-                    <h2>add nonsense about why you should use our app</h2>
-                    <h2>screen shots of usefull features etc then scroll to buttons</h2>
-                </div> */}
-                <div class="landing-menu">
-                    <button type="button" className="btn btn-block btn-outline-dark" onClick={() => navigate("/register")}>Register </button>
-                    <button type="button" className="btn btn-block btn-outline-dark" onClick={() => navigate("/login")}>Login </button>
-                </div>
-            </div>
-        </>
     );
 }
