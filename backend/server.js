@@ -15,6 +15,7 @@ const messageRoutes = require('./routes/message') //this includes message into t
 const sitterScheduleRoutes = require('./routes/sitterSchedule') //this includes sitter_schedule into the files
 const parentScheduleRoutes = require('./routes/parentSchedule') //this includes parent_schedule into the files
 const rateParentRoutes = require('./routes/rateParent') //this includes rate_parent into the files
+const rateSitterRoutes = require('./routes/rateSitter') //this includes rate_sitter into the files
 const jobRoutes = require('./routes/job') //this includes job into the files
 
 
@@ -51,6 +52,7 @@ app.use('/sitter', authenticateJWT, sitterRoutes); //this makes sitterRoutes a r
 app.use('/sitter_schedule', authenticateJWT, sitterScheduleRoutes); //this makes sitterScheduleRoutes a route file
 app.use('/parent_schedule', authenticateJWT, parentScheduleRoutes); //this makes parentScheduleRoutes a route file
 app.use('/rate_parent', authenticateJWT, rateParentRoutes); //this makes rateParentRoutes a route file
+app.use('/rate_sitter', authenticateJWT, rateSitterRoutes); //this makes rateSitterRoutes a route file
 app.use('/message',authenticateJWT, messageRoutes); //this makes messageRoutes a route file
 app.use('/job', authenticateJWT, jobRoutes); //this makes jobRoutes a route file
 
