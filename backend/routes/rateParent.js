@@ -10,7 +10,7 @@ router.post('/self', authenticateWithClaims("sitter"),
     async (req, res, next) => {
         try {
             const post = await rateParentRoutes.createPost(req.user.id, req.body.parentID, req.body.rating, req.body.comment);
-            if(post.error != null) {
+            if(post.error != "") {
                 res.status(400).json({message: post.error});
             }
             //TODO: have the return of POST be the information just added to the DB

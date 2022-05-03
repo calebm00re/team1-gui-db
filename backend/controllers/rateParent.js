@@ -18,7 +18,9 @@ const createPost = async (sitterID, parentID, rating, comment) => {
         }
     }
     //next, we put all of the data into the database
-
+    result = await rateParentModels.createNewRating(sitterID, parentID, rating, comment);
+    result.error = "";
+    return result;
 }
 
 module.exports = {
