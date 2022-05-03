@@ -5,24 +5,26 @@ const blockModels = require("../models/block");
 const messageModels = require("../models/message");
 
 // check if role is valid
-const checkRoleValid = async (role,id1,id2) => {
-    // check if id1 and id2 are null
-    if (id1 == null || id2 == null) {
+const checkRoleValid = async (userToken,otherID) => {
+    // check if tokenUserID and id2 are null
+    if (userToken == null || otherID == null) {
         return {error: "Missing data"};
     }
+    role = userToken.claims[0];
+    tokenUserID = userToken.id;
 
     // check if role is user/sitter
     if (role == "user") {
         return {
-            parentId: id1,
-            sitterId: id2,
+            parentId: tokenUserID,
+            sitterId: otherID,
             isParent: 1,
             error: null
         };
     } else if (role == "sitter") {
         return {
-            parentId: id2,
-            sitterId: id1,
+            parentId: otherID,
+            sitterId: tokenUserID,
             isParent: 0,
             error: null
         }
@@ -51,8 +53,7 @@ const postMessage = async (parentId,sitterId,message,parentSent, isUrgent) => {
     }
 }
 
-//There should probably be more than one of these.
-//See the way that I do it in the other controllers
+//This is used by the GET to make determinations about which filters to make
 const makeFilter = async(parentId,sitterId,message,isUrgent,parentSent) => {
     const filters = {};
 
@@ -76,12 +77,8 @@ const makeFilter = async(parentId,sitterId,message,isUrgent,parentSent) => {
 
 
 // get all messages from user and sitter
-const getMessages = async(parentId,sitterId,isUrgent) =>{
+const getMessages = async(tokenUserID, otherID, urgent, messageID) =>{
     try {
-        // check if any param vars are null
-        if (parentId == null || sitterId == null || isUrgent == null) {
-            return {error: "Missing data"};
-        }
 
         const filter = await makeFilter(parentId,sitterId,null,isUrgent,null);
         const result = await messageModels.getMessagesFromUser(filter);

@@ -10,7 +10,7 @@ const router = express.Router();
 // POST /self creates a new message between sitter and parent
 router.post('/self', async(req, res, next) => {
     try {
-        const roleCheckResult = await messageController.checkRoleValid(req.user.claims[0],req.user.id,req.body.otherID);
+        const roleCheckResult = await messageController.checkRoleValid(req.user,req.body.otherID);
 
         // check if role is valid and if user/sitter exists in database
         if (roleCheckResult.error != null) {
@@ -35,23 +35,10 @@ router.post('/self', async(req, res, next) => {
 //The /self is to indicate only messages which pertain to the user are retained (standard for schema in rest of tables)
 router.get('/self', async(req, res, next) => {
     try {
-        const roleCheckResult = await messageController.checkRoleValid(req.user.claims[0],req.user.id,req.query.otherID);
-        // check if role is valid and if user/sitter exists in database
-        if (roleCheckResult.error == "Missing data" || roleCheckResult.error == "Unauthorized") {
-            console.log("I am in the error");
-            res.status(400).json({message: roleCheckResult.error});
-        } else {
-            console.log("I am in the else");
-            //Sort by date shoould also be implemented
-            const result = await messageController.getMessages(roleCheckResult.parentId,roleCheckResult.sitterId,req.body.is_urgent);
-
-            // check for possible errors
-            if (result.error != null) {
-                res.status(404).json(result.error);
-            }
-
-            res.status(200).json(result);
-        }
+        //TODO: pass in all of the query parameters (date, otherID, urgency, messageID) or none
+        const result = await messageController.getMessages(req.user.id, req.query.otherID, req.query.urgent, req.query.messageID);
+        //TODO: Pass an error if otherID is not null and is invalid
+        //TODO: add the info for this user and the other user
     } 
     catch (err){
         console.error('Failed to get message info:', err);
