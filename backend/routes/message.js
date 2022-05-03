@@ -10,7 +10,6 @@ const router = express.Router();
 // POST /self creates a new message between sitter and parent
 router.post('/self', async(req, res, next) => {
     try {
-        //TODO: the inputs of the checkRole valid should be either sitetrID or parentID (to make the life of frontend easier)
         const roleCheckResult = await messageController.checkRoleValid(req.user.claims[0],req.user.id,req.body.otherID);
 
         // check if role is valid and if user/sitter exists in database
@@ -36,15 +35,13 @@ router.post('/self', async(req, res, next) => {
 //The /self is to indicate only messages which pertain to the user are retained (standard for schema in rest of tables)
 router.get('/self', async(req, res, next) => {
     try {
-        //this only needs to be called when a query with the otherID is made
-        //Same as ealrlier comment
         const roleCheckResult = await messageController.checkRoleValid(req.user.claims[0],req.user.id,req.query.otherID);
-
         // check if role is valid and if user/sitter exists in database
-        //This is not necesssary sometimes. For example when we want all our texts
         if (roleCheckResult.error == "Missing data" || roleCheckResult.error == "Unauthorized") {
+            console.log("I am in the error");
             res.status(400).json({message: roleCheckResult.error});
         } else {
+            console.log("I am in the else");
             //Sort by date shoould also be implemented
             const result = await messageController.getMessages(roleCheckResult.parentId,roleCheckResult.sitterId,req.body.is_urgent);
 
