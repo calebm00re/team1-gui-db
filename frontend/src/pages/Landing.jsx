@@ -34,7 +34,21 @@ export const Landing = () => {
         }}
     >
         {/* <img src={landLogo} alt="Sitters 4 Hire" /> */}
-        <Typography variant="h1" textAlign="center">Sitters 4 Hire</Typography>
+        <Typography 
+            variant="h1" 
+            textAlign="center"
+            sx={{
+                fontSize: '5rem',
+                fontWeight: 'bold',
+                color: 'blue.500',
+                border: '3px solid',
+                borderColor: 'blue.500',
+                padding: '1rem',
+                borderRadius: '1rem',
+                margin: '1rem',
+                boxShadow: '0px 0px 10px rgba(0, 0, 0, 1)',
+            }}
+            >Sitters 4 Hire</Typography>
         <img width={"200px"} src={babies} alt="wiggling babies" />
         
 
