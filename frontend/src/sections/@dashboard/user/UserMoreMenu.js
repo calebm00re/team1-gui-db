@@ -7,6 +7,11 @@ import Iconify from '../../../components/Iconify';
 export default function UserMoreMenu(email) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  const copyEmail = () => {
+    navigator.clipboard.writeText(email.email);
+    alert ('Email copied to clipboard');
+  };
   // console.log('email');
   // console.log(email);
   return (
@@ -25,7 +30,7 @@ export default function UserMoreMenu(email) {
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <MenuItem sx={{ color: 'text.primary' }}>
+        <MenuItem sx={{ color: 'text.primary' }} onClick={() => copyEmail()}>
           <ListItemIcon>
             <Iconify icon="eva:email-outline" width={24} height={24} />
           </ListItemIcon>
