@@ -22,8 +22,9 @@ router.post('/self', async(req, res, next) => {
             if (result.error != null) {
                 res.status(404).json(result.error);
             }
-            //TODO: return the newly created entry and add in the GETS for the sitter / parent
-            res.status(200).json(result);
+            //return the newly created entry and add in the GETS for the sitter / parent
+            const returnGET = await messageController.getMessages(req.user, null, null, result[0]);
+            res.status(200).json(returnGET[0]);
         }
     }
     catch(err) {

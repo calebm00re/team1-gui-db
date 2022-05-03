@@ -80,8 +80,6 @@ const makeFilter = async(userToken,otherID, urgent, messageID) => {
             filters.parent_id = otherID;
         }
     }
-    else{
-    }
 
     if (messageID != null) {
         filters.id = messageID; //primary key
