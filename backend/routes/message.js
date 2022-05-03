@@ -36,7 +36,8 @@ router.post('/self', async(req, res, next) => {
 router.get('/self', async(req, res, next) => {
     try {
         //TODO: pass in all of the query parameters (date, otherID, urgency, messageID) or none
-        const result = await messageController.getMessages(req.user.id, req.query.otherID, req.query.urgent, req.query.messageID);
+        const result = await messageController.getMessages(req.user, req.query.otherID, req.query.urgent, req.query.messageID);
+
         //TODO: Pass an error if otherID is not null and is invalid
         //TODO: add the info for this user and the other user
     } 

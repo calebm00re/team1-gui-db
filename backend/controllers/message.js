@@ -1,7 +1,5 @@
 const userController = require('../controllers/users');
-const sitterModel = require('../models/sitter');
-const userModels = require("../models/users");
-const blockModels = require("../models/block");
+const sitterController = require('../controllers/sitter');
 const messageModels = require("../models/message");
 
 // check if role is valid
@@ -10,11 +8,18 @@ const checkRoleValid = async (userToken,otherID) => {
     if (userToken == null || otherID == null) {
         return {error: "Missing data"};
     }
-    role = userToken.claims[0];
-    tokenUserID = userToken.id;
+    let role = userToken.claims[0];
+    console.log("role: " + role);
+    let tokenUserID = userToken.id;
+    console.log("tokenUserID: " + tokenUserID);
 
     // check if role is user/sitter
     if (role == "user") {
+        //now we check if the otherID is a sitterID
+        let sitter = await sitterController.getSitters(null, null, null, otherID, null, null, null);
+        if (sitter.length == 0) {
+            return {error: "Invalid input"};
+        }
         return {
             parentId: tokenUserID,
             sitterId: otherID,
@@ -22,6 +27,11 @@ const checkRoleValid = async (userToken,otherID) => {
             error: null
         };
     } else if (role == "sitter") {
+        //now we check if the otherID is a parentID
+        let parent = await userController.getUsers(null, null, null, otherID, null , null, null, null, null,null);
+        if (parent.length == 0) {
+            return {error: "Invalid input"};
+        }
         return {
             parentId: otherID,
             sitterId: tokenUserID,
@@ -29,7 +39,7 @@ const checkRoleValid = async (userToken,otherID) => {
             error: null
         }
     } else {
-        return {error: "Unauthorized"};
+        return {error: "Invalid input"};
     }
 }
 
@@ -77,8 +87,16 @@ const makeFilter = async(parentId,sitterId,message,isUrgent,parentSent) => {
 
 
 // get all messages from user and sitter
-const getMessages = async(tokenUserID, otherID, urgent, messageID) =>{
+// *(user token refers to the user of the API not the user user type)
+const getMessages = async(userToken, otherID, urgent, messageID) =>{
     try {
+        //First we want to check that otherID (if not null) is a valid user
+        if(otherID != null){
+            const isValid = await checkRoleValid(userToken,otherID);
+            if(isValid.error != null){
+                return {error: isValid.error};
+            }
+        }
 
         const filter = await makeFilter(parentId,sitterId,null,isUrgent,null);
         const result = await messageModels.getMessagesFromUser(filter);
