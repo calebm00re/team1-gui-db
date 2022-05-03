@@ -14,9 +14,8 @@ router.post('/self', authenticateWithClaims("sitter"),
             if(post.error != "") {
                 res.status(400).json({message: post.error});
             }
-            //TODO: have the return of POST be the information just added to the DB
-        //    const result = await rateParentRoutes.getPosts(req.user.id, req.body.parentID, req.body.rating, null, post);
-            res.status(200).json(post);
+            const result = await rateParentRoutes.getPosts(req.user.id, req.body.parentID, req.body.rating, null, post[0]);
+            res.status(200).json(result[0]);
         } catch (err) {
             console.error('Failed to get user info:', err);
             res.status(500).json({ message: err.toString() });
@@ -24,7 +23,7 @@ router.post('/self', authenticateWithClaims("sitter"),
         next();
 });
 
-//TODO: GET (can sort based on sitterId, parentId, rating, or date)
+//GET (can sort based on sitterId, parentId, rating, or date)
 router.get('/',
     async (req, res, next) =>
 {
