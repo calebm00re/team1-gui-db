@@ -32,7 +32,7 @@ import ProfileImg from '../Assets/images/imgurl.jpg';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'firstname', label: 'Name', alignRight: false },
+  { id: 'lastname', label: 'Name', alignRight: false },
   { id: 'location', label: 'Location', alignRight: false },
   { id: 'age', label: 'Age', alignRight: false },
   { id: 'price', label: 'Price', alignRight: false },
@@ -65,9 +65,7 @@ function applySortFilter(array, comparator, query, queryTerm) {
   });
   if (query) {
     if (queryTerm === 'firstname') {
-      // console.log('array: ');
-      // console.log(array);
-      return filter(array, (_user) => _user.firstname.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+      return filter(array, (_user) => _user.lastname.toLowerCase().indexOf(query.toLowerCase()) !== -1);
     }
     else if (queryTerm === 'location') {
       return filter(array, (_user) => _user.location.toLowerCase().indexOf(query.toLowerCase()) !== -1);
