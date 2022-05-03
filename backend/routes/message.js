@@ -35,11 +35,13 @@ router.post('/self', async(req, res, next) => {
 //The /self is to indicate only messages which pertain to the user are retained (standard for schema in rest of tables)
 router.get('/self', async(req, res, next) => {
     try {
-        //TODO: pass in all of the query parameters (date, otherID, urgency, messageID) or none
+        //pass in all of the query parameters (date, otherID, urgency, messageID) or none
         const result = await messageController.getMessages(req.user, req.query.otherID, req.query.urgent, req.query.messageID);
-
-        //TODO: Pass an error if otherID is not null and is invalid
-        //TODO: add the info for this user and the other user
+        // Pass an error if otherID is not null and is invalid
+        if(result.error != null) {
+            res.status(404).json({message: result.error});
+        }
+        res.status(200).json(result);
     } 
     catch (err){
         console.error('Failed to get message info:', err);

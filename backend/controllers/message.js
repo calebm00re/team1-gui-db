@@ -64,23 +64,30 @@ const postMessage = async (parentId,sitterId,message,parentSent, isUrgent) => {
 }
 
 //This is used by the GET to make determinations about which filters to make
-const makeFilter = async(parentId,sitterId,message,isUrgent,parentSent) => {
+const makeFilter = async(userToken,otherID, urgent, messageID) => {
     const filters = {};
 
-    if (parentId != null) {
-        filters.parent_id = parentId;
+    let role = userToken.claims[0];
+    if(role == "user"){
+        filters.parent_id = userToken.id;
+        if(otherID != null){
+            filters.sitter_id = otherID;
+        }
     }
-    if (sitterId != null) {
-        filters.sitter_id = sitterId;
+    else if(role == "sitter"){
+        filters.sitter_id = userToken.id;
+        if(otherID != null){
+            filters.parent_id = otherID;
+        }
     }
-    if (message != null) {
-        filters.message = message;
+    else{
     }
-    if (isUrgent != null) {
-        filters.is_urgent = isUrgent;
+
+    if (messageID != null) {
+        filters.id = messageID; //primary key
     }
-    if (parentSent != null)  {
-        filters.parent_sent = parentSent;
+    if (urgent != null) {
+        filters.is_urgent = urgent;
     }
     return filters;
 }
@@ -98,8 +105,12 @@ const getMessages = async(userToken, otherID, urgent, messageID) =>{
             }
         }
 
-        const filter = await makeFilter(parentId,sitterId,null,isUrgent,null);
+        //Now we want to make the filters
+
+        const filter = await makeFilter(userToken,otherID, urgent, messageID);
         const result = await messageModels.getMessagesFromUser(filter);
+        console.log("I am here");
+        //Now we want to add to the return message info about each of the users.
         return result;
     } catch (error) {
         console.log(error);
@@ -109,6 +120,5 @@ const getMessages = async(userToken, otherID, urgent, messageID) =>{
 module.exports = {
     checkRoleValid,
     getMessages,
-    postMessage,
-    makeFilter
+    postMessage
 }

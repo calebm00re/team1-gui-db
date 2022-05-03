@@ -18,7 +18,8 @@ const postMessage = async(parent_id,sitter_id,message,parent_sent, is_urgent) =>
 const getMessagesFromUser = async(filter) => {
     return knex(MESSAGE_TABLE)
         .where(filter)
-        .select('*');
+        .select('*')
+        .orderBy('timestamp', 'desc');
 }
 
 
