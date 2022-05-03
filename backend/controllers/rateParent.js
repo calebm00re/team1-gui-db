@@ -23,6 +23,33 @@ const createPost = async (sitterID, parentID, rating, comment) => {
     return result;
 }
 
+
+const getPosts = async (sitterID, parentID, rating, date, postID) => {
+    //first we are going to generate a filter for the exact matches
+    const filter = await makeFilter(sitterID, parentID, rating, postID);
+    //second, we'll pass the values
+    const result = await rateParentModels.getPosts(filter, date);
+    return result;
+}
+
+const makeFilter = async (sitterID, parentID, rating, postID) => {
+    let filter = {};
+    if(sitterID != null){
+        filter.sitter_id = sitterID;
+    }
+    if(parentID != null){
+        filter.parent_id = parentID;
+    }
+    if(rating != null){
+        filter.rating = rating;
+    }
+    if(postID != null){
+        filter.id = postID; //postID is primary key
+    }
+    return filter;
+}
+
 module.exports = {
-    createPost
+    createPost,
+    getPosts
 };

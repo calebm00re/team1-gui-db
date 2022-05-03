@@ -5,7 +5,7 @@ const {authenticateWithClaims} = require("../middleware/auth");
 
 const router = express.Router();
 
-//TODO: POST /self (takes sitterId, parentId, rating, and comment)
+//POST /self (takes sitterId, parentId, rating, and comment)
 router.post('/self', authenticateWithClaims("sitter"),
     async (req, res, next) => {
         try {
