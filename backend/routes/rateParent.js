@@ -9,6 +9,7 @@ const router = express.Router();
 router.post('/self', authenticateWithClaims("sitter"),
     async (req, res, next) => {
         try {
+            console.log("Token ID: " + req.user.id);
             const post = await rateParentRoutes.createPost(req.user.id, req.body.parentID, req.body.rating, req.body.comment);
             if(post.error != "") {
                 res.status(400).json({message: post.error});

@@ -5,7 +5,7 @@ rateTable = 'rate_parent';
 const createNewRating = async (sitterID, parentID, rating, comment) => {
     console.log("sitterID: ", sitterID);
     const result = await knex(rateTable).insert({
-        sitter_id: 19,
+        sitter_id: sitterID,
         parent_id: parentID,
         rating: rating,
         comment: comment,
