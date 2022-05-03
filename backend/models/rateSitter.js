@@ -1,11 +1,11 @@
 const knex = require('../database/knex.js');
 
-rateTable = 'rate_parent';
+rateTable = 'rate_sitter';
 
-const createNewRating = async (sitterID, parentID, rating, comment) => {
+const createNewRating = async (parentID, sitterID, rating, comment) => {
     const result = await knex(rateTable).insert({
-        sitter_id: sitterID,
         parent_id: parentID,
+        sitter_id: sitterID,
         rating: rating,
         comment: comment,
         time_stamp: new Date().toISOString()
