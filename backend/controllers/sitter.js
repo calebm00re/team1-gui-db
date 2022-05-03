@@ -4,9 +4,10 @@ const userModels = require("../models/users");
 
 //TODO: change this to doesSitterEmailExist
 const doesSitterEmailExist = async (email) => {
- const users = await sitterModel.find({email : email });
- return users.length === 1;
+ const sitters = await sitterModel.find({email : email });
+ return sitters.length === 1;
 }
+
 
 const getSitters = async (firstName, lastName, email, id, location, price, age) =>  {
     try {

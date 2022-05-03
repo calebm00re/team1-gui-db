@@ -21,7 +21,8 @@ const getSitterSchedules = async (filters , date) => {
                     .andWhere('start_time', '<=', date + ' 23:59:59');
             }
         })
-        .select('*');
+        .select('*')
+        .orderBy('start_time', 'desc');
     return result;
 }
 
