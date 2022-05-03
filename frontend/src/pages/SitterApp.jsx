@@ -11,37 +11,42 @@ import TextField from '@mui/material/TextField';
 import { UserRepository } from '../api/userRepository.js'
 import { CardContent } from '@mui/material';
 import { Button } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import { AlertCreateShift } from '../components/AlertCreateShift';
 
-export default function DashboardApp() {
+export const SitterApp = () => {
   const [value, setValue] = React.useState(new Date());
-  const [sitters, setSitters] = React.useState([]);
+  const [open, setOpen] = React.useState(false);
   const [jobs, setJobs] = React.useState([]);
-  const userRepository = new UserRepository();
-  const [change , setChange] = React.useState(false);
+  const [sitters, setSitters] = React.useState([]);
   const theme = useTheme();
+  const userRepository = new UserRepository();
 
   useEffect(() => {
-    console.log('in useEffect');
     const day = value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate();
     // console.log("Day: " + day);
-    userRepository.getSittersByDate(day).then(setSitters).catch(err => console.error(err));
+    userRepository.getSitterByDate(day).then(setSitters).catch(err => console.error(err));
     userRepository.getJobs(day).then(setJobs).catch(err => console.error(err));
-  }, [value, change]);
-
-  const handleBook = (sitter) => {
-    userRepository.newJob(sitter.sitter_id, sitter.start_time, sitter.end_time).then(() => {
-      setChange(!change);
-    }).catch(err => console.error(err));
-  }
+  }, [open, value])
 
   return (
     <Page title="Dashboard">
       <ThemeProvider theme={theme}>
         <Container maxWidth="xl">
-          <Typography variant="h4" sx={{ mb: 5 }}>
+          <Typography variant="h4" sx={{ mb: 2 }}>
             Hi, welcome back
           </Typography>
-
+          <Grid container justifyContent={'flex-end'}>
+            <Button
+              variant="contained"
+              sx={{ mb: 2, justifyContent: 'flex-end' }}
+              endIcon={<AddIcon />}
+              onClick={() => setOpen(true)}
+            >
+              Add Shift
+            </Button>
+            <AlertCreateShift open={open} setOpen={setOpen} />
+          </Grid>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6} lg={4}>
               <Card>
@@ -63,7 +68,7 @@ export default function DashboardApp() {
               <Card>
                 <CardHeader title={(new Date().toDateString() === value.toDateString()) ? 'Schedule for Today' : `Schedule for ${value.toDateString()}`} />
                 <Typography variant="body1" sx={{ m: 5 }}>
-                {jobs.length === 0 ?
+                  {jobs.length === 0 ?
                     <div> Nothing on the schedule here! </div>
                     :
                     <Grid container rowSpacing={1} columnSpacing={2}>
@@ -76,15 +81,15 @@ export default function DashboardApp() {
                                 {/* <Button className="m-1" variant="contained" size="small">Book</Button> */}
                               </Typography>
                               <Typography variant="h5" component="div">
-                                {sitter.sitter.firstname} {sitter.sitter.lastname}
+                                {sitter.user.firstName} {sitter.user.lastName}
                               </Typography>
                               <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                ${sitter.sitter.price} / hr
+                                {sitter.user.numKids} {sitter.user.numKids === '1' ? 'Kid' : 'Kids'} {sitter.user.numKids === '1' ? 'Age' : `Ages ${sitter.user.minKidAge} to ${sitter.user.maxKidAge}`}
                               </Typography>
                               <Typography variant="body2">
                                 {sitter.sitter.location}
                                 <br />
-                                {sitter.sitter.experience}
+                                {sitter.user.bio}
                               </Typography>
                             </CardContent>
                           </Card>
@@ -96,33 +101,31 @@ export default function DashboardApp() {
             </Grid>
             <Grid item xs={12} md={12} lg={12}>
               <Card >
-                <CardHeader title={(new Date().toDateString() === value.toDateString()) ? 'Browse for Today' : `Browse for ${value.toDateString()}`} />
+                <CardHeader title={(new Date().toDateString() === value.toDateString()) ? 'Availability for Today' : `Availability for ${value.toDateString()}`} />
                 <div className='m-3'>
                   {sitters.length === 0 ?
-                    <div> No sitters found for this date </div>
+                    <div> You Have no Availability for this Day, Consider Adding a Shift </div>
                     :
                     <Grid container rowSpacing={1} columnSpacing={2}>
                       {sitters.map((sitter, index) => (
-                        <Grid item xs={12} md={6} lg={4} key={index}>
-                          <Card sx={{ height: 275, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                        <Grid item xs={6} md={3} lg={2} key={index}>
+                          <Card sx={{ height: 150, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                             <CardContent>
-                              <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                              <Typography sx={{ fontSize: 14 }} gutterBottom>
                                 {sitter.start_time.substring(11, 16)} - {sitter.end_time.substring(11, 16)}
                                 {/* <Button className="m-1" variant="contained" size="small">Book</Button> */}
                               </Typography>
-                              <Typography variant="h5" component="div">
+                              {/* <Typography variant="h5" component="div">
                                 {sitter.firstname} {sitter.lastname}
-                              </Typography>
-                              <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                              </Typography> */}
+                              <Typography sx={{ mb: 1.5, mt: 1.5 }}>
                                 ${sitter.price} / hr
                               </Typography>
                               <Typography variant="body2">
                                 {sitter.location}
-                                <br />
-                                {sitter.experience}
                               </Typography>
                             </CardContent>
-                            <Button sx={{ alignSelf: 'flex-end' }} className="m-2" variant="contained" size="small" onClick={() => handleBook(sitter)}>Book</Button>
+                            {/* <Button sx={{ alignSelf: 'flex-end' }} className="m-2" variant="contained" size="small" onClick={() => handleBook(sitter)}>Book</Button> */}
                           </Card>
                         </Grid>))}
                     </Grid>}

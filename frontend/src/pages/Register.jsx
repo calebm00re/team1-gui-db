@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from "react-router-dom";
-import theme from '../Assets/theme';
+import { useTheme } from '@mui/material/styles';
 import { UserRepository } from '../api/userRepository.js'
 import { FormControlLabel } from '@mui/material';
 // import { FormGroup } from '@mui/material';
@@ -23,7 +23,7 @@ import Radio from '@mui/material/Radio';
 import Page from '../components/Page';
 
 export const Register = () => {
-
+  const theme = useTheme();
   const [value, setValue] = React.useState('Parent');
 
   const userRepository = new UserRepository();
@@ -35,6 +35,8 @@ export const Register = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    //check to sign up as sitter or parent
+    if (value === 'Parent') {
     userRepository.register(data.get('firstName'), data.get('lastName'), data.get('email'), data.get('password')).then(res => {
       if (res.status <= 201) {
         navigate('/dashboard/app');
@@ -42,6 +44,15 @@ export const Register = () => {
     }).catch(err => {
       alert("email already in use");
     });
+  } else {
+    userRepository.sitterRegister(data.get('firstName'), data.get('lastName'), data.get('email'), data.get('password')).then(res => {
+      if (res.status <= 201) {
+        navigate('/sitters/app');
+      }
+    }).catch(err => {
+      alert("email already in use");
+    });
+  };
   };
 
   return (

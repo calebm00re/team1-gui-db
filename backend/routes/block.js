@@ -7,12 +7,12 @@ const router = express.Router();
 
 // route for blocking sitter from parent
 //The route header /block/:id is again my fault
-router.post('/', authenticateWithClaims("sitter"),
+router.post('/self', authenticateWithClaims("sitter"),
     async (req,res,next) => {
     try {
         const sitterID = req.user.id; //This should be a user token
         console.log("The sitter ID is: " + sitterID);
-        const parentID = req.body.id; //this is the parameter which needs to be passed in the body
+        const parentID = req.body.parentID; //this is the parameter which needs to be passed in the body
         console.log("The user ID is: " + parentID);
         const result = await blockController.blockSitter(parentID, sitterID);
 

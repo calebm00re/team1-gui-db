@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from "react-router-dom";
-import theme from '../Assets/theme';
+import { useTheme } from '@mui/material/styles';
 import { UserRepository } from '../api/userRepository.js'
 import { FormControl } from '@mui/material';
 import { FormLabel } from '@mui/material';
@@ -22,32 +22,13 @@ import Page from '../components/Page';
 
 
 export const Login = () => {
-
+  const theme = useTheme();
   const [value, setValue] = React.useState('Parent');
   // const [loaded, setLoaded] = React.useState(false);
 
   const userChange = (event) => {
     setValue(event.target.value);
   };
-
-  // const delay = ms => new Promise(res => setTimeout(res, ms));
-
-  // const get_info = async () => {
-  //   userRepository.getInfo()
-  //     .then(response => {
-  //       console.log('this is the response for get_info: ')
-  //       console.log(response)
-  //       sessionStorage.setItem('firstName', response.data.firstName);
-  //       sessionStorage.setItem('lastName', response.data.lastName);
-  //       sessionStorage.setItem('email', response.data.email);
-  //       await delay(5000);
-  //     })
-  //     .catch(error => {
-  //       console.log('this is the error for get_info: ')
-  //       console.log(error)
-  //     });
-  // }
-
 
   const userRepository = new UserRepository();
   const navigate = useNavigate();
@@ -56,33 +37,24 @@ export const Login = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
+    //decide to log in as sitter or parent
+    if (value === 'Parent') {
     userRepository.login(data.get('email'), data.get('password')).then(res => {
       if (res.status <= 201) {
-        // userRepository.getInfo().then(response => {
-        //   console.log('this is the response for get_info: ')
-        //   console.log(response)
-        //   sessionStorage.setItem('firstName', response.data.firstName);
-        //   sessionStorage.setItem('lastName', response.data.lastName);
-        //   sessionStorage.setItem('email', response.data.email);
-        //   sessionStorage.setItem('bio', response.data.bio);
-        //   sessionStorage.setItem('imgurl', response.data.imgurl);
-        //   sessionStorage.setItem('minage', response.data.minKidAge);
-        //   sessionStorage.setItem('maxage', response.data.maxKidAge);
-        //   sessionStorage.setItem('startTime', response.data.startWorkTime);
-        //   sessionStorage.setItem('endTime', response.data.endWorkTime);
-        // }).catch(error => {
-        //   console.log('this is the error for get_info: ')
-        //   console.log(error)
-        // });
-
         navigate('/dashboard/app');
-        // setTimeout(() => {
-        //   navigate('/dashboard/app');
-        // }, 1000);
       }
     }).catch(err => {
       alert("invalid credentials");
     });
+  } else {
+    userRepository.sitterLogin(data.get('email'), data.get('password')).then(res => {
+      if (res.status <= 201) {
+        navigate('/sitters/app');
+      }
+    }).catch(err => {
+      alert("invalid credentials");
+    });
+  };
   };
 
   return (
