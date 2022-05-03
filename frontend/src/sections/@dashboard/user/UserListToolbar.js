@@ -38,7 +38,7 @@ UserListToolbar.propTypes = {
 export default function UserListToolbar({ numSelected, filterName, onFilterName, queryType, setQueryType }) {
   // const [filterType, setFilterType] = React.useState('First Name');
   const filterTypes = ['firstname', 'location', 'age', 'price'];
-  const filterNames = ['First Name', 'Location', 'Age', 'Price'];
+  const filterNames = ['Last Name', 'Location', 'Age', 'Price'];
   const [isOpen, setIsOpen] = React.useState(false);
   const ref = React.useRef(null);
 
