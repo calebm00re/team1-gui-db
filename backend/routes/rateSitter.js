@@ -1,5 +1,5 @@
 const express = require('express');
-const rateSitterController = require('../controllers/rateSitterController');
+const rateSitterController = require('../controllers/rateSitter');
 const {authenticateWithClaims} = require("../middleware/auth");
 
 const router = express.Router();
