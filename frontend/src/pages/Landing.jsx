@@ -9,7 +9,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles'
 //import theme from '../Assets/theme';
 //import landLogo from "../Assets/images/Landing Title.png";
-//import babies from "../Assets/images/landing_animation.gif";
+import babies from "../Assets/images/landing_animation.gif";
 import { Typography } from "@mui/material";
 
 export const Landing = () => {
@@ -39,14 +39,15 @@ export const Landing = () => {
             sx={{
                 fontSize: '5rem',
                 fontWeight: 'bold',
+                color: '#103996',
                 border: '3px solid',
                 padding: '1rem',
                 borderRadius: '1rem',
                 margin: '1rem',
-                boxShadow: '0px 0px 10px rgba(0, 0, 0, 1)',
+                boxShadow: '0px 0px 10px rgba(0, 0, 0, .5)',
             }}
             >Sitters 4 Hire</Typography>
-        {/* <img width={"200px"} src={babies} alt="wiggling babies" /> */}
+        <img width={"200px"} src={babies} alt="wiggling babies" />
         
 
     </Box>
