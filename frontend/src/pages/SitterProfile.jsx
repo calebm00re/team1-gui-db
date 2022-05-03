@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import { UserRepository } from '../api/userRepository.js'
-import { AlertDelete } from '../components/AlertDelete';
+import { AlertSitterDelete } from '../components/AlertSitterDelete';
 import ProfileImg from '../Assets/images/imgurl.jpg';
 import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
@@ -19,53 +19,43 @@ import { FormControl } from '@mui/material';
 import { InputLabel } from '@mui/material';
 
 
-export const Profile = () => {
+export const SitterProfile = () => {
     const theme = useTheme();
     const [nameF, setNameF] = React.useState(sessionStorage.getItem('firstName'));
     const [nameL, setNameL] = React.useState(sessionStorage.getItem('lastName'));
     const [email, setEmail] = React.useState(sessionStorage.getItem('email'));
-    const [bio, setBio] = React.useState(sessionStorage.getItem('bio'));
+    const [xp, setXp] = React.useState(sessionStorage.getItem('xp'));
     const [location, setLocation] = React.useState(sessionStorage.getItem('location'));
-    const [minage, setMinage] = React.useState(sessionStorage.getItem('minage') !== 'null' ? sessionStorage.getItem('minage') : '');
-    const [maxage, setMaxage] = React.useState(sessionStorage.getItem('maxage') !== 'null' ? sessionStorage.getItem('maxage') : '');
-    const [startTime, setStartTime] = React.useState(sessionStorage.getItem('startTime') !== 'null' ? sessionStorage.getItem('startTime').slice(-2) : '');
-    const [endTime, setEndTime] = React.useState(sessionStorage.getItem('endTime') !== 'null' ? sessionStorage.getItem('endTime').slice(-2) : '');
-    const [numKids, setNumKids] = React.useState(sessionStorage.getItem('numKids') !== 'null' ? sessionStorage.getItem('numKids') : '');
+    const [age, setAge] = React.useState(sessionStorage.getItem('age') !== 'null' ? sessionStorage.getItem('age') : '');
+    const [price, setPrice] = React.useState(sessionStorage.getItem('price') !== 'null' ? sessionStorage.getItem('price') : '');
     const [imgurl, setImgurl] = React.useState(sessionStorage.getItem('imgurl'));
     const [open, setOpen] = React.useState(false);
-    const ages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
-    const workTimes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
-    const numkids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const ages = [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100];
+    const prices = [15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100];
 
     const userRepository = new UserRepository();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        userRepository.putInfo(data.get('firstName'), data.get('lastName'), data.get('imgurl'), data.get('password'), data.get('bio'),
-                               minage, maxage, startTime, endTime, numKids, data.get('location') ).then(res => {
-            // console.log('this is the response for update_info: ')
-            // console.log(res);
-            alert('Profile updated successfully!');
-        }).catch(error => {
-            console.log('this is the error for update_info: ')
-            console.log(error)
-            alert('There was an error updating your account, please try again.');
+        console.log('data: ');
+        console.log(data.get('imgurl'));
+        userRepository.putSitterInfo(data.get('firstName'), data.get('lastName'), data.get('location'), age, price, data.get('xp'), data.get('password'), data.get('imgurl')).then(res => {
+            alert('Profile updated');
+        }).catch(err => {
+            alert('Error updating profile');
         }).finally(() => {
             setNameF(data.get('firstName'));
             setNameL(data.get('lastName'));
-            setBio(data.get('bio'));
             setLocation(data.get('location'));
+            setXp(data.get('xp'));
             setImgurl(data.get('imgurl'));
             sessionStorage.setItem('firstName', data.get('firstName'));
             sessionStorage.setItem('lastName', data.get('lastName'));
-            sessionStorage.setItem('bio', data.get('bio'));
             sessionStorage.setItem('location', data.get('location'));
-            sessionStorage.setItem('numKids', numKids);
-            sessionStorage.setItem('startTime', startTime);
-            sessionStorage.setItem('endTime', endTime);
-            sessionStorage.setItem('minage', minage);
-            sessionStorage.setItem('maxage', maxage);
+            sessionStorage.setItem('age', age);
+            sessionStorage.setItem('price', price);
+            sessionStorage.setItem('xp', data.get('xp'));
             sessionStorage.setItem('imgurl', data.get('imgurl'));
         });
     };
@@ -132,100 +122,53 @@ export const Profile = () => {
                                         autoComplete="location"
                                     />
                                 </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl fullWidth>
+                                        <InputLabel id="age">Age</InputLabel>
+                                        <Select
+                                            labelId="age"
+                                            id="age"
+                                            value={age}
+                                            label="Age"
+                                            onChange={(event) => { setAge(event.target.value) }}
+                                        >
+                                            {ages.map((n, index) => (
+                                                <MenuItem key={index} value={n}>{n}</MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl fullWidth>
+                                        <InputLabel id="price">Price</InputLabel>
+                                        <Select
+                                            labelId="price"
+                                            id="price"
+                                            value={price}
+                                            label="Price"
+                                            onChange={(event) => { setPrice(event.target.value) }}
+                                        >
+                                            {prices.map((n, index) => (
+                                                <MenuItem key={index} value={n}>{n}</MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
                                 <Grid item xs={12}>
                                     <TextField
                                         fullWidth
-                                        id="bio"
-                                        label={'Bio'}
+                                        id="xp"
+                                        label={'Experience'}
                                         // defaultValue={bio}
-                                        placeholder={'Tell us about yourself!'}
-                                        defaultValue={bio === 'null' ? '' : bio}
-                                        name="bio"
-                                        autoComplete="bio"
+                                        placeholder={'Tell us about yourself, and your experience!'}
+                                        defaultValue={xp === 'null' ? '' : xp}
+                                        name="xp"
+                                        autoComplete="xp"
                                         multiline
                                         rows={2}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={4}>
-                                    <FormControl fullWidth>
-                                        <InputLabel id="minage">Youngest Child Age</InputLabel>
-                                        <Select
-                                            labelId="minage"
-                                            id="minage"
-                                            value={minage}
-                                            label="Youngest Child Age"
-                                            onChange={(event) => { setMinage(event.target.value) }}
-                                        >
-                                            {ages.map((n, index) => (
-                                                <MenuItem key={index} value={n}>{n}</MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12} sm={4}>
-                                    <FormControl fullWidth>
-                                        <InputLabel id="maxage">Oldest Child Age</InputLabel>
-                                        <Select
-                                            labelId="maxage"
-                                            id="maxage"
-                                            value={maxage}
-                                            label="Oldest Child Age"
-                                            onChange={(event) => { setMaxage(event.target.value) }}
-                                        >
-                                            {ages.map((n, index) => (
-                                                <MenuItem key={index} value={n}>{n}</MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12} sm={4}>
-                                    <FormControl fullWidth>
-                                        <InputLabel id="numkids">Number of Kids</InputLabel>
-                                        <Select
-                                            labelId="numkids"
-                                            id="numkids"
-                                            value={numKids}
-                                            label="Number of Kids"
-                                            onChange={(event) => { setNumKids(event.target.value) }}
-                                        >
-                                            {numkids.map((n, index) => (
-                                                <MenuItem key={index} value={n}>{n}</MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <FormControl fullWidth>
-                                        <InputLabel id="starttime">Start Work Time</InputLabel>
-                                        <Select
-                                            labelId="starttime"
-                                            id="starttime"
-                                            value={startTime}
-                                            label="Start Work Time"
-                                            onChange={(event) => { setStartTime(event.target.value) }}
-                                        >
-                                            {workTimes.map((n, index) => (
-                                                <MenuItem key={index} value={n}>{n}</MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <FormControl fullWidth>
-                                        <InputLabel id="endtime">End Work Time</InputLabel>
-                                        <Select
-                                            labelId="endtime"
-                                            id="endtime"
-                                            value={endTime}
-                                            label="End Work Time"
-                                            onChange={(event) => { setEndTime(event.target.value) }}
-                                        >
-                                            {workTimes.map((n, index) => (
-                                                <MenuItem key={index} value={n}>{n}</MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                </Grid>
+
                                 <Grid item xs={12}>
                                     <TextField
                                         fullWidth
@@ -278,7 +221,7 @@ export const Profile = () => {
                             Delete account
                         </Button>
                     </Box>
-                    <AlertDelete open={open} setOpen={setOpen} />
+                    <AlertSitterDelete open={open} setOpen={setOpen} />
                 </Container>
             </ThemeProvider>
         </Page>

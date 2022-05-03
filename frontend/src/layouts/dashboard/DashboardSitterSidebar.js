@@ -6,7 +6,7 @@ import { Box, Drawer, Typography, Avatar } from '@mui/material';
 import useResponsive from '../../hooks/useResponsive';
 import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
-import { navConfig } from './NavConfig';
+import { sitterConfig } from './NavConfig';
 
 // ----------------------------------------------------------------------
 
@@ -29,12 +29,12 @@ const AccountStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-DashboardSidebar.propTypes = {
+DashboardSitterSidebar.propTypes = {
   isOpenSidebar: PropTypes.bool,
   onCloseSidebar: PropTypes.func,
 };
 
-export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar, user, Imgurl}) {
+export default function DashboardSitterSidebar({ isOpenSidebar, onCloseSidebar, user, Imgurl}) {
   const { pathname } = useLocation();
 
   const isDesktop = useResponsive('up', 'lg');
@@ -43,7 +43,6 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar, user, 
     if (isOpenSidebar) {
       onCloseSidebar();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   const renderContent = (
@@ -54,7 +53,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar, user, 
       }}
     >
       <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
-        Let's get your 👶 sat
+        Let's sit some 👶s!
       </Box>
 
       <Box sx={{ mb: 5, mx: 2.5 }}>
@@ -73,7 +72,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar, user, 
         {/* </Link> */}
       </Box>
 
-      <NavSection navConfig={navConfig} />
+      <NavSection navConfig={sitterConfig} />
 
       <Box sx={{ flexGrow: 1 }} />
 

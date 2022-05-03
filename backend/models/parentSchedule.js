@@ -2,7 +2,16 @@ const knex = require('../database/knex.js');
 
 const parentSchedule = 'parent_schedule';
 
-//NOTE: I may be wrong but, you shouldn't have to change anything in this file.
+const createParentSchedule = async (parentID, startTime, endTime) => {
+    const result = await knex(parentSchedule)
+        .insert({
+            parent_id: parentID,
+            start_time: startTime,
+            end_time: endTime
+        });
+    return result;
+}
+
 
 const getParentSchedules = async (filters, date) => {
     const result = await knex(parentSchedule)
@@ -26,17 +35,6 @@ const updateParentSchedule = async (eventID,filters) => {
     return result;
 }
 
-//NOTE: As I mentioned previously, as the event_description is an optional field it should not be included here.
-//Instead, a call to updateParentSchedule should be made with the event_description as a parameter (even when made at the POST).
-const createParentSchedule = async (parentID, startTime, endTime) => {
-    const result = await knex(parentSchedule)
-        .insert({
-            parent_id: parentID,
-            start_time: startTime,
-            end_time: endTime
-        });
-    return result;
-}
 
 const deleteParentSchedule = async (eventID) => {
     const result = await knex(parentSchedule)
@@ -45,9 +43,22 @@ const deleteParentSchedule = async (eventID) => {
     return result;
 };
 
+
+const removeFromParentSchedule = async (parentID, scheduleStartTime, scheduleEndTime) => {
+    //a schedule should be removed if and only if
+    const result = await knex(parentSchedule)
+            .where('parent_id', parentID)
+                //(a) event_start is before schedule_end
+            .andWhere('start_time', '<=', scheduleEndTime)
+                //(b) event_end is after schedule_start
+            .andWhere('end_time', '>=', scheduleStartTime)
+            .del();
+};
+
 module.exports = {
     getParentSchedules,
     updateParentSchedule,
     createParentSchedule,
-    deleteParentSchedule
+    deleteParentSchedule,
+    removeFromParentSchedule
 };
