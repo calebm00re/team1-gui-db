@@ -47,6 +47,7 @@ router.post('/users/register', async (req, res, next) => {
 router.post('/users/login', async (req, res, next) => {
     try {
         const body = req.body;
+        //console.log("Email,Password:" ,body.email,body.password);
         const result = await sessionController.authenticateUser(body.email, body.password);
         console.log("result of authenticateUser: ", result);
         if(result.error === "Email or password is missing"){
