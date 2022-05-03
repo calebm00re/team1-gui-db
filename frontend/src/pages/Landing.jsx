@@ -31,14 +31,11 @@ export const Landing = () => {
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            backgroundColor: '#fafafa',
         }}
     >
         {/* <img src={landLogo} alt="Sitters 4 Hire" /> */}
         <Typography variant="h1" textAlign="center">Sitters 4 Hire</Typography>
-        <Container component="main" maxWidth="xs">
-        <img src={babies} alt="wiggling babies" />
-        </Container>
+        <img width={"200px"} src={babies} alt="wiggling babies" />
         
 
     </Box>
@@ -47,7 +44,7 @@ export const Landing = () => {
         
         <Box
           sx={{
-            marginTop: 4,
+            marginTop: 0,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',

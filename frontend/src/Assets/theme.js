@@ -24,6 +24,21 @@ const theme = createTheme({
                 },
             },
         },
+        MuiTypography: {
+            styleOverrides: {
+                root: {
+                  fontSize: '5rem',
+                  fontWeight: 'bold',
+                  color: primaryColor,
+                  border: '3px solid',
+                  borderColor: primaryColor,
+                  padding: '1rem',
+                  borderRadius: '1rem',
+                  margin: '1rem',
+                  shadow: '0px 0px 10px rgba(0, 0, 0, 1)',
+                },
+              },
+            },
     },
   });
 
